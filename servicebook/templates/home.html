@@ -1,8 +1,17 @@
-<html>
-  <body>
-    <h1>Projects</h1>
+{% extends "bootstrap/base.html" %}
 
-    <table style="width: 100%; border: 1px solid black">
+{% block title %}Service Book{% endblock %}
+
+{% block navbar %}
+{{nav.frontend_top.render()}}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Service Book</h2>
+    <p>List of all active projects for the QA team</p>
+    <div class="table-responsive">
+    <table class="table">
       <thead>
       <tr>
         <th>Project</th>
@@ -24,5 +33,6 @@
     {% endfor %}
     </tbody>
     </table>
-  </body>
-</html>
+    </div>
+</div>
+{% endblock %}

@@ -1,3 +1,5 @@
 sqlalchemy_utils
 flask
 flask-sqlalchemy
+flask-bootstrap
+flask-nav

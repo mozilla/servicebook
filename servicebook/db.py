@@ -34,8 +34,12 @@ _GROUPS = [
 ]
 
 _PROJS = [
-["Shavar (Tracking Protection)", "Rebecca", "Richard", "#shavar", "Services"]
+["Shavar (Tracking Protection)", "Rebecca", "Richard", "#shavar", "Services"],
+["ABSearch", "Karl", "Chris", "#absearch", "Services"],
+["Balrog", "Chris", "Karl", "#balrog", "Services"]
+
 ]
+
 
 
 def init(sqluri='sqlite:////tmp/qa_projects.db', fill=False):
