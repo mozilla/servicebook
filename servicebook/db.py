@@ -38,10 +38,13 @@ _PROJS = [
 ]
 
 
-def init(sqluri='sqlite:////tmp/qa_projects.db'):
+def init(sqluri='sqlite:////tmp/qa_projects.db', fill=False):
     engine = create_engine(sqluri)
     session_factory.configure(bind=engine)
     mappings.Base.metadata.create_all(engine)
+    if not fill:
+        return engine
+
     session = Session()
 
     for person in _PEOPLE.split('\n'):
@@ -73,8 +76,8 @@ def init(sqluri='sqlite:////tmp/qa_projects.db'):
     for project in _PROJS:
         proj = mappings.Project()
         proj.name = project[0]
-        proj.primary = _find_person(project[1]).id
-        proj.secondary = _find_person(project[2]).id
+        proj.primary = _find_person(project[1])
+        proj.secondary = _find_person(project[2])
         proj.irc = project[3]
         proj.group = _find_group(project[4]).name
         session.add(proj)
@@ -85,4 +88,4 @@ def init(sqluri='sqlite:////tmp/qa_projects.db'):
 
 
 if __name__ == '__main__':
-    init()
+    init(fill=True)

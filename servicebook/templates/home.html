@@ -1,0 +1,28 @@
+<html>
+  <body>
+    <h1>Projects</h1>
+
+    <table style="width: 100%; border: 1px solid black">
+      <thead>
+      <tr>
+        <th>Project</th>
+        <th>Primary</th>
+        <th>Secondary</th>
+        <th>IRC</th>
+        <th>Technical Group</th>
+      </tr>
+      </thead>
+      <tbody>
+    {% for project in projects %}
+    <tr>
+      <td>{{project.name}}</td>
+      <td>{{project.primary}}</td>
+      <td>{{project.secondary}}</td>
+      <td>{{project.irc}}</td>
+      <td>{{project.group}}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+  </body>
+</html>

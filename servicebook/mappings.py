@@ -2,6 +2,7 @@
 from sqlalchemy_utils import ScalarListType, URLType
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, Unicode, ForeignKey
+from sqlalchemy.orm import relationship
 
 
 Base = declarative_base()
@@ -17,30 +18,32 @@ class Person(Base):
         super(Person, self).__init__()
         self.firstname = firstname
         self.lastname = lastname
-        self.id = None
+
+    def __repr__(self):
+        return '%s %s' % (self.firstname, self.lastname)
 
 
 class Group(Base):
     __tablename__ = 'group'
     name = Column(Unicode(128), primary_key=True)
     home = Column(URLType())
-    lead = Column(Integer, ForeignKey('person.id'))
+    lead_id = Column(Integer, ForeignKey('person.id'))
+    lead = relationship('Person', foreign_keys='Group.lead_id')
 
     def __init__(self, name=None, home=None, lead=None):
         super(Group, self).__init__()
         self.name = name
         self.home = home
-        if lead is not None:
-            self.lead = lead.id
-        else:
-            self.lead = lead
+        self.lead = lead
 
 
 class Project(Base):
     __tablename__ = 'project'
     name = Column(Unicode(128), primary_key=True)
-    primary = Column(Integer, ForeignKey('person.id'))
-    secondary = Column(Integer, ForeignKey('person.id'))
+    primary_id = Column(Integer, ForeignKey('person.id'))
+    primary = relationship('Person', foreign_keys='Project.primary_id')
+    secondary_id = Column(Integer, ForeignKey('person.id'))
+    secondary = relationship('Person', foreign_keys='Project.secondary_id')
     irc = Column(Unicode(128))
     group = Column(Unicode(128), ForeignKey('group.name'))
 
