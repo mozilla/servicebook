@@ -1,7 +1,7 @@
 Service Book
 ============
 
-Small dashboard that lists web services, and displays their swagger documentation.
+Small dashboard that lists all QA projects, and displays their swagger documentation
+and everything we have about them.
 
-Registering a new service is simply done by adding its swagger spec.
 
