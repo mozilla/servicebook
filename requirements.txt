@@ -4,3 +4,4 @@ flask-sqlalchemy
 flask-bootstrap
 flask-nav
 Flask-WTF
+PyYAML

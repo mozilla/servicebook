@@ -10,8 +10,14 @@
 <div class="container">
   <div class="row">
   <div class="col-md-6">
-    <h2>{{project.name}}</h2>
-    <p>{{project.description}}</p>
+    {% if project_info %}
+      <h2>{{project_info['title']}}</h2>
+      <p>{{project_info['description']}}</p>
+    {% else %}
+      <h2>{{project.name}}</h2>
+      <p>{{project.description}}</p>
+    {% endif %}
+
     <h3>Bugzilla bugs</h3>
     <ul class="list-unstyled">
         {% for bug in bugs %}
@@ -23,9 +29,14 @@
   </div>
   <div class="col-md-6">
   <ul class="list-group">
-     <li class="list-group-item"><em>Project Contact</em> <a href="mailto:mike@mail.com"><strong>Mike Connor</strong></a></li>
-     <li class="list-group-item"><em>Licence</em> <a href="https://www.apache.org/licenses/LICENSE-2.0.html"><strong>APLv2</strong></a></li>
-     <li class="list-group-item"><em>Homepage</em> <a href="https://github.com/mozilla-services/absearch">https://github.com/mozilla-services/absearch</a></li>
+     {% if project_info %}
+     <li class="list-group-item"><em>Project Contact</em>
+         <a href="mailto:{{project_info['contact']['email']}}"><strong>{{project_info['contact']['name']}}</strong></a></li>
+     <li class="list-group-item"><em>Licence</em>
+         <a href="{{project_info['license']['url']}}"><strong>{{project_info['license']['name']}}</strong></a></li>
+     <li class="list-group-item"><em>Homepage</em>
+         <a href="{{project_info['x-mozilla-services']['homepage']}}">{{project_info['x-mozilla-services']['homepage']}}</a></li>
+     {% endif %}
      <li class="list-group-item"><em>QA Primary</em> <strong>{{project.primary}}</strong></li>
      <li class="list-group-item"><em>QA Secondary</em> <strong>{{project.secondary}}</strong></li>
      <li class="list-group-item"><em>IRC</em> <strong>{{project.irc}}</strong></li>

@@ -1,3 +1,4 @@
+import yaml
 import requests
 from flask import Flask, render_template
 from flask_bootstrap import Bootstrap
@@ -31,6 +32,8 @@ _BUGZILLA = 'https://bugzilla.mozilla.org/rest/bug?product=%s&component=%s'
 def project(project_id):
     q = Session.query(mappings.Project).filter(mappings.Project.id==project_id)
     project = q.one()
+
+    # scraping bugzilla info
     if project.bz_product:
         bugzilla = _BUGZILLA % (project.bz_product, project.bz_component)
         res = requests.get(bugzilla)
@@ -38,7 +41,28 @@ def project(project_id):
     else:
         bugs = []
 
-    return render_template('project.html', project=project, bugs=bugs)
+    # if we have some deployments, scraping project info out of the
+    # stage one (fallback to the first one)
+    swagger = None
+
+    if len(project.deployments) > 0:
+        for depl in project.deployments:
+            if depl.name == 'stage':
+                swagger = depl.endpoint.lstrip('/') + '/__api__'
+                break
+
+        if swagger is None:
+            swagger = project.deployments[0].endpoint.lstrip('/') + '/__api__'
+
+    project_info = None
+
+    if swagger is not None:
+        res = requests.get(swagger)
+        if res.status_code == 200:
+            project_info = yaml.load(res.content)['info']
+
+    return render_template('project.html', project=project, bugs=bugs,
+                           project_info=project_info)
 
 
 
