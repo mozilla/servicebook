@@ -15,7 +15,7 @@ from nav import nav
 
 frontend = Blueprint('frontend', __name__)
 
-nav.register_element('frontend_top', Navbar(View('Home', '.home'),))
+nav.register_element('frontend_top', Navbar(View('Mozilla QA ~ Service Book', '.home'),))
 
 
 @frontend.route("/")
