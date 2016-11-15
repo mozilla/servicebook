@@ -1,7 +1,7 @@
 # encoding: utf8
 from sqlalchemy_utils import ScalarListType, URLType
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, Unicode, ForeignKey
+from sqlalchemy import Column, Integer, Unicode, ForeignKey, UnicodeText
 from sqlalchemy.orm import relationship
 
 
@@ -37,9 +37,22 @@ class Group(Base):
         self.lead = lead
 
 
+class Deployment(Base):
+    __tablename__ = 'deployment'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(Unicode(128))
+    endpoint = Column(URLType())
+    project_id = Column(Integer, ForeignKey('project.id'))
+    project = relationship('Project', back_populates="deployments")
+
+
 class Project(Base):
     __tablename__ = 'project'
-    name = Column(Unicode(128), primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(Unicode(128))
+    bz_product = Column(Unicode(128))
+    bz_component = Column(Unicode(128))
+    description = Column(UnicodeText)
     primary_id = Column(Integer, ForeignKey('person.id'))
     primary = relationship('Person', foreign_keys='Project.primary_id')
     secondary_id = Column(Integer, ForeignKey('person.id'))
@@ -47,7 +60,8 @@ class Project(Base):
     irc = Column(Unicode(128))
     group = Column(Unicode(128), ForeignKey('group.name'))
 
-    swagger_def = Column(URLType())
+    deployments = relationship('Deployment', back_populates="project")
+
     test_suite = Column(ScalarListType(URLType))
     unit_tests = Column(ScalarListType(URLType))
     functional_tests = Column(ScalarListType(URLType))
@@ -56,3 +70,5 @@ class Project(Base):
     accessibility_tests = Column(ScalarListType(URLType))
     sec_tests = Column(ScalarListType(URLType))
     localization_tests = Column(ScalarListType(URLType))
+
+

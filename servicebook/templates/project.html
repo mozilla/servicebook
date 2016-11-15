@@ -1,0 +1,68 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}Service Book{% endblock %}
+
+{% block navbar %}
+{{nav.frontend_top.render()}}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+  <div class="col-md-6">
+    <h2>{{project.name}}</h2>
+    <p>{{project.description}}</p>
+    <h3>Bugzilla bugs</h3>
+    <ul class="list-unstyled">
+        {% for bug in bugs %}
+        <li><span class="badge">{{bug.status}}</span>
+            <a href="https://bugzilla.mozilla.org/show_bug.cgi?id={{bug.id}}">{{bug.summary}}</a></li>
+        {% endfor %}
+    </ul>
+
+  </div>
+  <div class="col-md-6">
+  <ul class="list-group">
+     <li class="list-group-item"><em>Project Contact</em> <a href="mailto:mike@mail.com"><strong>Mike Connor</strong></a></li>
+     <li class="list-group-item"><em>Licence</em> <a href="https://www.apache.org/licenses/LICENSE-2.0.html"><strong>APLv2</strong></a></li>
+     <li class="list-group-item"><em>Homepage</em> <a href="https://github.com/mozilla-services/absearch">https://github.com/mozilla-services/absearch</a></li>
+     <li class="list-group-item"><em>QA Primary</em> <strong>{{project.primary}}</strong></li>
+     <li class="list-group-item"><em>QA Secondary</em> <strong>{{project.secondary}}</strong></li>
+     <li class="list-group-item"><em>IRC</em> <strong>{{project.irc}}</strong></li>
+     <li class="list-group-item"><em>Group</em> <strong>{{project.group}}</strong></li>
+  </ul>
+  </div>
+  </div>
+
+  <h2>Deployments</h2>
+  {% for deployment in project.deployments %}
+<div class="panel panel-primary">
+<div class="panel-heading">
+  <h2 class="panel-title">{{deployment.name}}  <span class="badge">v0.3.0</span></h2>
+  </div>
+  <div class="panel-body">
+
+   <ul class="list-group">
+     <li class="list-group-item"><em>Endpoint</em> <a href="{{deployment.endpoint}}"><strong>{{deployment.endpoint}}</strong></a></li>
+     <li class="list-group-item"><em>Deployment Date</em> <strong>11/10/2016</strong></li>
+   </ul>
+
+    <div class="btn-group" role="group">
+     <button type="button" class="btn btn-default btn-lg">
+        <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Hearbeat
+     </button>
+     <button type="button" class="btn btn-default btn-lg">
+        <span class="glyphicon glyphicon-list" aria-hidden="true"></span> Swagger
+     </button>
+     <button type="button" class="btn btn-default btn-lg">
+        <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Smoke Test
+     </button>
+    </div>
+  </div>
+</div>
+
+  {% endfor %}
+
+</div>
+
+{% endblock %}

@@ -24,7 +24,7 @@
       <tbody>
     {% for project in projects %}
     <tr>
-      <td>{{project.name}}</td>
+      <td><a href="/project/{{project.id}}">{{project.name}}</a></td>
       <td>{{project.primary}}</td>
       <td>{{project.secondary}}</td>
       <td>{{project.irc}}</td>
