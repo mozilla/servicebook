@@ -1,3 +1,4 @@
+import json
 import yaml
 import requests
 from flask import Flask, render_template
@@ -5,6 +6,7 @@ from flask_bootstrap import Bootstrap
 from flask_nav.elements import Navbar, View, Subgroup, Link, Text, Separator
 from flask_nav import Nav
 from flask import Blueprint
+from flask import request
 
 #from flaskext.wtf import Form
 #from wtforms.ext.appengine.db import model_form
@@ -26,6 +28,16 @@ def home():
 
 
 _BUGZILLA = 'https://bugzilla.mozilla.org/rest/bug?product=%s&component=%s'
+
+
+@frontend.route("/swagger")
+def swagger():
+    endpoint = request.args.get('endpoint')
+    res = requests.get(endpoint)
+    spec = yaml.load(res.content)
+    return render_template('swagger.html', swagger_url=endpoint,
+            spec=json.dumps(spec))
+
 
 
 @frontend.route("/project/<int:project_id>")
@@ -63,8 +75,3 @@ def project(project_id):
 
     return render_template('project.html', project=project, bugs=bugs,
                            project_info=project_info)
-
-
-
-
-

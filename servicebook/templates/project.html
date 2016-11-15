@@ -59,15 +59,15 @@
    </ul>
 
     <div class="btn-group" role="group">
-     <button type="button" class="btn btn-default btn-lg">
+        <a href="/heartbeat?endpoint={{deployment.endpoint}}/__heartbeat__" role="button" class="btn btn-default btn-lg">
         <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Hearbeat
-     </button>
-     <button type="button" class="btn btn-default btn-lg">
+     </a>
+     <a href="/swagger?endpoint={{deployment.endpoint}}/__api__" role="button" class="btn btn-default btn-lg">
         <span class="glyphicon glyphicon-list" aria-hidden="true"></span> Swagger
-     </button>
-     <button type="button" class="btn btn-default btn-lg">
+     </a>
+     <a href="/smoke?endpoint={{deployment.endpoint}}/__api__" role="button" class="btn btn-default btn-lg">
         <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Smoke Test
-     </button>
+     </a>
     </div>
   </div>
 </div>
