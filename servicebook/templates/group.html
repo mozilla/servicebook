@@ -1,4 +1,10 @@
 {% extends "bootstrap/base.html" %}
+{% block head %}
+  {{super()}}
+  <link href='/static/css/bookstyle.css' 
+        media='screen' rel='stylesheet' type='text/css'/>
+{% endblock %}
+
 
 {% block title %}{{group.name}}{% endblock %}
 
@@ -8,7 +14,9 @@
 
 {% block content %}
 <div class="container">
-  <h2>{{group.name}} Projects</h2>
+  <h2>{{group.name}} Projects
+	  <span class="badge"><a class="json" href="/group/{{group.name}}.json">JSON</a></span>
+  </h2>
 
   <p>Group lead : <a href="/person/{{group.lead.id}}">{{group.lead.fullname()}}</a></p>
   <p>List of all active projects for <em>{{group.name}}</em></p>

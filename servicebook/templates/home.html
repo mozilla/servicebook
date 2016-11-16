@@ -1,4 +1,11 @@
 {% extends "bootstrap/base.html" %}
+{% block head %}
+  {{super()}}
+  <link href='/static/css/bookstyle.css' 
+        media='screen' rel='stylesheet' type='text/css'/>
+{% endblock %}
+
+
 
 {% block title %}Service Book{% endblock %}
 
@@ -8,7 +15,9 @@
 
 {% block content %}
 <div class="container">
-  <h2>Welcome to Service Book</h2>
+ <h2>Welcome to Service Book 
+   <span class="badge"><a class="json" href="/projects.json">JSON</a></span>
+ </h2>
   <p>List of all active projects for the QA team</p>
   {% include 'projectlist.html' %}
 </div>
