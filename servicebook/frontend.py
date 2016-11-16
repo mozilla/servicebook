@@ -4,7 +4,7 @@ import yaml
 import requests
 
 from flask import render_template
-from flask_nav import View, Navbar
+from flask_nav.elements import View, Navbar
 from flask import Blueprint
 from flask import request
 

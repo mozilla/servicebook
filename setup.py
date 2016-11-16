@@ -13,4 +13,8 @@ setup(name='servicebook',
       description="Mozilla QA Service Book",
       include_package_data=True,
       zip_safe=False,
-      install_requires=install_requires)
+      install_requires=install_requires,
+      entry_points="""
+      [console_scripts]
+      servicebook = servicebook.server:main
+      """)
