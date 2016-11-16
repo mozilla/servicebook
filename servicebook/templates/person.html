@@ -1,6 +1,6 @@
 {% extends "bootstrap/base.html" %}
 
-{% block title %}Service Book{% endblock %}
+{% block title %}{{person.fullname()}}{% endblock %}
 
 {% block navbar %}
 {{nav.frontend_top.render()}}
@@ -8,8 +8,9 @@
 
 {% block content %}
 <div class="container">
-  <h2>Welcome to Service Book</h2>
-  <p>List of all active projects for the QA team</p>
+  <h2>{{person.fullname()}} Projects</h2>
+  <p>List of all active projects for <em>{{person.fullname()}}</em></p>
   {% include 'projectlist.html' %}
 </div>
+
 {% endblock %}

@@ -22,6 +22,9 @@ class Person(Base):
     def __repr__(self):
         return '%s %s' % (self.firstname, self.lastname)
 
+    def fullname(self):
+        return self.__repr__()
+
 
 class Group(Base):
     __tablename__ = 'group'

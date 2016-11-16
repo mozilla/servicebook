@@ -1,0 +1,19 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}{{group.name}}{% endblock %}
+
+{% block navbar %}
+{{nav.frontend_top.render()}}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h2>{{group.name}} Projects</h2>
+
+  <p>Group lead : <a href="/person/{{group.lead.id}}">{{group.lead.fullname()}}</a></p>
+  <p>List of all active projects for <em>{{group.name}}</em></p>
+  {% include 'projectlist.html' %}
+
+</div>
+
+{% endblock %}

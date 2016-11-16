@@ -47,6 +47,7 @@ def init(sqluri='sqlite:////tmp/qa_projects.db', fill=False):
     for project in PROJS:
         proj = mappings.Project()
         proj.name = project[0]
+        print('Importing %s' % proj.name)
         proj.description = project[1]
         proj.primary = _find_person(project[2])
         proj.secondary = _find_person(project[3])

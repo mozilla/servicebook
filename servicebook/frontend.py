@@ -9,7 +9,7 @@ from flask import Blueprint
 from flask import request
 
 from servicebook.db import Session
-from servicebook.mappings import Project
+from servicebook.mappings import Project, Person, Group
 from servicebook.nav import nav
 
 
@@ -20,8 +20,31 @@ nav.register_element('frontend_top',
 
 @frontend.route("/")
 def home():
-    projects = Session.query(Project)
+    projects = Session.query(Project).order_by(Project.name.asc())
     return render_template('home.html', projects=projects)
+
+
+@frontend.route("/person/<int:person_id>")
+def person(person_id):
+    person = Session.query(Person).filter(Person.id == person_id).one()
+
+    # should be an attribute in the person table
+    p = Session.query(Project)
+    projects = p.filter((Project.primary_id == person_id) |
+                 (Project.secondary_id == person_id))
+    projects = projects.order_by(Project.name.asc())
+
+    return render_template('person.html', projects=projects, person=person)
+
+
+@frontend.route("/group/<name>")
+def group(name):
+    group = Session.query(Group).filter(Group.name == name).one()
+    # should be an attribute in the group table
+    p = Session.query(Project)
+    projects = p.filter(Project.group == name)
+    projects = projects.order_by(Project.name.asc())
+    return render_template('group.html', projects=projects, group=group)
 
 
 _BUGZILLA = 'https://bugzilla.mozilla.org/rest/bug?product=%s&component=%s'
