@@ -4,7 +4,7 @@ from flask import Flask
 from flask_bootstrap import Bootstrap
 
 from servicebook.db import init
-from servicebook import frontend
+from servicebook import frontend, api
 from servicebook.nav import nav
 
 HERE = os.path.dirname(__file__)
@@ -15,6 +15,7 @@ def create_app():
     Bootstrap(app)
     app.db = init()
     app.register_blueprint(frontend.frontend)
+    app.register_blueprint(api.api)
     nav.init_app(app)
 
     app.add_url_rule(

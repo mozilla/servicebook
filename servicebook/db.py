@@ -71,5 +71,5 @@ def init(sqluri='sqlite:////tmp/qa_projects.db', fill=False):
     return engine
 
 
-if __name__ == '__main__':
+def main():
     init(fill=True)

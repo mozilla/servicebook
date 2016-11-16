@@ -5,7 +5,21 @@ from sqlalchemy import Column, Integer, Unicode, ForeignKey, UnicodeText
 from sqlalchemy.orm import relationship
 
 
-Base = declarative_base()
+def _declarative_base(cls):
+    return declarative_base(cls=cls)
+
+
+@_declarative_base
+class Base(object):
+    @property
+    def columns(self):
+        return [col.name for col in self.__table__.columns]
+
+    def to_json(self):
+        res = {}
+        for col in self.columns:
+            res[col] = getattr(self, col)
+        return res
 
 
 class Person(Base):
@@ -73,3 +87,8 @@ class Project(Base):
     accessibility_tests = Column(ScalarListType(URLType))
     sec_tests = Column(ScalarListType(URLType))
     localization_tests = Column(ScalarListType(URLType))
+
+    def to_json(self):
+        res = super(Project, self).to_json()
+        res['deployments'] = [depl.to_json() for depl in self.deployments]
+        return res

@@ -17,4 +17,5 @@ setup(name='servicebook',
       entry_points="""
       [console_scripts]
       servicebook = servicebook.server:main
+      servicebook-import = servicebook.db:main
       """)
