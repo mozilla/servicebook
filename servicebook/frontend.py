@@ -31,7 +31,7 @@ def person(person_id):
     # should be an attribute in the person table
     p = Session.query(Project)
     projects = p.filter((Project.primary_id == person_id) |
-                 (Project.secondary_id == person_id))
+                        (Project.secondary_id == person_id))
     projects = projects.order_by(Project.name.asc())
 
     return render_template('person.html', projects=projects, person=person)
