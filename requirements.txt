@@ -1,3 +1,4 @@
+SQLALchemy
 sqlalchemy_utils
 flask
 flask-sqlalchemy
