@@ -1,7 +1,11 @@
 *.un~
 .DS_Store
 bin
-include 
+include
 lib
 .Python
 __pycache__
+*.pyc
+servicebook.egg-info
+.coverage
+.tox

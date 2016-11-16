@@ -2,55 +2,12 @@
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import create_engine
 
-import mappings
+from servicebook import mappings
+from servicebook.data import PEOPLE, GROUPS, PROJS
 
 
 session_factory = sessionmaker(autoflush=False)
 Session = scoped_session(session_factory)
-
-
-_PEOPLE = """\
-Stuart Philp
-Krupa Raj
-Dave Hunt
-Richard Pappalardo
-Karl Thiessen
-Peter deHaan
-Chris Hartjes
-Stephen Donner
-Kevin Brosnan
-Aaron Train
-Matt Brandt
-Rebecca Billings
-John Dorlus
-No-Jun Park
-Benny Forehand Jr.
-"""
-
-_GROUPS = [
-("User Interfaces", "https://wiki.mozilla.org/TestEngineering/UI", "Dave Hunt"),
-("Services", "https://wiki.mozilla.org/TestEngineering/Services", "Richard Pappalardo"),
-("Customization", "https://wiki.mozilla.org/TestEngineering/Customization", "Krupa Raj"),
-]
-
-
-_ABSEARCHDEPLOY = [['stage', 'https://search.stage.mozaws.net'],
-                   ['prod', 'https://search.services.mozilla.com']]
-_ABDESC = """\
-The ABSearch Service is used by Firefox to a/b test new search settings.
-"""
-_ABBUGZILLA = ["Cloud Services", "Server: absearch"]
-
-
-_PROJS = [
-["Shavar (Tracking Protection)", "", "Rebecca", "Richard", "#shavar",
-    "Services", [], []],
-["ABSearch", _ABDESC, "Karl", "Chris", "#absearch", "Services", _ABSEARCHDEPLOY,
-    _ABBUGZILLA],
-["Balrog", "", "Chris", "Karl", "#balrog", "Services", [], []]
-
-]
-
 
 
 def init(sqluri='sqlite:////tmp/qa_projects.db', fill=False):
@@ -62,7 +19,7 @@ def init(sqluri='sqlite:////tmp/qa_projects.db', fill=False):
 
     session = Session()
 
-    for person in _PEOPLE.split('\n'):
+    for person in PEOPLE.split('\n'):
         if person.strip() == '':
             continue
         first, last = person.split(' ', 1)
@@ -74,21 +31,20 @@ def init(sqluri='sqlite:////tmp/qa_projects.db', fill=False):
     g = mappings.Group
 
     def _find_person(firstname):
-        q = session.query(p).filter(p.firstname==firstname)
+        q = session.query(p).filter(p.firstname == firstname)
         return q.first()
-
 
     def _find_group(name):
-        q = session.query(g).filter(g.name==name)
+        q = session.query(g).filter(g.name == name)
         return q.first()
 
-    for label, home, lead in _GROUPS:
-        lead = session.query(p).filter(p.lastname==lead.split(' ', 1)[-1])
+    for label, home, lead in GROUPS:
+        lead = session.query(p).filter(p.lastname == lead.split(' ', 1)[-1])
         session.add(mappings.Group(label, home, lead.first()))
 
     session.commit()
 
-    for project in _PROJS:
+    for project in PROJS:
         proj = mappings.Project()
         proj.name = project[0]
         proj.description = project[1]

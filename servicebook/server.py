@@ -1,14 +1,11 @@
 import os
-from flask import Flask, render_template, send_from_directory
-from flask_bootstrap import Bootstrap
-from flask_nav.elements import Navbar, View, Subgroup, Link, Text, Separator
-from flask_nav import Nav
-from flask import Blueprint
 
-from db import init, Session
-import mappings
-import frontend
-from nav import nav
+from flask import Flask
+from flask_bootstrap import Bootstrap
+
+from servicebook.db import init
+from servicebook import frontend
+from servicebook.nav import nav
 
 HERE = os.path.dirname(__file__)
 

@@ -70,5 +70,3 @@ class Project(Base):
     accessibility_tests = Column(ScalarListType(URLType))
     sec_tests = Column(ScalarListType(URLType))
     localization_tests = Column(ScalarListType(URLType))
-
-

@@ -1,29 +1,26 @@
 import json
+
 import yaml
 import requests
-from flask import Flask, render_template
-from flask_bootstrap import Bootstrap
-from flask_nav.elements import Navbar, View, Subgroup, Link, Text, Separator
-from flask_nav import Nav
+
+from flask import render_template
+from flask_nav import View, Navbar
 from flask import Blueprint
 from flask import request
 
-#from flaskext.wtf import Form
-#from wtforms.ext.appengine.db import model_form
-
-from db import init, Session
-import mappings
-from nav import nav
+from servicebook.db import Session
+from servicebook.mappings import Project
+from servicebook.nav import nav
 
 
 frontend = Blueprint('frontend', __name__)
-
-nav.register_element('frontend_top', Navbar(View('Mozilla QA ~ Service Book', '.home'),))
+nav.register_element('frontend_top',
+                     Navbar(View('Mozilla QA ~ Service Book', '.home'),))
 
 
 @frontend.route("/")
 def home():
-    projects = Session.query(mappings.Project)
+    projects = Session.query(Project)
     return render_template('home.html', projects=projects)
 
 
@@ -36,13 +33,12 @@ def swagger():
     res = requests.get(endpoint)
     spec = yaml.load(res.content)
     return render_template('swagger.html', swagger_url=endpoint,
-            spec=json.dumps(spec))
-
+                           spec=json.dumps(spec))
 
 
 @frontend.route("/project/<int:project_id>")
 def project(project_id):
-    q = Session.query(mappings.Project).filter(mappings.Project.id==project_id)
+    q = Session.query(Project).filter(Project.id == project_id)
     project = q.one()
 
     # scraping bugzilla info
