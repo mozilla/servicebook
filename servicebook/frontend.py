@@ -50,7 +50,9 @@ def group(name):
     return render_template('group.html', projects=projects, group=group)
 
 
-_BUGZILLA = 'https://bugzilla.mozilla.org/rest/bug?product=%s&component=%s'
+_STATUSES = 'status=NEW&status=REOPENED&status=UNCONFIRMED&status=ASSIGNED'
+_BUGZILLA = ('https://bugzilla.mozilla.org/rest/bug?' + _STATUSES +
+             '&product=%s&component=%s')
 
 
 @frontend.route("/swagger")
