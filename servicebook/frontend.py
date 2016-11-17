@@ -71,14 +71,14 @@ def edit_project(project_id):
 
     form = ProjectForm(request.form, project)
     if request.method == 'POST' and form.validate():
-        project = Project()
         form.populate_obj(project)
         Session.add(project)
         Session.commit()
         return redirect('/project/%d' % project.id)
 
     action = 'Edit %r' % project.name
-    return render_template("project_edit.html", form=form, action=action)
+    return render_template("project_edit.html", form=form, action=action,
+                            form_action='/project/%d/edit' % project.id)
 
 
 @frontend.route("/project/", methods=['GET', 'POST'])
@@ -92,7 +92,8 @@ def add_project():
         return redirect('/project/%d' % project.id)
 
     action = 'Add a new project'
-    return render_template("project_edit.html", form=form, action=action)
+    return render_template("project_edit.html", form=form, action=action,
+                           form_action="/project/")
 
 
 @frontend.route("/project/<int:project_id>")

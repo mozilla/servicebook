@@ -3,7 +3,7 @@
 {% set subtitle = 'You can add more details later.' %}
 
 {% block page %}
-<form action="/project/" method="POST">
+<form action="{{form_action}}" method="POST">
  {% for field in form %}
    {% if field.errors %}
     <div class="form-group has-error">
