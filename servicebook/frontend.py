@@ -43,7 +43,7 @@ def group(name):
     group = Session.query(Group).filter(Group.name == name).one()
     # should be an attribute in the group table
     p = Session.query(Project)
-    projects = p.filter(Project.group == name)
+    projects = p.filter(Project.group_name == name)
     projects = projects.order_by(Project.name.asc())
     return render_template('group.html', projects=projects, group=group)
 

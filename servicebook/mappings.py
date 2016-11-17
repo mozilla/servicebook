@@ -53,6 +53,9 @@ class Group(Base):
         self.home = home
         self.lead = lead
 
+    def __repr__(self):
+        return self.name
+
 
 class Deployment(Base):
     __tablename__ = 'deployment'
@@ -75,7 +78,8 @@ class Project(Base):
     secondary_id = Column(Integer, ForeignKey('person.id'))
     secondary = relationship('Person', foreign_keys='Project.secondary_id')
     irc = Column(Unicode(128))
-    group = Column(Unicode(128), ForeignKey('group.name'))
+    group_name = Column(Unicode(128), ForeignKey('group.name'))
+    group = relationship('Group', foreign_keys='Project.group_name')
 
     deployments = relationship('Deployment', back_populates="project")
 

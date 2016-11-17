@@ -52,7 +52,7 @@ def init(sqluri='sqlite:////tmp/qa_projects.db', fill=False):
         proj.primary = _find_person(project[2])
         proj.secondary = _find_person(project[3])
         proj.irc = project[4]
-        proj.group = _find_group(project[5]).name
+        proj.group = _find_group(project[5])
         for deplo in project[6]:
             d = mappings.Deployment()
             d.name = deplo[0]
