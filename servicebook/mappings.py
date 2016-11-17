@@ -1,5 +1,5 @@
 # encoding: utf8
-from sqlalchemy_utils import ScalarListType, URLType
+from sqlalchemy_utils import URLType
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, Unicode, ForeignKey, UnicodeText
 from sqlalchemy.orm import relationship
@@ -66,6 +66,16 @@ class Deployment(Base):
     project = relationship('Project', back_populates="deployments")
 
 
+class Link(Base):
+    __tablename__ = 'link'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(Unicode(128), nullable=False)
+    description = Column(UnicodeText)
+    link = Column(URLType(), nullable=False)
+    project_id = Column(Integer, ForeignKey('project.id'))
+    project = relationship('Project', back_populates="links")
+
+
 class Project(Base):
     __tablename__ = 'project'
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -82,17 +92,10 @@ class Project(Base):
     group = relationship('Group', foreign_keys='Project.group_name')
 
     deployments = relationship('Deployment', back_populates="project")
-
-    test_suite = Column(ScalarListType(URLType))
-    unit_tests = Column(ScalarListType(URLType))
-    functional_tests = Column(ScalarListType(URLType))
-    load_tests = Column(ScalarListType(URLType))
-    perf_tests = Column(ScalarListType(URLType))
-    accessibility_tests = Column(ScalarListType(URLType))
-    sec_tests = Column(ScalarListType(URLType))
-    localization_tests = Column(ScalarListType(URLType))
+    links = relationship('Link', back_populates="project")
 
     def to_json(self):
         res = super(Project, self).to_json()
         res['deployments'] = [depl.to_json() for depl in self.deployments]
+        res['links'] = [link.to_json() for link in self.links]
         return res

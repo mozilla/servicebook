@@ -64,6 +64,14 @@ def init(sqluri='sqlite:////tmp/qa_projects.db', fill=False):
             proj.bz_product = project[7][0]
             proj.bz_component = project[7][1]
 
+        for link in project[8]:
+            d = mappings.Link()
+            d.name = link[0]
+            d.description = link[1]
+            d.link = link[2]
+            session.add(d)
+            proj.links.append(d)
+
         session.add(proj)
 
     session.commit()

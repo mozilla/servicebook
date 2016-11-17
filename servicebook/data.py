@@ -1,4 +1,4 @@
-
+# flake8: noqa
 PEOPLE = """\
 Stuart Philp
 Krupa Raj
@@ -34,49 +34,59 @@ _ABDESC = """\
 The ABSearch Service is used by Firefox to a/b test new search settings.
 """
 _ABBUGZILLA = ["Cloud Services", "Server: absearch"]
+_WEBEXTLINKS = [['Test Suite', '',
+    'https://testrail.stage.mozaws.net/index.php?/suites/view/37']]
+
+_AMOLINKS = [
+   ['Functional', 'Tests for AMO', 'https://github.com/mozilla/Addon-Tests'],
+   ['UI', 'Tests for server',
+   'https://github.com/mozilla/addons-server/tree/master/tests/ui'],
+   ['UI', 'Tests for client',
+   'https://github.com/mozilla/addons-frontend/tree/master/tests/ui']
+        ]
 
 
-# name, desc, primary, secondary, irc, group, deployments, bugzilla info.
+# name, desc, primary, secondary, irc, group, deployments, bugzilla info, links
 PROJS = [
         # Customization projects
         ["PageShot", "Test Pilot", "Peter", "Softvision", "#pageshot",
-         "Customization", [], []],
+         "Customization", [], [], []],
         ["NoMore404s", "Test Pilot", "Karl", "Softvision", "#testpilot",
-         "Customization", [], []],
+         "Customization", [], [], []],
         ["MinVid", "Test Pilot", "Peter", "Softvision", "#testpilot",
-         "Customization", [], []],
+         "Customization", [], [], []],
         ["Fathom", "Test Pilot", "Peter", "Softvision", "#testpilot",
-         "Customization", [], []],
+         "Customization", [], [], []],
         ["Heatmap", "Test Pilot", "Peter", "Softvision", "#testpilot",
-         "Customization", [], []],
+         "Customization", [], [], []],
         ["Universal Search", "Test Pilot", "Stephen", "Peter",
-         "#universal-search", "Customization", [], []],
+         "#universal-search", "Customization", [], [], []],
         ["Activity Stream", "Test Pilot", "Peter", "John",
-         "#activity-stream", "Customization", [], []],
+         "#activity-stream", "Customization", [], [], []],
         ["WebExtensions", "", "Krupa", "Softvision",
-         "#webextensions", "Customization", [], []],
+         "#webextensions", "Customization", [], [], _WEBEXTLINKS],
         ["Test Pilot", "", "Peter", "John",
-         "#testpilot", "Customization", [], []],
+         "#testpilot", "Customization", [], [], []],
         ["Socorro", "", "Matt", "Stephen",
-         "#socorro", "Customization", [], []],
+         "#socorro", "Customization", [], [], []],
         ["Telemetry", "", "John", "Softvision",
-         "#telemetry", "Customization", [], []],
+         "#telemetry", "Customization", [], [], []],
         ["addons.mozilla.org", "", "Krupa", "Softvision",
-         "#amo", "Customization", [], []],
+         "#amo", "Customization", [], [], _AMOLINKS],
         ["TabCenter", "Test Pilot", "Peter", "Softvision",
-         "#testpilot", "Customization", [], []],
+         "#testpilot", "Customization", [], [], []],
         ["Blok", "Test Pilot", "Rebecca", "Softvision",
-         "#testpilot", "Customization", [], []],
+         "#testpilot", "Customization", [], [], []],
 
         # User Interface projects
         ["Treeherder", "", "Rebecca", "Dave", "#treeherder", "User Interfaces",
-         [], []],
+         [], [], []],
         ["developer.mozilla.org", "", "Matt", "Dave", "#mdndev",
-         "User Interfaces", [], []],
+         "User Interfaces", [], [], []],
 
         # Services projects
         ["Shavar", "Tracking Protection", "Rebecca", "Richard", "#shavar",
-         "Services", [], []],
+         "Services", [], [], []],
         ["ABSearch", _ABDESC, "Karl", "Chris", "#absearch", "Services",
-         _ABSEARCHDEPLOY, _ABBUGZILLA],
-        ["Balrog", "", "Chris", "Karl", "#balrog", "Services", [], []]]
+         _ABSEARCHDEPLOY, _ABBUGZILLA, []],
+        ["Balrog", "", "Chris", "Karl", "#balrog", "Services", [], [], []]]

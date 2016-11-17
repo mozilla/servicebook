@@ -8,7 +8,18 @@
 <div class="row">
  <div class="col-md-6">
 
-    <h2>Bugzilla bugs</h2>
+     <h2>Tests & Links</h2>
+     <div class="list-group">
+     {% for link in project.links %}
+       <a class="list-group-item" href="{{link.link}}">
+           <strong>{{link.name}}</strong>
+           <em>{{link.description}}</em>
+        </a>
+     {% endfor %}
+     </div>
+
+
+    <h2>Bugs</h2>
     <ul class="list-unstyled">
         {% for bug in bugs %}
         <li><span class="badge">{{bug.status}}</span>
