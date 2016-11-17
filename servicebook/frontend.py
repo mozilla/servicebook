@@ -78,7 +78,7 @@ def edit_project(project_id):
 
     action = 'Edit %r' % project.name
     return render_template("project_edit.html", form=form, action=action,
-                            form_action='/project/%d/edit' % project.id)
+                           form_action='/project/%d/edit' % project.id)
 
 
 @frontend.route("/project/", methods=['GET', 'POST'])

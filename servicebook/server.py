@@ -10,10 +10,10 @@ from servicebook.nav import nav
 HERE = os.path.dirname(__file__)
 
 
-def create_app():
+def create_app(fill=False, sqluri=None):
     app = Flask(__name__, static_url_path='/static')
     Bootstrap(app)
-    app.db = init()
+    app.db = init(sqluri, fill)
     app.register_blueprint(frontend.frontend)
     app.register_blueprint(api.api)
     nav.init_app(app)

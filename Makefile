@@ -6,7 +6,7 @@ PYTHON = $(BIN)/python
 
 INSTALL = $(BIN)/pip install --no-deps
 
-.PHONY: all test docs build_extras
+.PHONY: all test
 
 all: build
 
@@ -20,7 +20,7 @@ clean:
 	rm -rf $(VENV)
 
 test_dependencies:
-	$(BIN)/pip install flake8 tox unittest2
+	$(BIN)/pip install flake8 tox
 
 test: build test_dependencies
 	$(BIN)/flake8 servicebook
