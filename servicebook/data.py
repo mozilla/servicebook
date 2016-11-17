@@ -45,6 +45,10 @@ _AMOLINKS = [
    'https://github.com/mozilla/addons-frontend/tree/master/tests/ui']
         ]
 
+_SYNCLINK = [
+ ['Documentation', 'This is the starting point.' ,
+ 'https://wiki.mozilla.org/Services/Sync']
+        ]
 
 # name, desc, primary, secondary, irc, group, deployments, bugzilla info, links
 PROJS = [
@@ -89,4 +93,7 @@ PROJS = [
          "Services", [], [], []],
         ["ABSearch", _ABDESC, "Karl", "Chris", "#absearch", "Services",
          _ABSEARCHDEPLOY, _ABBUGZILLA, []],
-        ["Balrog", "", "Chris", "Karl", "#balrog", "Services", [], [], []]]
+        ["Balrog", "", "Chris", "Karl", "#balrog", "Services", [], [], []],
+        ["Sync", "", "Karl", "Chris", "#sync", "Services", [], [], _SYNCLINK]
+
+]

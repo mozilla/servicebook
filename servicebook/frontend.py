@@ -3,6 +3,7 @@ import json
 import yaml
 import requests
 
+from sqlalchemy.sql import collate
 from flask import render_template
 from flask_nav.elements import View, Navbar
 from flask import Blueprint
@@ -21,7 +22,8 @@ nav.register_element('frontend_top',
 
 @frontend.route("/")
 def home():
-    projects = Session.query(Project).order_by(Project.name.asc())
+    field = collate(Project.name, 'NOCASE')
+    projects = Session.query(Project).order_by(field.asc())
     return render_template('home.html', projects=projects)
 
 
