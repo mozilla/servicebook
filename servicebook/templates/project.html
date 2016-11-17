@@ -43,11 +43,11 @@
    </h2>
   <ul class="list-group">
      {% if project_info %}
-     <li class="list-group-item"><em>Project Contact</em>
+     <li class="list-group-item list-group-item-success"><em>Project Contact</em>
          <a href="mailto:{{project_info['contact']['email']}}"><strong>{{project_info['contact']['name']}}</strong></a></li>
-     <li class="list-group-item"><em>Licence</em>
+     <li class="list-group-item list-group-item-success"><em>Licence</em>
          <a href="{{project_info['license']['url']}}"><strong>{{project_info['license']['name']}}</strong></a></li>
-     <li class="list-group-item"><em>Homepage</em>
+     <li class="list-group-item list-group-item-success"><em>Homepage</em>
          <a href="{{project_info['x-mozilla-services']['homepage']}}">{{project_info['x-mozilla-services']['homepage']}}</a></li>
      {% endif %}
      <li class="list-group-item"><em>QA Primary</em> <strong>{{project.primary}}</strong></li>
