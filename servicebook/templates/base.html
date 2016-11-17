@@ -1,0 +1,37 @@
+{% extends "bootstrap/base.html" %}
+{% block head %}
+  {{super()}}
+  <link href='/static/css/bookstyle.css' media='screen' rel='stylesheet' type='text/css'/>
+{% endblock %}
+
+{% block navbar %}
+{{nav.frontend_top.render()}}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  {% block page_header %}
+  <div class="page-header">
+    <h1>{{title|default}}
+    <small>{{subtitle|default}}</small>
+    {% if json %}
+      <span class="badge"><a class="json" href="{{json}}">JSON</a></span>
+    {% endif %}
+    </h1>
+  </div>
+  {% endblock page_header %}
+
+  {%block page -%}{%- endblock page %}
+</div>
+
+</div>
+
+ <footer class="footer navbar-fixed-bottom">
+  <div class="container">
+    <p class="text-muted">&copy; Mozilla QA - 2016</p>
+  </div>
+ </footer>
+
+{% endblock content %}
+
+

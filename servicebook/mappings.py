@@ -25,8 +25,8 @@ class Base(object):
 class Person(Base):
     __tablename__ = 'person'
     id = Column(Integer, primary_key=True, autoincrement=True)
-    firstname = Column(Unicode(128))
-    lastname = Column(Unicode(128))
+    firstname = Column(Unicode(128), nullable=False)
+    lastname = Column(Unicode(128), nullable=False)
 
     def __init__(self, firstname=None, lastname=None):
         super(Person, self).__init__()
@@ -57,8 +57,8 @@ class Group(Base):
 class Deployment(Base):
     __tablename__ = 'deployment'
     id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(Unicode(128))
-    endpoint = Column(URLType())
+    name = Column(Unicode(128), nullable=False)
+    endpoint = Column(URLType(), nullable=False)
     project_id = Column(Integer, ForeignKey('project.id'))
     project = relationship('Project', back_populates="deployments")
 
@@ -66,7 +66,7 @@ class Deployment(Base):
 class Project(Base):
     __tablename__ = 'project'
     id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(Unicode(128))
+    name = Column(Unicode(128), nullable=False)
     bz_product = Column(Unicode(128))
     bz_component = Column(Unicode(128))
     description = Column(UnicodeText)

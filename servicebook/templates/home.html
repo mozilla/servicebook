@@ -1,24 +1,12 @@
-{% extends "bootstrap/base.html" %}
-{% block head %}
-  {{super()}}
-  <link href='/static/css/bookstyle.css' 
-        media='screen' rel='stylesheet' type='text/css'/>
-{% endblock %}
+{% extends "base.html" %}
+{% set title = 'Welcome to Service Book' %}
+{% set subtitle = 'Mozilla QA projects' %}
+{% set json = '/projects.json' %}
 
 
-
-{% block title %}Service Book{% endblock %}
-
-{% block navbar %}
-{{nav.frontend_top.render()}}
-{% endblock %}
-
-{% block content %}
-<div class="container">
- <h2>Welcome to Service Book 
-   <span class="badge"><a class="json" href="/projects.json">JSON</a></span>
- </h2>
-  <p>List of all active projects for the QA team</p>
-  {% include 'projectlist.html' %}
-</div>
+{% block page %}
+ {% include 'projectlist.html' %}
+ <a href="/project/" role="button" class="btn btn-default btn-lg">
+  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a Project
+ </a>
 {% endblock %}

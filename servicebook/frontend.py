@@ -6,11 +6,12 @@ import requests
 from flask import render_template
 from flask_nav.elements import View, Navbar
 from flask import Blueprint
-from flask import request
+from flask import request, redirect
 
 from servicebook.db import Session
 from servicebook.mappings import Project, Person, Group
 from servicebook.nav import nav
+from servicebook.forms import ProjectForm
 
 
 frontend = Blueprint('frontend', __name__)
@@ -57,6 +58,37 @@ def swagger():
     spec = yaml.load(res.content)
     return render_template('swagger.html', swagger_url=endpoint,
                            spec=json.dumps(spec))
+
+
+@frontend.route("/project/<int:project_id>/edit", methods=['GET', 'POST'])
+def edit_project(project_id):
+    q = Session.query(Project).filter(Project.id == project_id)
+    project = q.one()
+
+    form = ProjectForm(request.form, project)
+    if request.method == 'POST' and form.validate():
+        project = Project()
+        form.populate_obj(project)
+        Session.add(project)
+        Session.commit()
+        return redirect('/project/%d' % project.id)
+
+    action = 'Edit %r' % project.name
+    return render_template("project_edit.html", form=form, action=action)
+
+
+@frontend.route("/project/", methods=['GET', 'POST'])
+def add_project():
+    form = ProjectForm(request.form)
+    if request.method == 'POST' and form.validate():
+        project = Project()
+        form.populate_obj(project)
+        Session.add(project)
+        Session.commit()
+        return redirect('/project/%d' % project.id)
+
+    action = 'Add a new project'
+    return render_template("project_edit.html", form=form, action=action)
 
 
 @frontend.route("/project/<int:project_id>")

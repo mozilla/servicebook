@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% set title = action %}
+{% set subtitle = 'You can add more details later.' %}
+
+{% block page %}
+<form action="/project/" method="POST">
+ {% for field in form %}
+   {% if field.errors %}
+    <div class="form-group has-error">
+   {% else %}
+    <div class="form-group">
+   {% endif %}
+
+   {% if field.type != 'HiddenField' %}
+     <label for="{{ field.id }}">
+                 {{field.label.text}}
+     </label>
+   {% endif %}
+
+     {{ field(class_='form-control')|safe }}
+   {% if field.errors %}
+      {% for e in field.errors %}
+          <p class="help-block">{{ e }}</p>
+      {% endfor %}
+   {% endif %}
+   </div>
+ {% endfor %}
+
+ <button type="submit" class="btn btn-defaulti btn-lg">
+  <span class="glyphicon glyphicon-plus" aria-hidden="true">
+  </span> Submit
+ </button>
+</form>
+
+</div>
+{% endblock %}
