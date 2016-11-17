@@ -32,7 +32,8 @@
     <ul class="list-unstyled">
         {% for bug in bugs %}
         <li><span class="badge">{{bug.status}}</span>
-            <a href="https://bugzilla.mozilla.org/show_bug.cgi?id={{bug.id}}">{{bug.summary}}</a></li>
+            <a href="https://bugzilla.mozilla.org/show_bug.cgi?id={{bug.id}}">
+               {{bug.id}} {{bug.summary}}</a></li>
         {% endfor %}
     </ul>
 
