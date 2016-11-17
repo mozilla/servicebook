@@ -9,6 +9,10 @@
  <div class="col-md-6">
 
      <h2>Tests & Links</h2>
+     {% if project.links == [] %}
+     <strong>No links here ? Come on, this is so sad.</strong>
+     {% endif %}
+
      <div class="list-group">
      {% for link in project.links %}
        <a class="list-group-item" href="{{link.link}}">
@@ -20,6 +24,11 @@
 
 
     <h2>Bugs</h2>
+     {% if bugs == [] %}
+     <strong>Zaroo bugs. WOW.</strong>
+     {% endif %}
+
+
     <ul class="list-unstyled">
         {% for bug in bugs %}
         <li><span class="badge">{{bug.status}}</span>
@@ -43,13 +52,24 @@
      {% endif %}
      <li class="list-group-item"><em>QA Primary</em> <strong>{{project.primary}}</strong></li>
      <li class="list-group-item"><em>QA Secondary</em> <strong>{{project.secondary}}</strong></li>
-     <li class="list-group-item"><em>IRC</em> <strong>{{project.irc}}</strong></li>
+     <li class="list-group-item"><em>IRC</em>
+         {% if project.irc %}
+         <strong>{{project.irc}}</strong>
+         {% else %}
+         <strong>Too many IRC channels already.</strong>
+         {% endif %}
+     </li>
      <li class="list-group-item"><em>Group</em> <strong>{{project.group}}</strong></li>
   </ul>
   </div>
   </div>
 
   <h2>Deployments</h2>
+     {% if project.deployments == [] %}
+     <strong>No deployments means no worries, right ?</strong>
+     {% endif %}
+
+
   {% for deployment in project.deployments %}
 <div class="panel panel-primary">
 <div class="panel-heading">
