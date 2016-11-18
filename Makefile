@@ -23,5 +23,4 @@ test_dependencies:
 	$(BIN)/pip install flake8 tox
 
 test: build test_dependencies
-	$(BIN)/flake8 servicebook
 	$(BIN)/tox
