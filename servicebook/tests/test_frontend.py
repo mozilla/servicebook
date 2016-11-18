@@ -1,19 +1,14 @@
 import os
-from unittest import TestCase
 import re
 import json
-import yaml
 
-from flask.ext.webtest import TestApp
+import yaml
 import requests_mock
 
-from servicebook.server import create_app
+from servicebook.tests.support import BaseTest
 
 
-class FrontEndTest(TestCase):
-    @classmethod
-    def setUpClass(cls):
-        cls.app = TestApp(create_app(True, 'sqlite:///:memory:'))
+class FrontEndTest(BaseTest):
 
     def test_browsing_project(self):
         r = self.app.get('/')

@@ -38,7 +38,7 @@ def api_group(name):
     group = Session.query(Group).filter(Group.name == name).one()
     # should be an attribute in the group table
     p = Session.query(Project)
-    projects = p.filter(Project.group == name)
+    projects = p.filter(Project.group == group)
     projects = projects.order_by(Project.name.asc())
 
     group = group.to_json()
