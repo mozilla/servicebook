@@ -11,10 +11,11 @@ from servicebook.server import create_app
 
 
 class FrontEndTest(TestCase):
-    def setUp(self):
-        self.app = TestApp(create_app(True, 'sqlite:///:memory:'))
+    @classmethod
+    def setUpClass(cls):
+        cls.app = TestApp(create_app(True, 'sqlite:///:memory:'))
 
-    def test_clicking_around(self):
+    def test_browsing_project(self):
         r = self.app.get('/')
         first_proj_link = r.html.findAll('a')[2]['href']
 
@@ -30,5 +31,25 @@ class FrontEndTest(TestCase):
             m.get(bz_matcher, text=json.dumps(bz_resp))
             m.get(sw_matcher, text=json.dumps(sw_resp))
 
-            r = r.click(href=first_proj_link)
-            self.assertTrue('Karl' in r)
+            project_absearch = r.click(href=first_proj_link)
+            self.assertTrue('Karl' in project_absearch)
+
+    def test_browsing_user(self):
+        r = self.app.get('/')
+
+        for index, link in enumerate(r.html.findAll('a')):
+            if 'Karl' in link.text:
+                break
+
+        karl = r.click(index=index)
+        self.assertTrue('ABSearch' in karl)
+
+    def test_browsing_group(self):
+        r = self.app.get('/')
+
+        for index, link in enumerate(r.html.findAll('a')):
+            if 'Customization' in link.text:
+                break
+
+        custom = r.click(index=index)
+        self.assertTrue('Telemetry' in custom)
