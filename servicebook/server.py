@@ -4,18 +4,19 @@ from flask import Flask
 from flask_bootstrap import Bootstrap
 
 from servicebook.db import init
-from servicebook import frontend, api
+from servicebook import frontend, api, actions
 from servicebook.nav import nav
 
 HERE = os.path.dirname(__file__)
 
 
-def create_app(fill=False, sqluri=None):
+def create_app(fill=False, sqluri='sqlite:////tmp/qa_projects.db'):
     app = Flask(__name__, static_url_path='/static')
     Bootstrap(app)
     app.db = init(sqluri, fill)
-    app.register_blueprint(frontend.frontend)
-    app.register_blueprint(api.api)
+
+    for bp in (frontend.frontend, api.api, actions.actions):
+        app.register_blueprint(bp)
     nav.init_app(app)
 
     app.add_url_rule(

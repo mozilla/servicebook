@@ -90,13 +90,13 @@
    </ul>
 
     <div class="btn-group" role="group">
-        <a href="/heartbeat?endpoint={{deployment.endpoint}}/__heartbeat__" role="button" class="btn btn-default btn-lg">
+        <a href="/action/heartbeat?endpoint={{deployment.endpoint}}/__heartbeat__" role="button" class="btn btn-default btn-lg">
         <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Hearbeat
      </a>
-     <a href="/swagger?endpoint={{deployment.endpoint}}/__api__" role="button" class="btn btn-default btn-lg">
+     <a href="/action/swagger?endpoint={{deployment.endpoint}}/__api__" role="button" class="btn btn-default btn-lg">
         <span class="glyphicon glyphicon-list" aria-hidden="true"></span> Swagger
      </a>
-     <a href="/smoke?endpoint={{deployment.endpoint}}/__api__" role="button" class="btn btn-default btn-lg">
+     <a href="/action/smoke?endpoint={{deployment.endpoint}}/__api__" role="button" class="btn btn-default btn-lg">
         <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Smoke Test
      </a>
     </div>

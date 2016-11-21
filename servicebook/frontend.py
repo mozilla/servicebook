@@ -55,14 +55,6 @@ _BUGZILLA = ('https://bugzilla.mozilla.org/rest/bug?' + _STATUSES +
              '&product=%s&component=%s&limit=10')
 
 
-@frontend.route("/swagger")
-def swagger():
-    endpoint = request.args.get('endpoint')
-    res = requests.get(endpoint)
-    spec = yaml.load(res.content)
-    return render_template('swagger.html', swagger_url=endpoint,
-                           spec=json.dumps(spec))
-
 
 @frontend.route("/project/<int:project_id>/edit", methods=['GET', 'POST'])
 def edit_project(project_id):
