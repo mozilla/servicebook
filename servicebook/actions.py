@@ -1,3 +1,4 @@
+import os
 import yaml
 import json
 import requests
@@ -21,8 +22,9 @@ def action_hb():
 
 @actions.route("/action/smoke")
 def action_smoke():
-    #endpoint = request.args.get('endpoint')
-    endpoint = '/Users/tarek/Dev/github.com/smwogger/smwogger/tests/absearch.yaml'
+    # endpoint = request.args.get('endpoint')
+    endpoint = os.path.join(os.path.dirname(__file__), 'tests',
+                            'absearch.yaml')
     runner = get_runner(endpoint)
     steps = []
     for index, (oid, options) in enumerate(runner.scenario()):
