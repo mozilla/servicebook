@@ -17,7 +17,7 @@
      {% for link in project.links %}
        <a class="list-group-item" href="{{link.link}}">
            <strong>{{link.name}}</strong>
-           <em>{{link.description}}</em>
+           {% if link.description %}<em>{{link.description}}</em>{% endif %}
         </a>
      {% endfor %}
      </div>

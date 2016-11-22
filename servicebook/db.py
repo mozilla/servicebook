@@ -67,8 +67,11 @@ def init(sqluri='sqlite:////tmp/qa_projects.db', fill=False):
         for link in project[8]:
             d = mappings.Link()
             d.name = link[0]
-            d.description = link[1]
-            d.link = link[2]
+            if len(link) == 3:
+                d.description = link[1]
+                d.link = link[2]
+            else:
+                d.link = link[1]
             session.add(d)
             proj.links.append(d)
 

@@ -40,9 +40,9 @@ _WEBEXTLINKS = [['Test Suite', '',
 
 _AMOLINKS = [
    ['Functional', 'Tests for AMO', 'https://github.com/mozilla/Addon-Tests'],
-   ['UI', 'Tests for server',
+   ['Server UI Tests', 'Tests for server',
    'https://github.com/mozilla/addons-server/tree/master/tests/ui'],
-   ['UI', 'Tests for client',
+   ['Client UI Tests', 'Tests for client',
    'https://github.com/mozilla/addons-frontend/tree/master/tests/ui']
         ]
 
@@ -85,16 +85,63 @@ PROJS = [
 
         # User Interface projects
         ["Treeherder", "", "Rebecca", "Dave", "#treeherder", "User Interfaces",
-         [], [], []],
+         [], [], [
+             ['Tests', 'https://github.com/mozilla/treeherder-tests']]],
         ["developer.mozilla.org", "", "Matt", "Dave", "#mdndev",
+         "User Interfaces", [], [], [
+             ['UI Tests', 'https://github.com/mozilla/kuma/tree/master/tests/ui'],
+             ['Functional Tests',
+                 'https://github.com/mozilla/kuma/tree/master/tests/functional']]],
+
+
+        ["mozilla.org", "", "Rebecca", "Dave", "#bedrock", "User Interfaces",
+            [], [], [['Functional tests', 'https://github.com/mozilla/bedrock/tree/master/tests/functional']]],
+        ["FoxPuppet", "", "Benny", "Dave", "#fx-test",
+         "User Interfaces", [], [], []],
+        ["Activity Stream (iOS)", "", "Aaron", "No-Jun", "#mobile",
+         "User Interfaces", [], [], []],
+        ["Activity Stream (Android)", "", "Kevin", "No-Jun", "#mobile",
+         "User Interfaces", [], [], []],
+        ["Prox (iOS)", "", "Aaron", "No-Jun", "#mobile",
+         "User Interfaces", [], [], []],
+        ["Focus (iOS)", "", "Aaron", "No-Jun", "#mobile",
          "User Interfaces", [], [], []],
 
-        # Services projects
-        ["Shavar", "Tracking Protection", "Rebecca", "Richard", "#shavar",
-         "Services", _SHAVAR_DEPL, [], []],
+        # Services project
         ["ABSearch", _ABDESC, "Karl", "Chris", "#absearch", "Services",
          _ABSEARCHDEPLOY, _ABBUGZILLA, []],
         ["Balrog", "", "Chris", "Karl", "#balrog", "Services", [], [], []],
+        ["Bouncer", "", "Matt", "Dave", "#stubby", "Services", [], [], [
+            ['End2end test',
+            'https://github.com/mozilla-services/go-bouncer/tree/master/tests/e2e']
+            ]],
+        ["Firefox Accounts", "", "Karl", "Peter", "#fxa", "Services", [], [], [
+            ['Content Server Tests',
+                'https://github.com/mozilla/fxa-content-server#testing'],
+            ['FxaPom', 'https://github.com/mozilla/fxapom']
+            ]],
+
+        ["Kinto", "", "Chris", "Karl", "#storage", "Services", [], [], []],
+        ["Loads", "", "Richard", "Chris", "#fx-test", "Services", [], [], []],
+        ["Push Notification", "", "Richard", "Rebecca", "#push", "Services", [], [], [
+            ['Github', 'https://github.com/mozilla-services/autopush'],
+            ['Documentation', 'http://autopush.readthedocs.io/'],
+            ['Load test', 'https://github.com/mozilla-services/ap-loadtester']]],
+        ["Shavar", "Tracking Protection", "Rebecca", "Richard", "#shavar",
+         "Services", _SHAVAR_DEPL, [], [
+             ['Load Test', 'https://github.com/rpappalax/shavar-loadtests'],
+             ['Code+Test', 'https://github.com/mozilla-services/shavar/'
+             ]]],
+        ["SHIELD", "", "Chris", "Karl", "#normandy", "Services", [], [], []],
+        ["Stub Attribution", "", "Stephen", "Matt", "#stubby", "Services", [],
+                [], [["Project Page",
+                     'https://wiki.mozilla.org/Firefox/Stub_Attribution'],
+                     ['Unit test',
+                       'https://github.com/mozilla-services/stub_attribution'],
+                     ['Unit test (bedrock)',
+                      'https://github.com/mozilla/bedrock/tree/master/bedrock/firefox/tests'
+                     ]]],
+
         ["Sync", "", "Karl", "Chris", "#sync", "Services", [], [], _SYNCLINK]
 
 ]
