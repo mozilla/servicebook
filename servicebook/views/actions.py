@@ -8,6 +8,7 @@ from flask import request, jsonify
 from flask import render_template
 
 from smwogger.main import get_runner
+from servicebook.auth import only_for_editors
 
 
 actions = Blueprint('actions', __name__)
@@ -15,6 +16,7 @@ test_dir = os.path.join(os.path.dirname(__file__), '..', 'tests')
 
 
 @actions.route("/action/heartbeat")
+@only_for_editors
 def action_hb():
     endpoint = request.args.get('endpoint')
     result = requests.get(endpoint)
@@ -26,6 +28,7 @@ def action_hb():
 
 
 @actions.route("/action/smoke")
+@only_for_editors
 def action_smoke():
     endpoint = request.args.get('endpoint')
 
@@ -52,6 +55,7 @@ def action_smoke():
 
 
 @actions.route("/action/swagger")
+@only_for_editors
 def swagger():
     endpoint = request.args.get('endpoint')
     res = requests.get(endpoint)

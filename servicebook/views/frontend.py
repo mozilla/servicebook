@@ -3,7 +3,6 @@ import requests
 
 from sqlalchemy.sql import collate
 from flask import render_template
-from flask_nav.elements import View, Navbar
 from flask import Blueprint
 from flask import request, redirect
 
@@ -11,18 +10,22 @@ from servicebook.db import Session
 from servicebook.mappings import Project, Person, Group, Deployment
 from servicebook.nav import nav
 from servicebook.forms import ProjectForm, DeploymentForm
+from servicebook.auth import get_user, only_for_editors
 
 
 frontend = Blueprint('frontend', __name__)
-nav.register_element('frontend_top',
-                     Navbar(View('Mozilla QA ~ Service Book', '.home'),))
+
+
+def render(name, **kw):
+    kw['user'] = get_user()
+    return render_template(name, **kw)
 
 
 @frontend.route("/")
 def home():
     field = collate(Project.name, 'NOCASE')
     projects = Session.query(Project).order_by(field.asc())
-    return render_template('home.html', projects=projects)
+    return render('home.html', projects=projects)
 
 
 @frontend.route("/person/<int:person_id>")
@@ -35,8 +38,8 @@ def person(person_id):
                         (Project.secondary_id == person_id))
     projects = projects.order_by(Project.name.asc())
     backlink = '/'
-    return render_template('person.html', projects=projects, person=person,
-                           backlink=backlink)
+    return render('person.html', projects=projects, person=person,
+                  backlink=backlink)
 
 
 @frontend.route("/group/<name>")
@@ -47,8 +50,8 @@ def group(name):
     projects = p.filter(Project.group_name == name)
     projects = projects.order_by(Project.name.asc())
     backlink = '/'
-    return render_template('group.html', projects=projects, group=group,
-                           backlink=backlink)
+    return render('group.html', projects=projects, group=group,
+                  backlink=backlink)
 
 
 _STATUSES = 'status=NEW&status=REOPENED&status=UNCONFIRMED&status=ASSIGNED'
@@ -57,6 +60,7 @@ _BUGZILLA = ('https://bugzilla.mozilla.org/rest/bug?' + _STATUSES +
 
 
 @frontend.route("/project/<int:project_id>/edit", methods=['GET', 'POST'])
+@only_for_editors
 def edit_project(project_id):
     q = Session.query(Project).filter(Project.id == project_id)
     project = q.one()
@@ -69,11 +73,12 @@ def edit_project(project_id):
         return redirect('/project/%d' % project.id)
 
     action = 'Edit %r' % project.name
-    return render_template("project_edit.html", form=form, action=action,
-                           form_action='/project/%d/edit' % project.id)
+    return render("project_edit.html", form=form, action=action,
+                  form_action='/project/%d/edit' % project.id)
 
 
 @frontend.route("/project/", methods=['GET', 'POST'])
+@only_for_editors
 def add_project():
     form = ProjectForm(request.form)
     if request.method == 'POST' and form.validate():
@@ -84,8 +89,8 @@ def add_project():
         return redirect('/project/%d' % project.id)
 
     action = 'Add a new project'
-    return render_template("project_edit.html", form=form, action=action,
-                           form_action="/project/")
+    return render("project_edit.html", form=form, action=action,
+                  form_action="/project/")
 
 
 @frontend.route("/project/<int:project_id>")
@@ -122,12 +127,13 @@ def project(project_id):
             project_info = yaml.load(res.content)['info']
 
     backlink = '/'
-    return render_template('project.html', project=project, bugs=bugs,
-                           project_info=project_info, backlink=backlink)
+    return render('project.html', project=project, bugs=bugs,
+                  project_info=project_info, backlink=backlink)
 
 
 @frontend.route("/project/<int:project_id>/deployment",
                 methods=['GET', 'POST'])
+@only_for_editors
 def add_deployment(project_id):
     q = Session.query(Project).filter(Project.id == project_id)
     project = q.one()
@@ -142,12 +148,13 @@ def add_deployment(project_id):
         return redirect('/project/%d' % project.id)
 
     action = 'Add a new deployment for %s' % str(project)
-    return render_template("deployment_edit.html", form=form, action=action,
-                           form_action="/project/%s/deployment" % project_id)
+    return render("deployment_edit.html", form=form, action=action,
+                  form_action="/project/%s/deployment" % project_id)
 
 
 @frontend.route("/project/<int:project_id>/deployment/<int:depl_id>/delete",
                 methods=['GET'])
+@only_for_editors
 def remove_deployment(project_id, depl_id):
     q = Session.query(Deployment).filter(Deployment.id == depl_id)
     depl = q.one()
@@ -158,6 +165,7 @@ def remove_deployment(project_id, depl_id):
 
 @frontend.route("/project/<int:project_id>/deployment/<int:depl_id>/edit",
                 methods=['GET', 'POST'])
+@only_for_editors
 def edit_deployment(project_id, depl_id):
     q = Session.query(Deployment).filter(Deployment.id == depl_id)
     depl = q.one()
@@ -173,6 +181,6 @@ def edit_deployment(project_id, depl_id):
     form_action = '/project/%d/deployment/%d/edit'
     backlink = '/project/%d' % project.id
     action = 'Edit %r for %s' % (depl.name, project.name)
-    return render_template("deployment_edit.html", form=form, action=action,
-                           project=project, backlink=backlink,
-                           form_action=form_action % (project.id, depl.id))
+    return render("deployment_edit.html", form=form, action=action,
+                  project=project, backlink=backlink,
+                  form_action=form_action % (project.id, depl.id))

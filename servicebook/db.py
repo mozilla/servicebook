@@ -22,7 +22,7 @@ def init(sqluri='sqlite:////tmp/qa_projects.db', dump=None):
 
     session = Session()
 
-    people = []
+    people = ["Stuart", "Tarek"]
     groups = []
 
     def _find_person(firstname):
@@ -35,16 +35,25 @@ def init(sqluri='sqlite:////tmp/qa_projects.db', dump=None):
         q = session.query(g).filter(g.name == name)
         return q.first()
 
+    # importing two editors
+    stuart = mappings.Person('Stuart', 'Philp', 'stuartphilp', True)
+    tarek = mappings.Person('Tarek', 'Ziade', 'tarekziade', True)
+    session.add(stuart)
+    session.add(tarek)
+    session.commit()
+
     # importing people first
     for project in dump:
         # People
         for ppl in ('primary', 'secondary'):
-            pid = project[ppl]['id']
+            pid = project[ppl]['firstname']
             if pid in people:
                 continue
             firstname = project[ppl]['firstname']
             lastname = project[ppl]['lastname']
-            session.add(mappings.Person(firstname, lastname))
+            github = project[ppl].get('github')
+            editor = project[ppl].get('editor', False)
+            session.add(mappings.Person(firstname, lastname, github, editor))
             people.append(pid)
 
         session.commit()

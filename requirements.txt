@@ -8,4 +8,5 @@ flask-nav
 Flask-WTF
 PyYAML
 WTForms-Alchemy
+rauth
 -e git+https://github.com/tarekziade/smwogger#egg=smwogger
