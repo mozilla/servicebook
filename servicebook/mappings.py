@@ -28,16 +28,18 @@ class Person(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     firstname = Column(Unicode(128), nullable=False)
     lastname = Column(Unicode(128), nullable=False)
+    mozqa = Column(Boolean, default=False)
     github = Column(Unicode(128))
     editor = Column(Boolean, default=False)
 
     def __init__(self, firstname=None, lastname=None, github=None,
-                 editor=False):
+                 editor=False, mozqa=False):
         super(Person, self).__init__()
         self.firstname = firstname
         self.lastname = lastname
         self.github = github
         self.editor = editor
+        self.mozqa = mozqa
 
     def __repr__(self):
         return '%s %s' % (self.firstname, self.lastname)

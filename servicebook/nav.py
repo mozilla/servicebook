@@ -22,7 +22,7 @@ class MyNav(Nav):
 def build_nav():
     user = get_user()
     if user is None:
-        link = Link('Login', '/login')
+        link = Link('Github Login', '/login')
     else:
         link = Link('%s (logout)' % str(user), '/logout')
 

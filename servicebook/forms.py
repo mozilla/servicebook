@@ -24,8 +24,9 @@ class BaseForm(ModelForm):
 
 
 def get_persons():
+    # only mozqa folks can be primary/secondary/group lead
     from servicebook.db import Session
-    return Session().query(Person)
+    return Session().query(Person).filter(Person.mozqa == True)   # noqa
 
 
 def get_groups():

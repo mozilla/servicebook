@@ -36,8 +36,8 @@ def init(sqluri='sqlite:////tmp/qa_projects.db', dump=None):
         return q.first()
 
     # importing two editors
-    stuart = mappings.Person('Stuart', 'Philp', 'stuartphilp', True)
-    tarek = mappings.Person('Tarek', 'Ziade', 'tarekziade', True)
+    stuart = mappings.Person('Stuart', 'Philp', 'stuartphilp', True, True)
+    tarek = mappings.Person('Tarek', 'Ziade', 'tarekziade', True, True)
     session.add(stuart)
     session.add(tarek)
     session.commit()
@@ -53,7 +53,9 @@ def init(sqluri='sqlite:////tmp/qa_projects.db', dump=None):
             lastname = project[ppl]['lastname']
             github = project[ppl].get('github')
             editor = project[ppl].get('editor', False)
-            session.add(mappings.Person(firstname, lastname, github, editor))
+            mozqa = True
+            session.add(mappings.Person(firstname, lastname, github, editor,
+                                        mozqa))
             people.append(pid)
 
         session.commit()
