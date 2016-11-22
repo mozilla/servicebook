@@ -22,9 +22,17 @@ def action_hb():
 
 @actions.route("/action/smoke")
 def action_smoke():
-    # endpoint = request.args.get('endpoint')
-    endpoint = os.path.join(os.path.dirname(__file__), 'tests',
-                            'absearch.yaml')
+    endpoint = request.args.get('endpoint')
+
+    # XXX plugged two hardcoded files for the demo
+    #
+    if 'search' in endpoint:
+        endpoint = os.path.join(os.path.dirname(__file__), 'tests',
+                                'absearch.yaml')
+    elif 'shavar' in endpoint:
+        endpoint = os.path.join(os.path.dirname(__file__), 'tests',
+                                'shavar.yaml')
+
     runner = get_runner(endpoint)
     steps = []
     for index, (oid, options) in enumerate(runner.scenario()):

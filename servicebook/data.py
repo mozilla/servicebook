@@ -28,6 +28,7 @@ GROUPS = [("User Interfaces", "https://wiki.mozilla.org/TestEngineering/UI",
            "Krupa Raj")]
 
 
+_SHAVAR_DEPL = [['stage', 'https://shavar.stage.mozaws.net/']]
 _ABSEARCHDEPLOY = [['stage', 'https://search.stage.mozaws.net'],
                    ['prod', 'https://search.services.mozilla.com']]
 _ABDESC = """\
@@ -90,7 +91,7 @@ PROJS = [
 
         # Services projects
         ["Shavar", "Tracking Protection", "Rebecca", "Richard", "#shavar",
-         "Services", [], [], []],
+         "Services", _SHAVAR_DEPL, [], []],
         ["ABSearch", _ABDESC, "Karl", "Chris", "#absearch", "Services",
          _ABSEARCHDEPLOY, _ABBUGZILLA, []],
         ["Balrog", "", "Chris", "Karl", "#balrog", "Services", [], [], []],
