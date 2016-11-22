@@ -17,6 +17,9 @@
     {% if json %}
       <span class="badge"><a class="json" href="{{json}}">JSON</a></span>
     {% endif %}
+    {% if backlink %}
+      <span class="badge"><a class="json" href="{{backlink}}">Back</a></span>
+    {% endif %}
     </h1>
   </div>
   {% endblock page_header %}

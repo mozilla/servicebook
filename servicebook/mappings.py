@@ -94,6 +94,9 @@ class Project(Base):
     deployments = relationship('Deployment', back_populates="project")
     links = relationship('Link', back_populates="project")
 
+    def __repr__(self):
+        return '%s' % self.name
+
     def to_json(self):
         res = super(Project, self).to_json()
         res['deployments'] = [depl.to_json() for depl in self.deployments]

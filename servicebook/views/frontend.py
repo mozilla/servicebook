@@ -8,9 +8,9 @@ from flask import Blueprint
 from flask import request, redirect
 
 from servicebook.db import Session
-from servicebook.mappings import Project, Person, Group
+from servicebook.mappings import Project, Person, Group, Deployment
 from servicebook.nav import nav
-from servicebook.forms import ProjectForm
+from servicebook.forms import ProjectForm, DeploymentForm
 
 
 frontend = Blueprint('frontend', __name__)
@@ -34,8 +34,9 @@ def person(person_id):
     projects = p.filter((Project.primary_id == person_id) |
                         (Project.secondary_id == person_id))
     projects = projects.order_by(Project.name.asc())
-
-    return render_template('person.html', projects=projects, person=person)
+    backlink = '/'
+    return render_template('person.html', projects=projects, person=person,
+                           backlink=backlink)
 
 
 @frontend.route("/group/<name>")
@@ -45,7 +46,9 @@ def group(name):
     p = Session.query(Project)
     projects = p.filter(Project.group_name == name)
     projects = projects.order_by(Project.name.asc())
-    return render_template('group.html', projects=projects, group=group)
+    backlink = '/'
+    return render_template('group.html', projects=projects, group=group,
+                           backlink=backlink)
 
 
 _STATUSES = 'status=NEW&status=REOPENED&status=UNCONFIRMED&status=ASSIGNED'
@@ -118,5 +121,58 @@ def project(project_id):
         if res.status_code == 200:
             project_info = yaml.load(res.content)['info']
 
+    backlink = '/'
     return render_template('project.html', project=project, bugs=bugs,
-                           project_info=project_info)
+                           project_info=project_info, backlink=backlink)
+
+
+@frontend.route("/project/<int:project_id>/deployment",
+                methods=['GET', 'POST'])
+def add_deployment(project_id):
+    q = Session.query(Project).filter(Project.id == project_id)
+    project = q.one()
+
+    form = DeploymentForm(request.form)
+    if request.method == 'POST' and form.validate():
+        deployment = Deployment()
+        deployment.project = project
+        form.populate_obj(deployment)
+        Session.add(project)
+        Session.commit()
+        return redirect('/project/%d' % project.id)
+
+    action = 'Add a new deployment for %s' % str(project)
+    return render_template("deployment_edit.html", form=form, action=action,
+                           form_action="/project/%s/deployment" % project_id)
+
+
+@frontend.route("/project/<int:project_id>/deployment/<int:depl_id>/delete",
+                methods=['GET'])
+def remove_deployment(project_id, depl_id):
+    q = Session.query(Deployment).filter(Deployment.id == depl_id)
+    depl = q.one()
+    Session.delete(depl)
+    Session.commit()
+    return redirect('/project/%d' % (project_id))
+
+
+@frontend.route("/project/<int:project_id>/deployment/<int:depl_id>/edit",
+                methods=['GET', 'POST'])
+def edit_deployment(project_id, depl_id):
+    q = Session.query(Deployment).filter(Deployment.id == depl_id)
+    depl = q.one()
+    project = depl.project
+
+    form = DeploymentForm(request.form, depl)
+    if request.method == 'POST' and form.validate():
+        form.populate_obj(depl)
+        Session.add(depl)
+        Session.commit()
+        return redirect('/project/%d' % (project.id))
+
+    form_action = '/project/%d/deployment/%d/edit'
+    backlink = '/project/%d' % project.id
+    action = 'Edit %r for %s' % (depl.name, project.name)
+    return render_template("deployment_edit.html", form=form, action=action,
+                           project=project, backlink=backlink,
+                           form_action=form_action % (project.id, depl.id))

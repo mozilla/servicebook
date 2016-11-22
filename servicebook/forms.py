@@ -1,7 +1,7 @@
 from collections import OrderedDict
 from wtforms_alchemy import ModelForm, QuerySelectField
 
-from servicebook.mappings import Project, Person, Group
+from servicebook.mappings import Project, Person, Group, Deployment
 
 
 class BaseForm(ModelForm):
@@ -33,6 +33,11 @@ def get_groups():
     return Session().query(Group).order_by(Group.name)
 
 
+def get_projects():
+    from servicebook.db import Session
+    return Session().query(Project).order_by(Project.name)
+
+
 class ProjectForm(BaseForm):
     class Meta:
         model = Project
@@ -43,3 +48,10 @@ class ProjectForm(BaseForm):
     secondary = QuerySelectField('secondary', query_factory=get_persons)
     group = QuerySelectField('group', query_factory=get_groups,
                              get_label='name')
+
+
+class DeploymentForm(BaseForm):
+    class Meta:
+        model = Deployment
+
+    field_order = ('name', 'endpoint')

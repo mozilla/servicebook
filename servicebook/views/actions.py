@@ -11,13 +11,18 @@ from smwogger.main import get_runner
 
 
 actions = Blueprint('actions', __name__)
+test_dir = os.path.join(os.path.dirname(__file__), '..', 'tests')
 
 
 @actions.route("/action/heartbeat")
 def action_hb():
     endpoint = request.args.get('endpoint')
-    result = requests.get(endpoint).json()
-    return jsonify(result)
+    result = requests.get(endpoint)
+    try:
+        result = result.json()
+        return jsonify(result)
+    except ValueError:
+        return result.content
 
 
 @actions.route("/action/smoke")
@@ -27,11 +32,9 @@ def action_smoke():
     # XXX plugged two hardcoded files for the demo
     #
     if 'search' in endpoint:
-        endpoint = os.path.join(os.path.dirname(__file__), 'tests',
-                                'absearch.yaml')
+        endpoint = os.path.join(test_dir, 'absearch.yaml')
     elif 'shavar' in endpoint:
-        endpoint = os.path.join(os.path.dirname(__file__), 'tests',
-                                'shavar.yaml')
+        endpoint = os.path.join(test_dir, 'shavar.yaml')
 
     runner = get_runner(endpoint)
     steps = []
