@@ -55,5 +55,3 @@ def swagger():
     spec = yaml.load(res.content)
     return render_template('swagger.html', swagger_url=endpoint,
                            spec=json.dumps(spec))
-
-

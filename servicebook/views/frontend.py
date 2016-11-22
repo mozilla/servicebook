@@ -1,5 +1,3 @@
-import json
-
 import yaml
 import requests
 
@@ -53,7 +51,6 @@ def group(name):
 _STATUSES = 'status=NEW&status=REOPENED&status=UNCONFIRMED&status=ASSIGNED'
 _BUGZILLA = ('https://bugzilla.mozilla.org/rest/bug?' + _STATUSES +
              '&product=%s&component=%s&limit=10')
-
 
 
 @frontend.route("/project/<int:project_id>/edit", methods=['GET', 'POST'])

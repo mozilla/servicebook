@@ -4,7 +4,7 @@ from flask import Flask
 from flask_bootstrap import Bootstrap
 
 from servicebook.db import init
-from servicebook import frontend, api, actions
+from servicebook.views import frontend, api, actions
 from servicebook.nav import nav
 
 HERE = os.path.dirname(__file__)
