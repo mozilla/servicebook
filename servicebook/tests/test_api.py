@@ -24,10 +24,10 @@ class ApiTest(BaseTest):
             m.get(bz_matcher, text=json.dumps(bz_resp))
             m.get(sw_matcher, text=json.dumps(sw_resp))
             absearch = self.app.get('/project/%d.json' % absearch_id)
-            self.assertEqual(absearch.json['primary_id'], 5)
+            self.assertEqual(absearch.json['primary_id'], 1)
 
     def test_browsing_user(self):
-        karl_json = self.app.get('/person/5.json').json
+        karl_json = self.app.get('/person/1.json').json
         projects = [proj['name'] for proj in karl_json['projects']]
         projects.sort()
         wanted = ['ABSearch', 'Balrog', 'Firefox Accounts', 'Kinto',

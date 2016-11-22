@@ -56,6 +56,11 @@ class Group(Base):
     def __repr__(self):
         return self.name
 
+    def to_json(self):
+        res = super(Group, self).to_json()
+        res['lead'] = self.lead.to_json()
+        return res
+
 
 class Deployment(Base):
     __tablename__ = 'deployment'
@@ -101,4 +106,7 @@ class Project(Base):
         res = super(Project, self).to_json()
         res['deployments'] = [depl.to_json() for depl in self.deployments]
         res['links'] = [link.to_json() for link in self.links]
+        res['primary'] = self.primary.to_json()
+        res['secondary'] = self.secondary.to_json()
+        res['group'] = self.group.to_json()
         return res

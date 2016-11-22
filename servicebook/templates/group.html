@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% set title = group.name %}
 {% set subtitle = 'Technical group' %}
-{% set json = '/' + group.name + '.json' %}
+{% set json = '/group/' + group.name + '.json' %}
 
 {% block page %}
   <p>Group lead : <a href="/person/{{group.lead.id}}">{{group.lead.fullname()}}</a></p>

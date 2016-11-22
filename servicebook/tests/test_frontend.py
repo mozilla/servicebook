@@ -25,8 +25,7 @@ class FrontEndTest(BaseTest):
         with requests_mock.Mocker() as m:
             m.get(bz_matcher, text=json.dumps(bz_resp))
             m.get(sw_matcher, text=json.dumps(sw_resp))
-
-            project_absearch = r.click(href=first_proj_link)
+            project_absearch = self.app.get(first_proj_link)
             self.assertTrue('Karl' in project_absearch)
 
     def test_browsing_user(self):

@@ -1,3 +1,4 @@
+import json
 import os
 
 from flask import Flask
@@ -10,10 +11,15 @@ from servicebook.nav import nav
 HERE = os.path.dirname(__file__)
 
 
-def create_app(fill=False, sqluri='sqlite:////tmp/qa_projects.db'):
+def create_app(sqluri='sqlite:////tmp/qa_projects.db', dump=None):
     app = Flask(__name__, static_url_path='/static')
     Bootstrap(app)
-    app.db = init(sqluri, fill)
+
+    if dump is not None:
+        with open(dump) as f:
+            dump = json.loads(f.read())
+
+    app.db = init(sqluri, dump)
 
     for bp in (frontend.frontend, api.api, actions.actions):
         app.register_blueprint(bp)

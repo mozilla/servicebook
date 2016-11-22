@@ -1,86 +1,103 @@
 # encoding: utf8
+import os
+import json
+
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import create_engine
 
 from servicebook import mappings
-from servicebook.data import PEOPLE, GROUPS, PROJS
 
 
 session_factory = sessionmaker(autoflush=False)
 Session = scoped_session(session_factory)
 
 
-def init(sqluri='sqlite:////tmp/qa_projects.db', fill=False):
+def init(sqluri='sqlite:////tmp/qa_projects.db', dump=None):
     engine = create_engine(sqluri)
     session_factory.configure(bind=engine)
     mappings.Base.metadata.create_all(engine)
-    if not fill:
+
+    if dump is None:
         return engine
 
     session = Session()
 
-    for person in PEOPLE.split('\n'):
-        if person.strip() == '':
-            continue
-        first, last = person.split(' ', 1)
-        session.add(mappings.Person(first, last))
-
-    session.commit()
-
-    p = mappings.Person
-    g = mappings.Group
+    people = []
+    groups = []
 
     def _find_person(firstname):
+        p = mappings.Person
         q = session.query(p).filter(p.firstname == firstname)
         return q.first()
 
     def _find_group(name):
+        g = mappings.Group
         q = session.query(g).filter(g.name == name)
         return q.first()
 
-    for label, home, lead in GROUPS:
-        lead = session.query(p).filter(p.lastname == lead.split(' ', 1)[-1])
-        session.add(mappings.Group(label, home, lead.first()))
+    # importing people first
+    for project in dump:
+        # People
+        for ppl in ('primary', 'secondary'):
+            pid = project[ppl]['id']
+            if pid in people:
+                continue
+            firstname = project[ppl]['firstname']
+            lastname = project[ppl]['lastname']
+            session.add(mappings.Person(firstname, lastname))
+            people.append(pid)
 
-    session.commit()
+        session.commit()
 
-    for project in PROJS:
+    for project in dump:
+        print('Importing %s' % project['name'])
+        # Groups
+        group_name = project['group_name']
+        if group_name not in groups:
+            home = project['group']['home']
+            lead = _find_person(project['group']['lead']['firstname'])
+            session.add(mappings.Group(group_name, home, lead))
+            groups.append(group_name)
+
+        session.commit()
+
+        # The project itself
         proj = mappings.Project()
-        proj.name = project[0]
-        print('Importing %s' % proj.name)
-        proj.description = project[1]
-        proj.primary = _find_person(project[2])
-        proj.secondary = _find_person(project[3])
-        proj.irc = project[4]
-        proj.group = _find_group(project[5])
-        for deplo in project[6]:
+        proj.name = project['name']
+        proj.description = project['description']
+        proj.primary = _find_person(project['primary']['firstname'])
+        proj.secondary = _find_person(project['secondary']['firstname'])
+        proj.irc = project['irc']
+        proj.group = _find_group(project['group_name'])
+
+        for deplo in project['deployments']:
             d = mappings.Deployment()
-            d.name = deplo[0]
-            d.endpoint = deplo[1]
+            d.name = deplo['name']
+            d.endpoint = deplo['endpoint']
             session.add(d)
             proj.deployments.append(d)
 
-        if project[7] != []:
-            proj.bz_product = project[7][0]
-            proj.bz_component = project[7][1]
+        proj.bz_product = project['bz_component']
+        proj.bz_component = project['bz_product']
 
-        for link in project[8]:
+        for link in project['links']:
             d = mappings.Link()
-            d.name = link[0]
-            if len(link) == 3:
-                d.description = link[1]
-                d.link = link[2]
-            else:
-                d.link = link[1]
+            d.name = link['name']
+            d.description = link['description']
+            d.link = link['link']
             session.add(d)
             proj.links.append(d)
 
         session.add(proj)
+        session.commit()
 
-    session.commit()
     session.close()
     return engine
 
 
 def main():
-    init(fill=True)
+    here = os.path.dirname(__file__)
+    with open(os.path.join(here, 'dump.json')) as f:
+        dump = json.loads(f.read())
+
+    init(dump=dump)
