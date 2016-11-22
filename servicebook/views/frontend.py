@@ -8,7 +8,6 @@ from flask import request, redirect
 
 from servicebook.db import Session
 from servicebook.mappings import Project, Person, Group, Deployment
-from servicebook.nav import nav
 from servicebook.forms import ProjectForm, DeploymentForm
 from servicebook.auth import get_user, only_for_editors
 

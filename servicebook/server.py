@@ -1,7 +1,7 @@
 import json
 import os
 
-from flask import Flask, session
+from flask import Flask
 from flask_bootstrap import Bootstrap
 
 from servicebook.db import init
