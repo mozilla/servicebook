@@ -30,7 +30,8 @@ class ApiTest(BaseTest):
         karl_json = self.app.get('/person/5.json').json
         projects = [proj['name'] for proj in karl_json['projects']]
         projects.sort()
-        wanted = [u'ABSearch', u'Balrog', u'NoMore404s', u'Sync']
+        wanted = ['ABSearch', 'Balrog', 'Firefox Accounts', 'Kinto',
+                  'NoMore404s', 'SHIELD', 'Sync']
         self.assertEqual(projects, wanted)
 
     def test_browsing_group(self):
