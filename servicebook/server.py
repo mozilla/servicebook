@@ -1,11 +1,13 @@
 import json
 import os
 
-from flask import Flask
+from flask import Flask, g
 from flask_bootstrap import Bootstrap
 
 from servicebook.db import init
 from servicebook.nav import nav
+from servicebook.views import frontend, api, actions, auth
+from servicebook.auth import get_user
 
 
 HERE = os.path.dirname(__file__)
@@ -24,10 +26,10 @@ def create_app(sqluri='sqlite:////tmp/qa_projects.db', dump=None):
 
     app.db = init(sqluri, dump)
 
-    from servicebook.views import frontend, api, actions, auth
-
     for bp in (frontend.frontend, api.api, actions.actions, auth.auth):
         app.register_blueprint(bp)
+
+    app.register_error_handler(401, auth.unauthorized_view)
 
     nav.init_app(app)
 
@@ -35,6 +37,10 @@ def create_app(sqluri='sqlite:////tmp/qa_projects.db', dump=None):
            app.static_url_path + '/<path:filename>',
            endpoint='static',
            view_func=app.send_static_file)
+
+    @app.before_request
+    def before_req():
+        g.user = get_user()
 
     return app
 

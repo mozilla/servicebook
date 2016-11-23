@@ -1,5 +1,6 @@
 from flask import Blueprint
 from flask import request, redirect, session, url_for, flash
+from flask import render_template
 
 from servicebook.auth import github, github2dbuser
 
@@ -46,3 +47,7 @@ def authorized():
     session['user_id'] = db_user.id
     flash('Logged in as ' + str(db_user))
     return redirect('/')
+
+
+def unauthorized_view(error):
+    return render_template('unauthorized.html', backlink='/'), 401

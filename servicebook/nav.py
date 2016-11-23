@@ -1,5 +1,6 @@
+from flask import g
+
 from flask_nav import Nav, register_renderer
-from servicebook.auth import get_user
 from flask_nav.elements import View, Navbar, Link
 from flask_bootstrap.nav import BootstrapRenderer
 
@@ -20,7 +21,7 @@ class MyNav(Nav):
 
 
 def build_nav():
-    user = get_user()
+    user = g.user
     if user is None:
         link = Link('Github Login', '/login')
     else:

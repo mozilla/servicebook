@@ -1,8 +1,7 @@
 from functools import wraps
 
 from rauth.service import OAuth2Service
-from flask import session
-from werkzeug.exceptions import Unauthorized
+from flask import session, abort, g
 
 from servicebook.db import Session
 from servicebook.mappings import Person
@@ -54,9 +53,10 @@ def get_user():
 def only_for_editors(func):
     @wraps(func)
     def _only_for_editors(*args, **kw):
-        user = get_user()
+        user = g.user
         if user is None or not user.editor:
-            raise Unauthorized()
+            abort(401)
+            return
 
         return func(*args, **kw)
     return _only_for_editors
