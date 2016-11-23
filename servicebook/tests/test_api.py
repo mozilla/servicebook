@@ -27,7 +27,7 @@ class ApiTest(BaseTest):
             self.assertEqual(absearch.json['primary_id'], 3)
 
     def test_browsing_user(self):
-        karl_json = self.app.get('/person/3.json').json
+        karl_json = self.app.get('/user/3.json').json
         projects = [proj['name'] for proj in karl_json['projects']]
         projects.sort()
         wanted = ['ABSearch', 'Balrog', 'Firefox Accounts', 'Kinto',

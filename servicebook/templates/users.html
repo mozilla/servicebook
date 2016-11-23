@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% set title = 'Users' %}
+{% set subtitle = 'Manage users info & permissions' %}
+{% set json = '/users.json' %}
+
+
+{% block page %}
+<div class="table-responsive">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Github</th>
+        <th>Mozilla QA</th>
+        <th>Editor</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+    {% for user in users %}
+    <tr>
+      <td>{{user.firstname}}</td>
+      <td>{{user.lastname}}</td>
+      <td>
+      {%if user.github %}<a href="https://github.com/{{user.github}}">{{user.github}}</a>{% endif %}
+      </td>
+      <td>
+      {%if user.mozqa %}
+        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+      {% endif %}
+      </td>
+      <td>
+      {%if user.editor %}
+        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+      {% endif %}
+      </td>
+      <td>
+        <a href="/users/{{user.id}}/edit" role="button" class="btn btn-default">
+          <span class="glyphicon glyphicon-edit" aria-hidden="true">Edit</span>
+        </a>
+        <a href="/users/{{user.id}}/delete" role="button" class="btn btn-default">
+          <span class="glyphicon glyphicon-remove" aria-hidden="true">Delete</span>
+        </a>
+      </td>
+
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+
+ <a href="/users" role="button" class="btn btn-default btn-lg">
+  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a User
+ </a>
+{% endblock %}

@@ -1,7 +1,8 @@
 {% extends "base.html" %}
-{% set title = person.fullname() %}
+{% set title = user.fullname() %}
 {% set subtitle = 'Active projects & info' %}
-{% set json = '/person/%d.json' % person.id %}
+{% set json = '/user/%d.json' % user.id %}
+{% set edit = '/users/%d/edit' % user.id %}
 
 {% block page %}
 

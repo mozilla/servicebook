@@ -7,12 +7,53 @@ from flask import Blueprint
 from flask import request, redirect
 
 from servicebook.db import Session
-from servicebook.mappings import Project, Person, Group, Deployment
-from servicebook.forms import ProjectForm, DeploymentForm
+from servicebook.mappings import Project, User, Group, Deployment
+from servicebook.forms import ProjectForm, DeploymentForm, UserForm
 from servicebook.auth import only_for_editors
 
 
 frontend = Blueprint('frontend', __name__)
+
+
+@frontend.route("/users")
+@only_for_editors
+def users():
+    field = collate(User.firstname, 'NOCASE')
+    users = Session.query(User).order_by(field.asc())
+    return render_template('users.html', users=users)
+
+
+@frontend.route("/users/<int:user_id>/edit", methods=['GET', 'POST'])
+@only_for_editors
+def edit_user(user_id):
+    q = Session.query(User).filter(User.id == user_id)
+    user = q.one()
+
+    form = UserForm(request.form, user)
+    if request.method == 'POST' and form.validate():
+        form.populate_obj(user)
+        Session.add(user)
+        Session.commit()
+        return redirect('/users')
+
+    action = 'Edit %r' % user
+    return render_template("project_edit.html", form=form, action=action,
+                           form_action='/users/%d/edit' % user.id,
+                           backlink='/users/%d' % user.id)
+
+
+@frontend.route("/users/<int:user_id>")
+def user(user_id):
+    user = Session.query(User).filter(User.id == user_id).one()
+
+    # should be an attribute in the user table
+    p = Session.query(Project)
+    projects = p.filter((Project.primary_id == user_id) |
+                        (Project.secondary_id == user_id))
+    projects = projects.order_by(Project.name.asc())
+    backlink = '/'
+    return render_template('user.html', projects=projects, user=user,
+                           backlink=backlink)
 
 
 @frontend.route("/")
@@ -22,18 +63,6 @@ def home():
     return render_template('home.html', projects=projects)
 
 
-@frontend.route("/person/<int:person_id>")
-def person(person_id):
-    person = Session.query(Person).filter(Person.id == person_id).one()
-
-    # should be an attribute in the person table
-    p = Session.query(Project)
-    projects = p.filter((Project.primary_id == person_id) |
-                        (Project.secondary_id == person_id))
-    projects = projects.order_by(Project.name.asc())
-    backlink = '/'
-    return render_template('person.html', projects=projects, person=person,
-                           backlink=backlink)
 
 
 @frontend.route("/group/<name>")

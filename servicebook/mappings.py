@@ -23,8 +23,8 @@ class Base(object):
         return res
 
 
-class Person(Base):
-    __tablename__ = 'person'
+class User(Base):
+    __tablename__ = 'user'
     id = Column(Integer, primary_key=True, autoincrement=True)
     firstname = Column(Unicode(128), nullable=False)
     lastname = Column(Unicode(128), nullable=False)
@@ -34,7 +34,7 @@ class Person(Base):
 
     def __init__(self, firstname=None, lastname=None, github=None,
                  editor=False, mozqa=False):
-        super(Person, self).__init__()
+        super(User, self).__init__()
         self.firstname = firstname
         self.lastname = lastname
         self.github = github
@@ -52,8 +52,8 @@ class Group(Base):
     __tablename__ = 'group'
     name = Column(Unicode(128), primary_key=True)
     home = Column(URLType())
-    lead_id = Column(Integer, ForeignKey('person.id'))
-    lead = relationship('Person', foreign_keys='Group.lead_id')
+    lead_id = Column(Integer, ForeignKey('user.id'))
+    lead = relationship('User', foreign_keys='Group.lead_id')
 
     def __init__(self, name=None, home=None, lead=None):
         super(Group, self).__init__()
@@ -96,10 +96,10 @@ class Project(Base):
     bz_product = Column(Unicode(128))
     bz_component = Column(Unicode(128))
     description = Column(UnicodeText)
-    primary_id = Column(Integer, ForeignKey('person.id'))
-    primary = relationship('Person', foreign_keys='Project.primary_id')
-    secondary_id = Column(Integer, ForeignKey('person.id'))
-    secondary = relationship('Person', foreign_keys='Project.secondary_id')
+    primary_id = Column(Integer, ForeignKey('user.id'))
+    primary = relationship('User', foreign_keys='Project.primary_id')
+    secondary_id = Column(Integer, ForeignKey('user.id'))
+    secondary = relationship('User', foreign_keys='Project.secondary_id')
     irc = Column(Unicode(128))
     group_name = Column(Unicode(128), ForeignKey('group.name'))
     group = relationship('Group', foreign_keys='Project.group_name')

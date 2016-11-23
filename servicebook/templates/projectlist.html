@@ -13,8 +13,8 @@
     {% for project in projects %}
     <tr>
       <td><a href="/project/{{project.id}}">{{project.name}}</a></td>
-      <td><a href="/person/{{project.primary_id}}">{{project.primary}}</a></td>
-      <td><a href="/person/{{project.secondary_id}}">{{project.secondary}}</a></td>
+      <td><a href="/users/{{project.primary_id}}">{{project.primary}}</a></td>
+      <td><a href="/users/{{project.secondary_id}}">{{project.secondary}}</a></td>
       <td>{{project.irc}}</td>
       <td><a href="/group/{{project.group}}">{{project.group}}</a></td>
     </tr>

@@ -1,7 +1,7 @@
 from collections import OrderedDict
 from wtforms_alchemy import ModelForm, QuerySelectField
 
-from servicebook.mappings import Project, Person, Group, Deployment
+from servicebook.mappings import Project, User, Group, Deployment
 
 
 class BaseForm(ModelForm):
@@ -23,10 +23,10 @@ class BaseForm(ModelForm):
         return super(BaseForm, self).__iter__()
 
 
-def get_persons():
+def get_users():
     # only mozqa folks can be primary/secondary/group lead
     from servicebook.db import Session
-    return Session().query(Person).filter(Person.mozqa == True)   # noqa
+    return Session().query(User).filter(User.mozqa == True)   # noqa
 
 
 def get_groups():
@@ -45,8 +45,8 @@ class ProjectForm(BaseForm):
 
     field_order = ('name', 'description', 'primary', 'secondary', 'group',
                    'bz_product', 'bz_component', 'irc')
-    primary = QuerySelectField('primary', query_factory=get_persons)
-    secondary = QuerySelectField('secondary', query_factory=get_persons)
+    primary = QuerySelectField('primary', query_factory=get_users)
+    secondary = QuerySelectField('secondary', query_factory=get_users)
     group = QuerySelectField('group', query_factory=get_groups,
                              get_label='name')
 
@@ -56,3 +56,8 @@ class DeploymentForm(BaseForm):
         model = Deployment
 
     field_order = ('name', 'endpoint')
+
+
+class UserForm(BaseForm):
+    class Meta:
+        model = User

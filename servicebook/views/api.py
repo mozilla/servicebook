@@ -5,7 +5,7 @@ from flask import Blueprint
 from flask import jsonify
 
 from servicebook.db import Session
-from servicebook.mappings import Project, Person, Group
+from servicebook.mappings import Project, User, Group
 
 
 api = Blueprint('api', __name__)
@@ -18,19 +18,19 @@ def api_home():
     return jsonify(jprojects)
 
 
-@api.route("/person/<int:person_id>.json")
-def api_person(person_id):
-    person = Session.query(Person).filter(Person.id == person_id).one()
+@api.route("/user/<int:user_id>.json")
+def api_user(user_id):
+    user = Session.query(User).filter(User.id == user_id).one()
 
-    # should be an attribute in the person table
+    # should be an attribute in the user table
     p = Session.query(Project)
-    projects = p.filter((Project.primary_id == person_id) |
-                        (Project.secondary_id == person_id))
+    projects = p.filter((Project.primary_id == user_id) |
+                        (Project.secondary_id == user_id))
     projects = projects.order_by(Project.name.asc())
 
-    person = person.to_json()
-    person['projects'] = [project.to_json() for project in projects]
-    return jsonify(person)
+    user = user.to_json()
+    user['projects'] = [project.to_json() for project in projects]
+    return jsonify(user)
 
 
 @api.route("/group/<name>.json")

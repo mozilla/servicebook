@@ -4,7 +4,7 @@ from rauth.service import OAuth2Service
 from flask import session, abort, g
 
 from servicebook.db import Session
-from servicebook.mappings import Person
+from servicebook.mappings import User
 
 
 github = OAuth2Service(
@@ -19,8 +19,8 @@ github = OAuth2Service(
 
 def github2dbuser(github_user):
     dbsession = Session()
-    q = dbsession.query(Person)
-    q = q.filter(Person.github == github_user['login'])
+    q = dbsession.query(User)
+    q = q.filter(User.github == github_user['login'])
     db_user = q.first()
     if db_user is None:
         # creating an entry
@@ -30,7 +30,7 @@ def github2dbuser(github_user):
         else:
             firstname = lastname = name
         login = github_user['login']
-        db_user = Person(firstname, lastname, login)
+        db_user = User(firstname, lastname, login)
         dbsession.add(db_user)
         dbsession.commit()
 

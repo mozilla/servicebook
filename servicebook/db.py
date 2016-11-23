@@ -25,8 +25,8 @@ def init(sqluri='sqlite:////tmp/qa_projects.db', dump=None):
     people = ["Stuart", "Tarek"]
     groups = []
 
-    def _find_person(firstname):
-        p = mappings.Person
+    def _find_user(firstname):
+        p = mappings.User
         q = session.query(p).filter(p.firstname == firstname)
         return q.first()
 
@@ -36,8 +36,8 @@ def init(sqluri='sqlite:////tmp/qa_projects.db', dump=None):
         return q.first()
 
     # importing two editors
-    stuart = mappings.Person('Stuart', 'Philp', 'stuartphilp', True, True)
-    tarek = mappings.Person('Tarek', 'Ziade', 'tarekziade', True, True)
+    stuart = mappings.User('Stuart', 'Philp', 'stuartphilp', True, True)
+    tarek = mappings.User('Tarek', 'Ziade', 'tarekziade', True, True)
     session.add(stuart)
     session.add(tarek)
     session.commit()
@@ -54,7 +54,7 @@ def init(sqluri='sqlite:////tmp/qa_projects.db', dump=None):
             github = project[ppl].get('github')
             editor = project[ppl].get('editor', False)
             mozqa = True
-            session.add(mappings.Person(firstname, lastname, github, editor,
+            session.add(mappings.User(firstname, lastname, github, editor,
                                         mozqa))
             people.append(pid)
 
@@ -66,7 +66,7 @@ def init(sqluri='sqlite:////tmp/qa_projects.db', dump=None):
         group_name = project['group_name']
         if group_name not in groups:
             home = project['group']['home']
-            lead = _find_person(project['group']['lead']['firstname'])
+            lead = _find_user(project['group']['lead']['firstname'])
             session.add(mappings.Group(group_name, home, lead))
             groups.append(group_name)
 
@@ -76,8 +76,8 @@ def init(sqluri='sqlite:////tmp/qa_projects.db', dump=None):
         proj = mappings.Project()
         proj.name = project['name']
         proj.description = project['description']
-        proj.primary = _find_person(project['primary']['firstname'])
-        proj.secondary = _find_person(project['secondary']['firstname'])
+        proj.primary = _find_user(project['primary']['firstname'])
+        proj.secondary = _find_user(project['secondary']['firstname'])
         proj.irc = project['irc']
         proj.group = _find_group(project['group_name'])
 
