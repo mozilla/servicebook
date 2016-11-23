@@ -37,7 +37,8 @@ def init(sqluri='sqlite:////tmp/qa_projects.db', dump=None):
 
     # importing two editors
     stuart = mappings.User('Stuart', 'Philp', 'stuartphilp', True, True)
-    tarek = mappings.User('Tarek', 'Ziade', 'tarekziade', True, True)
+    tarek = mappings.User('Tarek', 'Ziade', 'tarekziade', True, True,
+                          'tarek@mozilla.com')
     session.add(stuart)
     session.add(tarek)
     session.commit()

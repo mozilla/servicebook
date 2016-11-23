@@ -14,6 +14,26 @@ from servicebook.auth import only_for_editors
 
 frontend = Blueprint('frontend', __name__)
 
+_MOZILLIANS_API_KEY = 'PUTYOURKEYHERE'
+_MOZILLIANS_API = 'https://mozillians.org/api/v2/users'
+_MOZILLIANS_CACHE = {}
+
+
+def get_mozillians_info(email):
+    if email in _MOZILLIANS_CACHE:
+        url = _MOZILLIANS_CACHE[email]
+    else:
+        url = '?api-key=%s&email=%s&format=json'
+        url = url % (_MOZILLIANS_API_KEY, email)
+        user = requests.get(_MOZILLIANS_API + url).json()
+        url = user['results'][0]['_url']
+        _MOZILLIANS_CACHE[email] = url
+
+    url = url + '?api-key=%s&format=json'
+    url = url % _MOZILLIANS_API_KEY
+    details = requests.get(url).json()
+    return details
+
 
 @frontend.route("/users")
 @only_for_editors
@@ -46,6 +66,11 @@ def edit_user(user_id):
 def user(user_id):
     user = Session.query(User).filter(User.id == user_id).one()
 
+    if user.email:
+        mozillians = get_mozillians_info(user.email)
+    else:
+        mozillians = {}
+
     # should be an attribute in the user table
     p = Session.query(Project)
     projects = p.filter((Project.primary_id == user_id) |
@@ -53,7 +78,7 @@ def user(user_id):
     projects = projects.order_by(Project.name.asc())
     backlink = '/'
     return render_template('user.html', projects=projects, user=user,
-                           backlink=backlink)
+                           backlink=backlink, mozillians=mozillians)
 
 
 @frontend.route("/")
@@ -61,8 +86,6 @@ def home():
     field = collate(Project.name, 'NOCASE')
     projects = Session.query(Project).order_by(field.asc())
     return render_template('home.html', projects=projects)
-
-
 
 
 @frontend.route("/group/<name>")

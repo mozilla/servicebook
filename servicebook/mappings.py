@@ -31,15 +31,17 @@ class User(Base):
     mozqa = Column(Boolean, default=False)
     github = Column(Unicode(128))
     editor = Column(Boolean, default=False)
+    email = Column(Unicode(128))
 
     def __init__(self, firstname=None, lastname=None, github=None,
-                 editor=False, mozqa=False):
+                 editor=False, mozqa=False, email=None):
         super(User, self).__init__()
         self.firstname = firstname
         self.lastname = lastname
         self.github = github
         self.editor = editor
         self.mozqa = mozqa
+        self.email = email
 
     def __repr__(self):
         return '%s %s' % (self.firstname, self.lastname)

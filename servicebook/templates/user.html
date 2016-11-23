@@ -1,11 +1,52 @@
 {% extends "base.html" %}
 {% set title = user.fullname() %}
+{% if mozillians %}
+{% set subtitle = mozillians['title']['value'] %}
+{% else %}
 {% set subtitle = 'Active projects & info' %}
+{% endif %}
 {% set json = '/user/%d.json' % user.id %}
 {% set edit = '/users/%d/edit' % user.id %}
 
 {% block page %}
 
+{% if mozillians %}
+<div class="row">
+  <div class="col-xs-6 col-md-3">
+    <a href="#" class="thumbnail">
+      <img src="{{mozillians['photo']['300x300']}}"></img>
+    </a>
+  </div>
+  <div class="col-xs-6 col-md-9">
+    <ul class="list-group">
+      <li class="list-group-item">
+        <em>Timezone</em>
+        <strong>{{mozillians['timezone']['value']}}</strong>
+      </li>
+      <li class="list-group-item">
+        <em>Country</em>
+        <strong>{{mozillians['country']['value']}}</strong>
+      </li>
+      <li class="list-group-item">
+        <em>IRC Name</em>
+        <strong>{{mozillians['ircname']['value']}}</strong>
+      </li>
+   </ul>
+    <p>{{mozillians['bio']['html']|safe}}</p>
+  </div>
+</div>
+
+{% endif %}
+
+{% if user.github %}
+<h4>
+<a href="https://github.com/{{user.github}}">
+  <img width="32" height="32" src="/static/Octocat.jpg"></img>{{user.github}}
+</a>
+</h4>
+{% endif %}
+
+<h3>Active Projects</h3>
 {% include 'projectlist.html' %}
 
 {% endblock %}
