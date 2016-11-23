@@ -96,7 +96,9 @@ def edit_project(project_id):
         return redirect('/project/%d' % project.id)
 
     action = 'Edit %r' % project.name
+    backlink = '/project/%d' % project.id
     return render_template("project_edit.html", form=form, action=action,
+                           backlink=backlink,
                            form_action='/project/%d/edit' % project.id)
 
 
@@ -150,7 +152,9 @@ def project(project_id):
             project_info = yaml.load(res.content)['info']
 
     backlink = '/'
+    edit = '/project/%d/edit' % project.id
     return render_template('project.html', project=project, bugs=bugs,
+                           edit=edit,
                            project_info=project_info, backlink=backlink)
 
 

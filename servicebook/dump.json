@@ -35,13 +35,15 @@
     "primary": {
       "firstname": "Karl",
       "id": 5,
-      "lastname": "Thiessen"
+      "lastname": "Thiessen",
+      "github": "karlht"
     },
     "primary_id": 5,
     "secondary": {
       "firstname": "Chris",
       "id": 7,
-      "lastname": "Hartjes"
+      "lastname": "Hartjes",
+      "github": "chartjes"
     },
     "secondary_id": 7
   },
@@ -68,7 +70,8 @@
     "primary": {
       "firstname": "Peter",
       "id": 6,
-      "lastname": "deHaan"
+      "lastname": "deHaan",
+      "github": "pdehaan"
     },
     "primary_id": 6,
     "secondary": {
@@ -487,7 +490,8 @@
     "primary": {
       "firstname": "Richard",
       "id": 4,
-      "lastname": "Pappalardo"
+      "lastname": "Pappalardo",
+      "github": "rpappalax"
     },
     "primary_id": 4,
     "secondary": {
