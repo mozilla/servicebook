@@ -23,11 +23,11 @@ class ApiTest(BaseTest):
         with requests_mock.Mocker() as m:
             m.get(bz_matcher, text=json.dumps(bz_resp))
             m.get(sw_matcher, text=json.dumps(sw_resp))
-            absearch = self.app.get('/project/%d.json' % absearch_id)
+            absearch = self.app.get('/projects/%d.json' % absearch_id)
             self.assertEqual(absearch.json['primary_id'], 3)
 
     def test_browsing_user(self):
-        karl_json = self.app.get('/user/3.json').json
+        karl_json = self.app.get('/users/3.json').json
         projects = [proj['name'] for proj in karl_json['projects']]
         projects.sort()
         wanted = ['ABSearch', 'Balrog', 'Firefox Accounts', 'Kinto',
@@ -35,6 +35,6 @@ class ApiTest(BaseTest):
         self.assertEqual(projects, wanted)
 
     def test_browsing_group(self):
-        group = self.app.get('/group/Customization.json').json
+        group = self.app.get('/groups/Customization.json').json
         projs = [p['name'] for p in group['projects']]
         self.assertTrue('Telemetry' in projs)

@@ -15,7 +15,7 @@ actions = Blueprint('actions', __name__)
 test_dir = os.path.join(os.path.dirname(__file__), '..', 'tests')
 
 
-@actions.route("/action/heartbeat")
+@actions.route("/actions/heartbeat")
 @only_for_editors
 def action_hb():
     endpoint = request.args.get('endpoint')
@@ -27,7 +27,7 @@ def action_hb():
         return result.content
 
 
-@actions.route("/action/smoke")
+@actions.route("/actions/smoke")
 @only_for_editors
 def action_smoke():
     endpoint = request.args.get('endpoint')
@@ -54,7 +54,7 @@ def action_smoke():
     return jsonify({'steps': steps})
 
 
-@actions.route("/action/swagger")
+@actions.route("/actions/swagger")
 @only_for_editors
 def swagger():
     endpoint = request.args.get('endpoint')

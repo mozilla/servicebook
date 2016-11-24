@@ -22,12 +22,12 @@ class MyNav(Nav):
 
 def build_nav():
     user = g.user
-    elements = [View('Mozilla QA ~ Service Book', '.home')]
+    elements = [View('Mozilla QA ~ Service Book', 'frontend.home')]
 
     if user is None:
         link = Link('Github Login', '/login')
     else:
-        elements.append(View('Manage Users', '.users'))
+        elements.append(View('Manage Users', 'users.users_view'))
         link = Link('%s (logout)' % str(user), '/logout')
 
     elements.append(link)

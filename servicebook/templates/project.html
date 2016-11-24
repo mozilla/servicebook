@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% set title = project.name %}
 {% set subtitle = project.description %}
-{% set json = '/project/%d.json' % project.id %}
+{% set json = '/projects/%d.json' % project.id %}
 
 {% block page %}
 
@@ -44,17 +44,17 @@
   <ul class="list-group">
      {% if project_info %}
      <li class="list-group-item">
-		 <span class="label label-success label-as-badge">{...}</span>
-         <em>Project Contact</em>
-         <a href="mailto:{{project_info['contact']['email']}}"><strong>{{project_info['contact']['name']}}</strong></a></li>
+       <span class="label label-success label-as-badge">{...}</span>
+       <em>Project Contact</em>
+       <a href="mailto:{{project_info['contact']['email']}}"><strong>{{project_info['contact']['name']}}</strong></a></li>
      <li class="list-group-item">
-		 <span class="label label-success label-as-badge">{...}</span>
-         <em>Licence</em>
-         <a href="{{project_info['license']['url']}}"><strong>{{project_info['license']['name']}}</strong></a></li>
+       <span class="label label-success label-as-badge">{...}</span>
+       <em>Licence</em>
+       <a href="{{project_info['license']['url']}}"><strong>{{project_info['license']['name']}}</strong></a></li>
      <li class="list-group-item">
-		 <span class="label label-success label-as-badge">{...}</span>
-         <em>Homepage</em>
-         <a href="{{project_info['x-mozilla-services']['homepage']}}">{{project_info['x-mozilla-services']['homepage']}}</a></li>
+       <span class="label label-success label-as-badge">{...}</span>
+       <em>Homepage</em>
+       <a href="{{project_info['x-mozilla-services']['homepage']}}">{{project_info['x-mozilla-services']['homepage']}}</a></li>
      {% endif %}
      <li class="list-group-item"><em>QA Primary</em> <strong>{{project.primary}}</strong></li>
      <li class="list-group-item"><em>QA Secondary</em> <strong>{{project.secondary}}</strong></li>
@@ -80,8 +80,8 @@
 <div class="panel panel-primary">
 <div class="panel-heading">
   <h2 class="panel-title">{{deployment.name}}  <span class="badge">v0.3.0</span>
-    <span class="badge"><a href="/project/{{project.id}}/deployment/{{deployment.id}}/edit">Edit</a></span>
-    <span class="badge"><a href="/project/{{project.id}}/deployment/{{deployment.id}}/delete">Remove</a></span>
+    <span class="badge"><a href="/projects/{{project.id}}/deployments/{{deployment.id}}/edit">Edit</a></span>
+    <span class="badge"><a href="/projects/{{project.id}}/deployments/{{deployment.id}}/delete">Remove</a></span>
   </h2>
   </div>
   <div class="panel-body">
@@ -92,13 +92,13 @@
    </ul>
 
     <div class="btn-group" role="group">
-        <a href="/action/heartbeat?endpoint={{deployment.endpoint}}/__heartbeat__" role="button" class="btn btn-default btn-lg">
+        <a href="/actions/heartbeat?endpoint={{deployment.endpoint}}/__heartbeat__" role="button" class="btn btn-default btn-lg">
         <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Hearbeat
      </a>
-     <a href="/action/swagger?endpoint={{deployment.endpoint}}/__api__" role="button" class="btn btn-default btn-lg">
+     <a href="/actions/swagger?endpoint={{deployment.endpoint}}/__api__" role="button" class="btn btn-default btn-lg">
         <span class="glyphicon glyphicon-list" aria-hidden="true"></span> Swagger
      </a>
-     <a href="/action/smoke?endpoint={{deployment.endpoint}}/__api__" role="button" class="btn btn-default btn-lg">
+     <a href="/actions/smoke?endpoint={{deployment.endpoint}}/__api__" role="button" class="btn btn-default btn-lg">
         <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Smoke Test
      </a>
     </div>
@@ -106,7 +106,7 @@
 </div>
 
   {% endfor %}
-  <a href="/project/{{project.id}}/deployment" role="button" class="btn btn-default btn-lg">
+  <a href="/projects/{{project.id}}/deployments" role="button" class="btn btn-default btn-lg">
   <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a Deployment
  </a>
 </div>

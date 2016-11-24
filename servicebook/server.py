@@ -3,22 +3,30 @@ import os
 
 from flask import Flask, g
 from flask_bootstrap import Bootstrap
+from flask.ext.iniconfig import INIConfig
 
 from servicebook.db import init
 from servicebook.nav import nav
-from servicebook.views import frontend, api, actions, auth
-from servicebook.auth import get_user
+from servicebook.views import blueprints
+from servicebook.auth import get_user, GithubAuth
+from servicebook.views.auth import unauthorized_view
+from servicebook.mozillians import Mozillians
 
 
 HERE = os.path.dirname(__file__)
+DEFAULT_INI_FILE = os.path.join(HERE, '..', 'servicebook.ini')
 
 
-def create_app(sqluri='sqlite:////tmp/qa_projects.db', dump=None):
+def create_app(ini_file=DEFAULT_INI_FILE, dump=None):
     app = Flask(__name__, static_url_path='/static')
-    app.secret_key = "we'll do better later"
-    app.config['SESSION_TYPE'] = 'filesystem'
+    INIConfig(app)
+    app.config.from_inifile(ini_file)
+    app.secret_key = app.config['common']['secret_key']
+    sqluri = app.config['common']['sqluri']
 
     Bootstrap(app)
+    GithubAuth(app)
+    Mozillians(app)
 
     if dump is not None:
         with open(dump) as f:
@@ -26,11 +34,11 @@ def create_app(sqluri='sqlite:////tmp/qa_projects.db', dump=None):
 
     app.db = init(sqluri, dump)
 
-    for bp in (frontend.frontend, api.api, actions.actions, auth.auth):
+    for bp in blueprints:
         app.register_blueprint(bp)
+        bp.app = app
 
-    app.register_error_handler(401, auth.unauthorized_view)
-
+    app.register_error_handler(401, unauthorized_view)
     nav.init_app(app)
 
     app.add_url_rule(
@@ -40,7 +48,7 @@ def create_app(sqluri='sqlite:////tmp/qa_projects.db', dump=None):
 
     @app.before_request
     def before_req():
-        g.user = get_user()
+        g.user = get_user(app)
 
     return app
 

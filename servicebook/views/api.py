@@ -18,7 +18,7 @@ def api_home():
     return jsonify(jprojects)
 
 
-@api.route("/user/<int:user_id>.json")
+@api.route("/users/<int:user_id>.json")
 def api_user(user_id):
     user = Session.query(User).filter(User.id == user_id).one()
 
@@ -33,7 +33,7 @@ def api_user(user_id):
     return jsonify(user)
 
 
-@api.route("/group/<name>.json")
+@api.route("/groups/<name>.json")
 def api_group(name):
     group = Session.query(Group).filter(Group.name == name).one()
     # should be an attribute in the group table
@@ -49,7 +49,7 @@ def api_group(name):
 _BUGZILLA = 'https://bugzilla.mozilla.org/rest/bug?product=%s&component=%s'
 
 
-@api.route("/project/<int:project_id>.json")
+@api.route("/projects/<int:project_id>.json")
 def api_project(project_id):
     q = Session.query(Project).filter(Project.id == project_id)
     project = q.one()

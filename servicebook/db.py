@@ -56,7 +56,7 @@ def init(sqluri='sqlite:////tmp/qa_projects.db', dump=None):
             editor = project[ppl].get('editor', False)
             mozqa = True
             session.add(mappings.User(firstname, lastname, github, editor,
-                                        mozqa))
+                                      mozqa))
             people.append(pid)
 
         session.commit()

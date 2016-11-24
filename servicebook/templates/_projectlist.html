@@ -1,0 +1,24 @@
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Project</th>
+        <th>Primary</th>
+        <th>Secondary</th>
+        <th>IRC</th>
+        <th>Technical Group</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for project in projects %}
+      <tr>
+        <td><a href="/projects/{{project.id}}">{{project.name}}</a></td>
+        <td><a href="/users/{{project.primary_id}}">{{project.primary}}</a></td>
+        <td><a href="/users/{{project.secondary_id}}">{{project.secondary}}</a></td>
+        <td>{{project.irc}}</td>
+        <td><a href="/groups/{{project.group}}">{{project.group}}</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>

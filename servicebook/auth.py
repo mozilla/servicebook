@@ -7,14 +7,11 @@ from servicebook.db import Session
 from servicebook.mappings import User
 
 
-github = OAuth2Service(
-    name='Servicebook',
-    base_url='https://api.github.com/',
-    access_token_url='https://github.com/login/oauth/access_token',
-    authorize_url='https://github.com/login/oauth/authorize',
-    client_id='cfcdbb666682b71f6d69',
-    client_secret='0544b34f3f8db81e24da4a1f57412cddab6ea0f8'
-)
+def GithubAuth(app):
+    github = OAuth2Service(**app.config['oauth'])
+    if not hasattr(app, 'extensions'):
+        app.extensions = {}
+    app.extensions['github'] = github
 
 
 def github2dbuser(github_user):
@@ -37,10 +34,11 @@ def github2dbuser(github_user):
     return db_user
 
 
-def get_user():
+def get_user(app):
     if 'token' not in session:
         return None
 
+    github = app.extensions['github']
     auth = github.get_session(token=session['token'])
     resp = auth.get('/user')
     if resp.status_code == 200:

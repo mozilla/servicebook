@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% set title = user.fullname() %}
-{% if mozillians %}
-{% set subtitle = mozillians['title']['value'] %}
+{% if mozillian %}
+{% set subtitle = mozillian['title']['value'] %}
 {% else %}
 {% set subtitle = 'Active projects & info' %}
 {% endif %}
@@ -10,29 +10,29 @@
 
 {% block page %}
 
-{% if mozillians %}
+{% if mozillian %}
 <div class="row">
   <div class="col-xs-6 col-md-3">
     <a href="#" class="thumbnail">
-      <img src="{{mozillians['photo']['300x300']}}"></img>
+      <img src="{{mozillian['photo']['300x300']}}"></img>
     </a>
   </div>
   <div class="col-xs-6 col-md-9">
     <ul class="list-group">
       <li class="list-group-item">
         <em>Timezone</em>
-        <strong>{{mozillians['timezone']['value']}}</strong>
+        <strong>{{mozillian['timezone']['value']}}</strong>
       </li>
       <li class="list-group-item">
         <em>Country</em>
-        <strong>{{mozillians['country']['value']}}</strong>
+        <strong>{{mozillian['country']['value']}}</strong>
       </li>
       <li class="list-group-item">
         <em>IRC Name</em>
-        <strong>{{mozillians['ircname']['value']}}</strong>
+        <strong>{{mozillian['ircname']['value']}}</strong>
       </li>
    </ul>
-    <p>{{mozillians['bio']['html']|safe}}</p>
+    <p>{{mozillian['bio']['html']|safe}}</p>
   </div>
 </div>
 
@@ -47,6 +47,6 @@
 {% endif %}
 
 <h3>Active Projects</h3>
-{% include 'projectlist.html' %}
+{% include '_projectlist.html' %}
 
 {% endblock %}

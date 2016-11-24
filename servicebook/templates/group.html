@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% set title = group.name %}
 {% set subtitle = 'Technical group' %}
-{% set json = '/group/' + group.name + '.json' %}
+{% set json = '/groups/' + group.name + '.json' %}
 
 {% block page %}
-  <p>Group lead : <a href="/user/{{group.lead.id}}">{{group.lead.fullname()}}</a></p>
+  <p>Group lead : <a href="/users/{{group.lead.id}}">{{group.lead.fullname()}}</a></p>
 
   <p>List of all active projects for <em>{{group.name}}</em></p>
-  {% include 'projectlist.html' %}
+  {% include '_projectlist.html' %}
 
 {% endblock %}

@@ -4,6 +4,7 @@ sqlalchemy_utils
 flask
 flask-sqlalchemy
 flask-bootstrap
+flask-iniconfig
 flask-nav
 Flask-WTF
 PyYAML

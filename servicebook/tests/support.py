@@ -7,6 +7,7 @@ from servicebook.server import create_app
 
 _ONE_TIME = None
 _DUMP = os.path.join(os.path.dirname(__file__), '..', 'dump.json')
+_INI = os.path.join(os.path.dirname(__file__), 'servicebook.ini')
 
 
 class BaseTest(TestCase):
@@ -14,5 +15,5 @@ class BaseTest(TestCase):
         super(BaseTest, self).setUp()
         global _ONE_TIME
         if _ONE_TIME is None:
-            _ONE_TIME = TestApp(create_app('sqlite://', _DUMP))
+            _ONE_TIME = TestApp(create_app(_INI, _DUMP))
         self.app = _ONE_TIME
