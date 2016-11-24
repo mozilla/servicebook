@@ -26,7 +26,14 @@ def get_mozillians_info(email):
         url = '?api-key=%s&email=%s&format=json'
         url = url % (_MOZILLIANS_API_KEY, email)
         user = requests.get(_MOZILLIANS_API + url).json()
-        url = user['results'][0]['_url']
+        if 'results' not in user:
+            return {}
+
+        res = user['results']
+        if len(res) == 0:
+            return {}
+
+        url = res[0]['_url']
         _MOZILLIANS_CACHE[email] = url
 
     url = url + '?api-key=%s&format=json'
