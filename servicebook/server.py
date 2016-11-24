@@ -11,6 +11,7 @@ from servicebook.views import blueprints
 from servicebook.auth import get_user, GithubAuth
 from servicebook.views.auth import unauthorized_view
 from servicebook.mozillians import Mozillians
+from servicebook.translations import APP_TRANSLATIONS
 
 
 HERE = os.path.dirname(__file__)
@@ -49,6 +50,14 @@ def create_app(ini_file=DEFAULT_INI_FILE, dump=None):
     @app.before_request
     def before_req():
         g.user = get_user(app)
+
+    @app.template_filter('translate')
+    def translate_string(s):
+        return APP_TRANSLATIONS.get(s, s)
+
+    @app.template_filter('capitalize')
+    def capitalize_string(s):
+        return s[0].capitalize() + s[1:]
 
     return app
 
