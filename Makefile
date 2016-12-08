@@ -24,3 +24,9 @@ test_dependencies:
 
 test: build test_dependencies
 	$(BIN)/tox
+
+docker-build:
+	docker build -t servicebook/dev .
+
+docker-run:
+	docker run servicebook/dev
