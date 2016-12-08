@@ -29,4 +29,4 @@ docker-build:
 	docker build -t servicebook/dev .
 
 docker-run:
-	docker run servicebook/dev
+	docker run -p 5000:5000 servicebook/dev
