@@ -26,7 +26,7 @@ test: build test_dependencies
 	$(BIN)/tox
 
 docker-build:
-	docker build -t servicebook/dev .
+	docker build -t servicebook/dev:latest .
 
 docker-run:
-	docker run -p 5000:5000 servicebook/dev
+	docker run -i -p 5000:5000 servicebook/dev:latest
