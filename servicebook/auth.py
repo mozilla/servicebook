@@ -52,7 +52,16 @@ def only_for_editors(func):
     @wraps(func)
     def _only_for_editors(*args, **kw):
         user = g.user
-        if user is None or not user.editor:
+
+        if user is None:
+            if g.debug:
+                print('Anonymous rejected')
+            abort(401)
+            return
+
+        if not user.editor:
+            if g.debug:
+                print('%r rejected' % user)
             abort(401)
             return
 

@@ -1,5 +1,6 @@
 import json
 import os
+import logging.config
 
 from flask import Flask, g
 from flask_bootstrap import Bootstrap
@@ -12,10 +13,12 @@ from servicebook.auth import get_user, GithubAuth
 from servicebook.views.auth import unauthorized_view
 from servicebook.mozillians import Mozillians
 from servicebook.translations import APP_TRANSLATIONS
+from servicebook import logger
 
 
 HERE = os.path.dirname(__file__)
 DEFAULT_INI_FILE = os.path.join(HERE, '..', 'servicebook.ini')
+_DEBUG = True
 
 
 def create_app(ini_file=DEFAULT_INI_FILE, dump=None):
@@ -50,6 +53,7 @@ def create_app(ini_file=DEFAULT_INI_FILE, dump=None):
     @app.before_request
     def before_req():
         g.user = get_user(app)
+        g.debug = _DEBUG
 
     @app.template_filter('translate')
     def translate_string(s):
@@ -59,12 +63,13 @@ def create_app(ini_file=DEFAULT_INI_FILE, dump=None):
     def capitalize_string(s):
         return s[0].capitalize() + s[1:]
 
+    logging.config.fileConfig(ini_file)
     return app
 
 
 def main():
     app = create_app()
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=_DEBUG, host='0.0.0.0', port=5000)
 
 
 if __name__ == "__main__":
