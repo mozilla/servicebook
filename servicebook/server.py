@@ -13,7 +13,6 @@ from servicebook.auth import get_user, GithubAuth
 from servicebook.views.auth import unauthorized_view
 from servicebook.mozillians import Mozillians
 from servicebook.translations import APP_TRANSLATIONS
-from servicebook import logger
 
 
 HERE = os.path.dirname(__file__)
