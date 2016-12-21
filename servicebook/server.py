@@ -46,7 +46,8 @@ def create_app(ini_file=DEFAULT_INI_FILE, dump=None):
     methods = ['GET', 'POST', 'DELETE', 'PATCH', 'PUT']
 
     for model in published:
-        manager.create_api(model, methods=methods, serializer=to_json)
+        manager.create_api(model, methods=methods, serializer=to_json,
+                           results_per_page=50)
 
     @app.before_request
     def before_req():
