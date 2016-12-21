@@ -6,6 +6,9 @@ from sqlalchemy import Integer, Unicode, ForeignKey, UnicodeText, Boolean
 from sqlalchemy.orm import relationship
 
 
+published = []
+
+
 def _declarative_base(cls):
     return declarative_base(cls=cls)
 
@@ -50,6 +53,9 @@ class User(Base):
         return self.__repr__()
 
 
+published.append(User)
+
+
 class Group(Base):
     __tablename__ = 'group'
     name = Column(Unicode(128), primary_key=True)
@@ -72,6 +78,9 @@ class Group(Base):
         return res
 
 
+published.append(Group)
+
+
 class Deployment(Base):
     __tablename__ = 'deployment'
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -79,6 +88,9 @@ class Deployment(Base):
     endpoint = Column(URLType(), nullable=False)
     project_id = Column(Integer, ForeignKey('project.id'))
     project = relationship('Project', back_populates="deployments")
+
+
+published.append(Deployment)
 
 
 class Link(Base):
@@ -89,6 +101,9 @@ class Link(Base):
     link = Column(URLType(), nullable=False)
     project_id = Column(Integer, ForeignKey('project.id'))
     project = relationship('Project', back_populates="links")
+
+
+published.append(Link)
 
 
 class Project(Base):
@@ -120,3 +135,6 @@ class Project(Base):
         res['secondary'] = self.secondary.to_json()
         res['group'] = self.group.to_json()
         return res
+
+
+published.append(Project)

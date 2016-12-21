@@ -3,16 +3,12 @@ import os
 import logging.config
 
 from flask import Flask, g
-from flask_bootstrap import Bootstrap
 from flask.ext.iniconfig import INIConfig
+from flask.ext.restless import APIManager
 
-from servicebook.db import init
-from servicebook.nav import nav
-from servicebook.views import blueprints
-from servicebook.auth import get_user, GithubAuth
-from servicebook.views.auth import unauthorized_view
-from servicebook.mozillians import Mozillians
-from servicebook.translations import APP_TRANSLATIONS
+from servicebook.db import init, Session
+from servicebook.auth import get_user, GithubAuth, raise_if_not_editor
+from servicebook.mappings import published
 
 
 HERE = os.path.dirname(__file__)
@@ -21,15 +17,13 @@ _DEBUG = True
 
 
 def create_app(ini_file=DEFAULT_INI_FILE, dump=None):
-    app = Flask(__name__, static_url_path='/static')
+    app = Flask(__name__)
     INIConfig(app)
     app.config.from_inifile(ini_file)
     app.secret_key = app.config['common']['secret_key']
     sqluri = app.config['common']['sqluri']
 
-    Bootstrap(app)
     GithubAuth(app)
-    Mozillians(app)
 
     if dump is not None:
         with open(dump) as f:
@@ -37,30 +31,25 @@ def create_app(ini_file=DEFAULT_INI_FILE, dump=None):
 
     app.db = init(sqluri, dump)
 
-    for bp in blueprints:
-        app.register_blueprint(bp)
-        bp.app = app
+    preprocessors = {'POST': [raise_if_not_editor],
+                     'DELETE': [raise_if_not_editor],
+                     'PUT': [raise_if_not_editor]}
 
-    app.register_error_handler(401, unauthorized_view)
-    nav.init_app(app)
+    manager = APIManager(app, flask_sqlalchemy_db=app.db,
+                         session=Session(),
+                         preprocessors=preprocessors)
 
-    app.add_url_rule(
-           app.static_url_path + '/<path:filename>',
-           endpoint='static',
-           view_func=app.send_static_file)
+    def to_json(instance):
+        return instance.to_json()
+
+    for model in published:
+        manager.create_api(model, methods=['GET', 'POST', 'DELETE'],
+                           serializer=to_json)
 
     @app.before_request
     def before_req():
         g.user = get_user(app)
         g.debug = _DEBUG
-
-    @app.template_filter('translate')
-    def translate_string(s):
-        return APP_TRANSLATIONS.get(s, s)
-
-    @app.template_filter('capitalize')
-    def capitalize_string(s):
-        return s[0].capitalize() + s[1:]
 
     logging.config.fileConfig(ini_file)
     return app

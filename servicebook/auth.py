@@ -48,22 +48,28 @@ def get_user(app):
         return None
 
 
+def raise_if_not_editor(*args, **kw):
+    user = g.user
+    if user is None:
+        if g.debug:
+            print('Anonymous rejected')
+        abort(401)
+        return False
+
+    if not user.editor:
+        if g.debug:
+            print('%r rejected' % user)
+        abort(401)
+        return False
+
+    return True
+
+
 def only_for_editors(func):
     @wraps(func)
     def _only_for_editors(*args, **kw):
-        user = g.user
-
-        if user is None:
-            if g.debug:
-                print('Anonymous rejected')
-            abort(401)
+        if not raise_if_not_editor():
             return
-
-        if not user.editor:
-            if g.debug:
-                print('%r rejected' % user)
-            abort(401)
-            return
-
         return func(*args, **kw)
+
     return _only_for_editors
