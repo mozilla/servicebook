@@ -33,7 +33,8 @@ def create_app(ini_file=DEFAULT_INI_FILE, dump=None):
 
     preprocessors = {'POST': [raise_if_not_editor],
                      'DELETE': [raise_if_not_editor],
-                     'PUT': [raise_if_not_editor]}
+                     'PUT': [raise_if_not_editor],
+                     'PATCH': [raise_if_not_editor]}
 
     manager = APIManager(app, flask_sqlalchemy_db=app.db,
                          session=Session(),
@@ -42,9 +43,10 @@ def create_app(ini_file=DEFAULT_INI_FILE, dump=None):
     def to_json(instance):
         return instance.to_json()
 
+    methods = ['GET', 'POST', 'DELETE', 'PATCH', 'PUT']
+
     for model in published:
-        manager.create_api(model, methods=['GET', 'POST', 'DELETE'],
-                           serializer=to_json)
+        manager.create_api(model, methods=methods, serializer=to_json)
 
     @app.before_request
     def before_req():
@@ -57,7 +59,7 @@ def create_app(ini_file=DEFAULT_INI_FILE, dump=None):
 
 def main():
     app = create_app()
-    app.run(debug=_DEBUG, host='0.0.0.0', port=5000)
+    app.run(debug=_DEBUG, host='0.0.0.0', port=5001)
 
 
 if __name__ == "__main__":

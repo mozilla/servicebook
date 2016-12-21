@@ -49,6 +49,8 @@ def get_user(app):
 
 
 def raise_if_not_editor(*args, **kw):
+    # XXX deactivated until we have auth0 integrated
+    # https://github.com/mozilla/servicebook/issues/11
     user = g.user
     if user is None:
         if g.debug:
