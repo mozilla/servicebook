@@ -1,6 +1,7 @@
-import json
 import os
 import logging.config
+import sys
+import argparse
 
 from flask import Flask, g
 from flask.ext.iniconfig import INIConfig
@@ -16,7 +17,7 @@ DEFAULT_INI_FILE = os.path.join(HERE, '..', 'servicebook.ini')
 _DEBUG = True
 
 
-def create_app(ini_file=DEFAULT_INI_FILE, dump=None):
+def create_app(ini_file=DEFAULT_INI_FILE):
     app = Flask(__name__)
     INIConfig(app)
     app.config.from_inifile(ini_file)
@@ -25,11 +26,7 @@ def create_app(ini_file=DEFAULT_INI_FILE, dump=None):
 
     GithubAuth(app)
 
-    if dump is not None:
-        with open(dump) as f:
-            dump = json.loads(f.read())
-
-    app.db = init(sqluri, dump)
+    app.db = init(sqluri)
 
     preprocessors = {'POST': [raise_if_not_editor],
                      'DELETE': [raise_if_not_editor],
@@ -58,9 +55,24 @@ def create_app(ini_file=DEFAULT_INI_FILE, dump=None):
     return app
 
 
-def main():
-    app = create_app()
-    app.run(debug=_DEBUG, host='0.0.0.0', port=5001)
+def main(args=sys.argv[1:]):
+    parser = argparse.ArgumentParser(description='ServiceBook Server.')
+
+    parser.add_argument('--config-file', help='Config file',
+                        type=str, default=DEFAULT_INI_FILE)
+    parser.add_argument(
+        '--no-run', action='store_true', default=False)
+
+    args = parser.parse_args(args=args)
+    app = create_app(ini_file=args.config_file)
+    host = app.config['common'].get('host', '0.0.0.0')
+    port = app.config['common'].get('port', 5001)
+    debug = app.config.get('DEBUG', _DEBUG)
+
+    if args.no_run:
+        return app
+
+    app.run(debug=debug, host=host, port=port)
 
 
 if __name__ == "__main__":

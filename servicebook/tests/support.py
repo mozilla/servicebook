@@ -7,7 +7,8 @@ import re
 import yaml
 import requests_mock
 from flask.ext.webtest import TestApp
-from servicebook.server import create_app
+from servicebook.server import main as app_creator
+from servicebook.db import main as importer
 
 
 _ONE_TIME = None
@@ -20,7 +21,9 @@ class BaseTest(TestCase):
         super(BaseTest, self).setUp()
         global _ONE_TIME
         if _ONE_TIME is None:
-            _ONE_TIME = TestApp(create_app(_INI, _DUMP))
+            importer(['--dump-file', _DUMP, '--sqluri', 'sqlite://'])
+            app = app_creator(['--config-file', _INI, '--no-run'])
+            _ONE_TIME = TestApp(app)
         self.app = _ONE_TIME
 
     @contextmanager

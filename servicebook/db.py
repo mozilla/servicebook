@@ -1,6 +1,8 @@
 # encoding: utf8
 import os
 import json
+import argparse
+import sys
 
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import create_engine
@@ -10,9 +12,12 @@ from servicebook import mappings
 
 session_factory = sessionmaker(autoflush=False)
 Session = scoped_session(session_factory)
+here = os.path.dirname(__file__)
+_DUMP = os.path.join(here, 'dump.json')
+_SQLURI = 'sqlite:////tmp/qa_projects.db'
 
 
-def init(sqluri='sqlite:////tmp/qa_projects.db', dump=None):
+def init(sqluri=_SQLURI, dump=None):
     engine = create_engine(sqluri)
     session_factory.configure(bind=engine)
     mappings.Base.metadata.create_all(engine)
@@ -107,9 +112,19 @@ def init(sqluri='sqlite:////tmp/qa_projects.db', dump=None):
     return engine
 
 
-def main():
-    here = os.path.dirname(__file__)
-    with open(os.path.join(here, 'dump.json')) as f:
+def main(args=sys.argv[1:]):
+    parser = argparse.ArgumentParser(
+        description='ServiceBook Data importer.')
+
+    parser.add_argument('--dump-file', help='Dump file',
+                        type=str, default=_DUMP)
+
+    parser.add_argument('--sqluri', help='Database',
+                        type=str, default=_SQLURI)
+
+    args = parser.parse_args(args=args)
+
+    with open(args.dump_file) as f:
         dump = json.loads(f.read())
 
-    init(dump=dump)
+    init(sqluri=args.sqluri, dump=dump)
