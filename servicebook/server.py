@@ -5,7 +5,7 @@ import argparse
 
 from flask import Flask, g
 from flask.ext.iniconfig import INIConfig
-from flask.ext.restless import APIManager
+from flask_restless_swagger import SwagAPIManager as APIManager
 
 from servicebook.db import init, Session
 from servicebook.auth import get_user, GithubAuth, raise_if_not_editor
