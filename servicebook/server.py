@@ -1,10 +1,12 @@
+import json
 import os
 import logging.config
 import sys
 import argparse
 import time
 
-from flask import Flask, g
+from werkzeug.exceptions import HTTPException
+from flask import Flask, g, request, Response
 from flask.ext.iniconfig import INIConfig
 from flask_restless_swagger import SwagAPIManager as APIManager
 
@@ -21,6 +23,13 @@ def add_timestamp(*args, **kw):
     kw['data']['last_modified'] = int(time.time() * 1000)
 
 
+class NotModified(HTTPException):
+    code = 304
+
+    def get_response(self, environment):
+        return Response(status=304)
+
+
 def create_app(ini_file=DEFAULT_INI_FILE):
     app = Flask(__name__)
     INIConfig(app)
@@ -30,8 +39,7 @@ def create_app(ini_file=DEFAULT_INI_FILE):
     app.db = init(sqluri)
 
     preprocessors = {}
-    for method in ('POST', 'PATCH_SINGLE', 'PUT_SINGLE', 'PATCH_MANY',
-                   'PUT_MANY', 'DELETE_SINGLE', 'DELETE_MANY'):
+    for method in ('POST', 'PATCH_SINGLE', 'PUT_SINGLE', 'DELETE_SINGLE'):
         preprocessors[method] = [add_timestamp]
 
     manager = APIManager(app, flask_sqlalchemy_db=app.db,
@@ -46,6 +54,31 @@ def create_app(ini_file=DEFAULT_INI_FILE):
     for model in published:
         manager.create_api(model, methods=methods, serializer=to_json,
                            results_per_page=50)
+
+    @app.after_request
+    def set_etag(response):
+        if request.blueprint == 'swagger':
+            return response
+
+        # suboptimal: redeserialization
+        # XXX use six
+        try:
+            result = json.loads(str(response.data, 'utf8'))
+        except TypeError:
+            result = json.loads(str(response.data))
+
+        last_modified = str(result.get('last_modified'))
+
+        # checking If-None-Match on GET calls
+        if (request.method == 'GET' and request.if_none_match):
+            if last_modified in request.if_none_match:
+                raise NotModified
+
+        # adding an ETag header
+        if last_modified:
+            response.set_etag(last_modified)
+
+        return response
 
     @app.before_request
     def before_req():
