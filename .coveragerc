@@ -1,0 +1,5 @@
+[run]
+source = servicebook
+
+[report]
+omit = servicebook/tests/*
