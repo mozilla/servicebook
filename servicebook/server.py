@@ -20,6 +20,11 @@ _DEBUG = True
 
 
 def add_timestamp(*args, **kw):
+    # XXX here we should query the db to get the stored
+    # timestamp, and compare it to the If-Match header.
+    # if they don't match we should abort with a 412 here
+    # on any database update
+
     kw['data']['last_modified'] = int(time.time() * 1000)
 
 
