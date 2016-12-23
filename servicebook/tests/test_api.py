@@ -34,3 +34,12 @@ class ApiTest(BaseTest):
     def test_browsing_group(self):
         group = self.app.get('/api/group/Customization').json
         self.assertEqual(group['name'], 'Customization')
+
+    def test_changing_user(self):
+        karl_json = self.app.get('/api/user/3').json
+        self.assertEqual(karl_json['firstname'], 'Karl')
+        karl_json['firstname'] = 'K.'
+        self.app.patch_json('/api/user/3', params=karl_json)
+
+        karl_json = self.app.get('/api/user/3').json
+        self.assertEqual(karl_json['firstname'], 'K.')

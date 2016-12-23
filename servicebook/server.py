@@ -2,6 +2,7 @@ import os
 import logging.config
 import sys
 import argparse
+import time
 
 from flask import Flask, g
 from flask.ext.iniconfig import INIConfig
@@ -16,10 +17,8 @@ DEFAULT_INI_FILE = os.path.join(HERE, '..', 'servicebook.ini')
 _DEBUG = True
 
 
-def raise_if_not_editor(*args, **kw):
-        # XXX deactivated until we have auth0 integrated
-        # https://github.com/mozilla/servicebook/issues/11
-        return True
+def add_timestamp(*args, **kw):
+    kw['data']['last_modified'] = int(time.time() * 1000)
 
 
 def create_app(ini_file=DEFAULT_INI_FILE):
@@ -29,10 +28,11 @@ def create_app(ini_file=DEFAULT_INI_FILE):
     app.secret_key = app.config['common']['secret_key']
     sqluri = app.config['common']['sqluri']
     app.db = init(sqluri)
-    preprocessors = {'POST': [raise_if_not_editor],
-                     'DELETE': [raise_if_not_editor],
-                     'PUT': [raise_if_not_editor],
-                     'PATCH': [raise_if_not_editor]}
+
+    preprocessors = {}
+    for method in ('POST', 'PATCH_SINGLE', 'PUT_SINGLE', 'PATCH_MANY',
+                   'PUT_MANY', 'DELETE_SINGLE', 'DELETE_MANY'):
+        preprocessors[method] = [add_timestamp]
 
     manager = APIManager(app, flask_sqlalchemy_db=app.db,
                          session=Session(),
