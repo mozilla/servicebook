@@ -8,7 +8,6 @@ from flask.ext.iniconfig import INIConfig
 from flask_restless_swagger import SwagAPIManager as APIManager
 
 from servicebook.db import init, Session
-from servicebook.auth import get_user, GithubAuth, raise_if_not_editor
 from servicebook.mappings import published
 
 
@@ -17,17 +16,19 @@ DEFAULT_INI_FILE = os.path.join(HERE, '..', 'servicebook.ini')
 _DEBUG = True
 
 
+def raise_if_not_editor(*args, **kw):
+        # XXX deactivated until we have auth0 integrated
+        # https://github.com/mozilla/servicebook/issues/11
+        return True
+
+
 def create_app(ini_file=DEFAULT_INI_FILE):
     app = Flask(__name__)
     INIConfig(app)
     app.config.from_inifile(ini_file)
     app.secret_key = app.config['common']['secret_key']
     sqluri = app.config['common']['sqluri']
-
-    GithubAuth(app)
-
     app.db = init(sqluri)
-
     preprocessors = {'POST': [raise_if_not_editor],
                      'DELETE': [raise_if_not_editor],
                      'PUT': [raise_if_not_editor],
@@ -48,7 +49,6 @@ def create_app(ini_file=DEFAULT_INI_FILE):
 
     @app.before_request
     def before_req():
-        g.user = get_user(app)
         g.debug = _DEBUG
 
     logging.config.fileConfig(ini_file)
