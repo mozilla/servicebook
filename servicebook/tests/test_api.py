@@ -5,7 +5,6 @@ import yaml
 
 import requests_mock
 from servicebook.tests.support import BaseTest
-from werkzeug.exceptions import HTTPException
 
 
 class ApiTest(BaseTest):
@@ -48,11 +47,7 @@ class ApiTest(BaseTest):
         self.assertEqual(karl_json['firstname'], 'K.')
 
         # now test the etag value
-        try:
-            resp = self.app.get('/api/user/3',
-                                headers={'If-None-Match': str(etag)})
-            raise AssertionError(str(resp))
-        except HTTPException as e:
-            self.assertEqual(e.code, 304)
-
+        resp = self.app.get('/api/user/3',
+                            headers={'If-None-Match': str(etag)})
+        self.assertEqual(resp.status_int, 304)
         self.app.get('/api/user/3', headers={'If-None-Match': "MEH"})
