@@ -16,6 +16,16 @@ a set of API to interact with them.
     :target: https://travis-ci.org/mozilla/servicebook
 
 
+Use the Service Book
+--------------------
+
+The Service Book provides a RESTFul HTTP API. If you are using Python, you can
+use the restjson client: https://github.com/tarekziade/restjson
+
+It provides a simple tool to interact with the Service Book.
+
+
+
 Running locally
 ---------------
 
