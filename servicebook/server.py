@@ -24,7 +24,6 @@ def add_timestamp(*args, **kw):
     # timestamp, and compare it to the If-Match header.
     # if they don't match we should abort with a 412 here
     # on any database update
-
     kw['data']['last_modified'] = int(time.time() * 1000)
 
 
@@ -65,6 +64,9 @@ def create_app(ini_file=DEFAULT_INI_FILE):
         if request.blueprint == 'swagger':
             return response
 
+        if response.status_code > 399:
+            return response
+
         # suboptimal: redeserialization
         # XXX use six
         try:
@@ -72,12 +74,15 @@ def create_app(ini_file=DEFAULT_INI_FILE):
         except TypeError:
             result = json.loads(str(response.data))
 
-        last_modified = str(result.get('last_modified'))
+        if 'last_modified' in result:
+            last_modified = str(result.get('last_modified'))
+        else:
+            last_modified = None
 
         # checking If-None-Match on GET calls
         if (request.method == 'GET' and request.if_none_match):
-            if last_modified in request.if_none_match:
-                raise NotModified
+            if last_modified and last_modified in request.if_none_match:
+                return NotModified()
 
         # adding an ETag header
         if last_modified:
