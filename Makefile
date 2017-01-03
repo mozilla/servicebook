@@ -29,4 +29,4 @@ docker-build:
 	docker build -t servicebook/dev:latest .
 
 docker-run:
-	docker run -i -p 5000:5000 servicebook/dev:latest
+	docker run -i -p 5001:5001 servicebook/dev:latest

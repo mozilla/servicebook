@@ -12,5 +12,5 @@ RUN \
     pip install -e git+https://github.com/tarekziade/smwogger#egg=smwogger
 
 
-EXPOSE 5000
+EXPOSE 5001
 CMD rm -f /tmp/qa_projects.db; cd code; servicebook-import; servicebook
