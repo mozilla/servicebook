@@ -3,6 +3,7 @@ import os
 import json
 import argparse
 import sys
+import random
 
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import create_engine
@@ -93,6 +94,17 @@ def init(sqluri=_SQLURI, dump=None):
             d.endpoint = deplo['endpoint']
             session.add(d)
             proj.deployments.append(d)
+
+        # for each project we want
+        tests = ['Test Suite', 'Unit', 'Functional/UI', 'Load',
+                 'Performance', 'Accessibility', 'Security',
+                 'Localization']
+
+        for test in tests:
+            ptest = mappings.ProjectTest()
+            ptest.name = test
+            ptest.operational = random.choice([True, False])
+            proj.tests.append(ptest)
 
         proj.bz_product = project['bz_component']
         proj.bz_component = project['bz_product']

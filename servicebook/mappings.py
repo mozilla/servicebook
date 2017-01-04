@@ -161,7 +161,7 @@ class Project(Base):
     def to_json(self):
         res = super(Project, self).to_json()
         res['deployments'] = [depl.to_json() for depl in self.deployments]
-
+        res['tests'] = [test.to_json() for test in self.tests]
         for field in ('qa_primary', 'qa_secondary', 'dev_primary',
                       'dev_secondary', 'ops_primary', 'ops_secondary'):
             user = getattr(self, field, None)

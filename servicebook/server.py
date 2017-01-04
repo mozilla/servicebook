@@ -48,16 +48,18 @@ _DEBUG = True
 
 
 def add_timestamp(method, *args, **kw):
-    if method != 'POST':
+    # getting the existing last_modified if the resource exists
+    model = g.api.model
+    session = g.api.session
+    query = session.query(model)
+    entry = query = query.filter(model.id == kw['instance_id']).one()
+
+    # if this is an update, we want a If-Match header
+    if entry is not None:
+        etag = str(entry.last_modified)
+
         if not request.if_match:
             abort(428)
-
-        # getting the existing last_modified
-        model = g.api.model
-        session = g.api.session
-        query = session.query(model)
-        entry = query = query.filter(model.id == kw['instance_id']).one()
-        etag = str(entry.last_modified)
 
         if etag not in request.if_match:
             abort(412)
