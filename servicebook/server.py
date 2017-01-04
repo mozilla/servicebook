@@ -16,6 +16,7 @@ from servicebook.mappings import published
 from flask_restless import views
 
 
+# see https://github.com/jfinkels/flask-restless/issues/619
 # hack until flask-restless provides the API class in
 # pre/post processors
 def _catch_integrity_errors(session):
