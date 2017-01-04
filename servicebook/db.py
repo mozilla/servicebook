@@ -28,14 +28,14 @@ def init(sqluri=_SQLURI, dump=None):
     session = Session()
 
     people = ["Stuart", "Tarek"]
-    groups = []
+    qa_groups = []
 
     def _find_user(firstname):
         p = mappings.User
         q = session.query(p).filter(p.firstname == firstname)
         return q.first()
 
-    def _find_group(name):
+    def _find_qa_group(name):
         g = mappings.Group
         q = session.query(g).filter(g.name == name)
         return q.first()
@@ -51,7 +51,7 @@ def init(sqluri=_SQLURI, dump=None):
     # importing people first
     for project in dump:
         # People
-        for ppl in ('primary', 'secondary'):
+        for ppl in ('qa_primary', 'qa_secondary'):
             pid = project[ppl]['firstname']
             if pid in people:
                 continue
@@ -69,12 +69,12 @@ def init(sqluri=_SQLURI, dump=None):
     for project in dump:
         print('Importing %s' % project['name'])
         # Groups
-        group_name = project['group_name']
-        if group_name not in groups:
-            home = project['group']['home']
-            lead = _find_user(project['group']['lead']['firstname'])
-            session.add(mappings.Group(group_name, home, lead))
-            groups.append(group_name)
+        qa_group_name = project['qa_group_name']
+        if qa_group_name not in qa_groups:
+            home = project['qa_group']['home']
+            lead = _find_user(project['qa_group']['lead']['firstname'])
+            session.add(mappings.Group(qa_group_name, home, lead))
+            qa_groups.append(qa_group_name)
 
         session.commit()
 
@@ -82,10 +82,10 @@ def init(sqluri=_SQLURI, dump=None):
         proj = mappings.Project()
         proj.name = project['name']
         proj.description = project['description']
-        proj.primary = _find_user(project['primary']['firstname'])
-        proj.secondary = _find_user(project['secondary']['firstname'])
+        proj.qa_primary = _find_user(project['qa_primary']['firstname'])
+        proj.qa_secondary = _find_user(project['qa_secondary']['firstname'])
         proj.irc = project['irc']
-        proj.group = _find_group(project['group_name'])
+        proj.qa_group = _find_qa_group(project['qa_group_name'])
 
         for deplo in project['deployments']:
             d = mappings.Deployment()

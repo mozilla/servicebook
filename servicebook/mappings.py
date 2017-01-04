@@ -117,13 +117,14 @@ class Project(Base):
     bz_product = Column(Unicode(128))
     bz_component = Column(Unicode(128))
     description = Column(UnicodeText)
-    primary_id = Column(Integer, ForeignKey('user.id'))
-    primary = relationship('User', foreign_keys='Project.primary_id')
-    secondary_id = Column(Integer, ForeignKey('user.id'))
-    secondary = relationship('User', foreign_keys='Project.secondary_id')
     irc = Column(Unicode(128))
-    group_name = Column(Unicode(128), ForeignKey('group.name'))
-    group = relationship('Group', foreign_keys='Project.group_name')
+
+    qa_primary_id = Column(Integer, ForeignKey('user.id'))
+    qa_primary = relationship('User', foreign_keys='Project.qa_primary_id')
+    qa_secondary_id = Column(Integer, ForeignKey('user.id'))
+    qa_secondary = relationship('User', foreign_keys='Project.qa_secondary_id')
+    qa_group_name = Column(Unicode(128), ForeignKey('group.name'))
+    qa_group = relationship('Group', foreign_keys='Project.qa_group_name')
 
     deployments = relationship('Deployment', back_populates="project")
     links = relationship('Link', back_populates="project")
@@ -136,9 +137,9 @@ class Project(Base):
         res = super(Project, self).to_json()
         res['deployments'] = [depl.to_json() for depl in self.deployments]
         res['links'] = [link.to_json() for link in self.links]
-        res['primary'] = self.primary.to_json()
-        res['secondary'] = self.secondary.to_json()
-        res['group'] = self.group.to_json()
+        res['qa_primary'] = self.qa_primary.to_json()
+        res['qa_secondary'] = self.qa_secondary.to_json()
+        res['qa_group'] = self.qa_group.to_json()
         return res
 
 

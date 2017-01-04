@@ -17,7 +17,7 @@
       }
     ],
     "description": "The ABSearch Service is used by Firefox to a/b test new search settings.\n",
-    "group": {
+    "qa_group": {
       "home": "https://wiki.mozilla.org/TestEngineering/Services",
       "lead": {
         "firstname": "Richard",
@@ -27,32 +27,32 @@
       "lead_id": 4,
       "name": "Services"
     },
-    "group_name": "Services",
+    "qa_group_name": "Services",
     "id": 23,
     "irc": "#absearch",
     "links": [],
     "name": "ABSearch",
-    "primary": {
+    "qa_primary": {
       "firstname": "Karl",
       "id": 5,
       "lastname": "Thiessen",
       "github": "karlht"
     },
-    "primary_id": 5,
-    "secondary": {
+    "qa_primary_id": 5,
+    "qa_secondary": {
       "firstname": "Chris",
       "id": 7,
       "lastname": "Hartjes",
       "github": "chartjes"
     },
-    "secondary_id": 7
+    "qa_secondary_id": 7
   },
   {
     "bz_component": null,
     "bz_product": null,
     "deployments": [],
     "description": "Test Pilot",
-    "group": {
+    "qa_group": {
       "home": "https://wiki.mozilla.org/TestEngineering/Customization",
       "lead": {
         "firstname": "Krupa",
@@ -62,31 +62,31 @@
       "lead_id": 2,
       "name": "Customization"
     },
-    "group_name": "Customization",
+    "qa_group_name": "Customization",
     "id": 7,
     "irc": "#activity-stream",
     "links": [],
     "name": "Activity Stream",
-    "primary": {
+    "qa_primary": {
       "firstname": "Peter",
       "id": 6,
       "lastname": "deHaan",
       "github": "pdehaan"
     },
-    "primary_id": 6,
-    "secondary": {
+    "qa_primary_id": 6,
+    "qa_secondary": {
       "firstname": "John",
       "id": 13,
       "lastname": "Dorlus"
     },
-    "secondary_id": 13
+    "qa_secondary_id": 13
   },
   {
     "bz_component": null,
     "bz_product": null,
     "deployments": [],
     "description": "",
-    "group": {
+    "qa_group": {
       "home": "https://wiki.mozilla.org/TestEngineering/UI",
       "lead": {
         "firstname": "Dave",
@@ -96,30 +96,30 @@
       "lead_id": 3,
       "name": "User Interfaces"
     },
-    "group_name": "User Interfaces",
+    "qa_group_name": "User Interfaces",
     "id": 20,
     "irc": "#mobile",
     "links": [],
     "name": "Activity Stream (Android)",
-    "primary": {
+    "qa_primary": {
       "firstname": "Kevin",
       "id": 9,
       "lastname": "Brosnan"
     },
-    "primary_id": 9,
-    "secondary": {
+    "qa_primary_id": 9,
+    "qa_secondary": {
       "firstname": "No-Jun",
       "id": 14,
       "lastname": "Park"
     },
-    "secondary_id": 14
+    "qa_secondary_id": 14
   },
   {
     "bz_component": null,
     "bz_product": null,
     "deployments": [],
     "description": "",
-    "group": {
+    "qa_group": {
       "home": "https://wiki.mozilla.org/TestEngineering/UI",
       "lead": {
         "firstname": "Dave",
@@ -129,30 +129,30 @@
       "lead_id": 3,
       "name": "User Interfaces"
     },
-    "group_name": "User Interfaces",
+    "qa_group_name": "User Interfaces",
     "id": 19,
     "irc": "#mobile",
     "links": [],
     "name": "Activity Stream (iOS)",
-    "primary": {
+    "qa_primary": {
       "firstname": "Aaron",
       "id": 10,
       "lastname": "Train"
     },
-    "primary_id": 10,
-    "secondary": {
+    "qa_primary_id": 10,
+    "qa_secondary": {
       "firstname": "No-Jun",
       "id": 14,
       "lastname": "Park"
     },
-    "secondary_id": 14
+    "qa_secondary_id": 14
   },
   {
     "bz_component": null,
     "bz_product": null,
     "deployments": [],
     "description": "",
-    "group": {
+    "qa_group": {
       "home": "https://wiki.mozilla.org/TestEngineering/Services",
       "lead": {
         "firstname": "Richard",
@@ -162,30 +162,30 @@
       "lead_id": 4,
       "name": "Services"
     },
-    "group_name": "Services",
+    "qa_group_name": "Services",
     "id": 24,
     "irc": "#balrog",
     "links": [],
     "name": "Balrog",
-    "primary": {
+    "qa_primary": {
       "firstname": "Chris",
       "id": 7,
       "lastname": "Hartjes"
     },
-    "primary_id": 7,
-    "secondary": {
+    "qa_primary_id": 7,
+    "qa_secondary": {
       "firstname": "Karl",
       "id": 5,
       "lastname": "Thiessen"
     },
-    "secondary_id": 5
+    "qa_secondary_id": 5
   },
   {
     "bz_component": null,
     "bz_product": null,
     "deployments": [],
     "description": "Test Pilot",
-    "group": {
+    "qa_group": {
       "home": "https://wiki.mozilla.org/TestEngineering/Customization",
       "lead": {
         "firstname": "Krupa",
@@ -195,30 +195,30 @@
       "lead_id": 2,
       "name": "Customization"
     },
-    "group_name": "Customization",
+    "qa_group_name": "Customization",
     "id": 14,
     "irc": "#testpilot",
     "links": [],
     "name": "Blok",
-    "primary": {
+    "qa_primary": {
       "firstname": "Rebecca",
       "id": 12,
       "lastname": "Billings"
     },
-    "primary_id": 12,
-    "secondary": {
+    "qa_primary_id": 12,
+    "qa_secondary": {
       "firstname": "Softvision",
       "id": 16,
       "lastname": "Co."
     },
-    "secondary_id": 16
+    "qa_secondary_id": 16
   },
   {
     "bz_component": null,
     "bz_product": null,
     "deployments": [],
     "description": "",
-    "group": {
+    "qa_group": {
       "home": "https://wiki.mozilla.org/TestEngineering/Services",
       "lead": {
         "firstname": "Richard",
@@ -228,7 +228,7 @@
       "lead_id": 4,
       "name": "Services"
     },
-    "group_name": "Services",
+    "qa_group_name": "Services",
     "id": 25,
     "irc": "#stubby",
     "links": [
@@ -241,25 +241,25 @@
       }
     ],
     "name": "Bouncer",
-    "primary": {
+    "qa_primary": {
       "firstname": "Matt",
       "id": 11,
       "lastname": "Brandt"
     },
-    "primary_id": 11,
-    "secondary": {
+    "qa_primary_id": 11,
+    "qa_secondary": {
       "firstname": "Dave",
       "id": 3,
       "lastname": "Hunt"
     },
-    "secondary_id": 3
+    "qa_secondary_id": 3
   },
   {
     "bz_component": null,
     "bz_product": null,
     "deployments": [],
     "description": "Test Pilot",
-    "group": {
+    "qa_group": {
       "home": "https://wiki.mozilla.org/TestEngineering/Customization",
       "lead": {
         "firstname": "Krupa",
@@ -269,30 +269,30 @@
       "lead_id": 2,
       "name": "Customization"
     },
-    "group_name": "Customization",
+    "qa_group_name": "Customization",
     "id": 4,
     "irc": "#testpilot",
     "links": [],
     "name": "Fathom",
-    "primary": {
+    "qa_primary": {
       "firstname": "Peter",
       "id": 6,
       "lastname": "deHaan"
     },
-    "primary_id": 6,
-    "secondary": {
+    "qa_primary_id": 6,
+    "qa_secondary": {
       "firstname": "Softvision",
       "id": 16,
       "lastname": "Co."
     },
-    "secondary_id": 16
+    "qa_secondary_id": 16
   },
   {
     "bz_component": null,
     "bz_product": null,
     "deployments": [],
     "description": "",
-    "group": {
+    "qa_group": {
       "home": "https://wiki.mozilla.org/TestEngineering/Services",
       "lead": {
         "firstname": "Richard",
@@ -302,7 +302,7 @@
       "lead_id": 4,
       "name": "Services"
     },
-    "group_name": "Services",
+    "qa_group_name": "Services",
     "id": 26,
     "irc": "#fxa",
     "links": [
@@ -322,25 +322,25 @@
       }
     ],
     "name": "Firefox Accounts",
-    "primary": {
+    "qa_primary": {
       "firstname": "Karl",
       "id": 5,
       "lastname": "Thiessen"
     },
-    "primary_id": 5,
-    "secondary": {
+    "qa_primary_id": 5,
+    "qa_secondary": {
       "firstname": "Peter",
       "id": 6,
       "lastname": "deHaan"
     },
-    "secondary_id": 6
+    "qa_secondary_id": 6
   },
   {
     "bz_component": null,
     "bz_product": null,
     "deployments": [],
     "description": "",
-    "group": {
+    "qa_group": {
       "home": "https://wiki.mozilla.org/TestEngineering/UI",
       "lead": {
         "firstname": "Dave",
@@ -350,30 +350,30 @@
       "lead_id": 3,
       "name": "User Interfaces"
     },
-    "group_name": "User Interfaces",
+    "qa_group_name": "User Interfaces",
     "id": 22,
     "irc": "#mobile",
     "links": [],
     "name": "Focus (iOS)",
-    "primary": {
+    "qa_primary": {
       "firstname": "Aaron",
       "id": 10,
       "lastname": "Train"
     },
-    "primary_id": 10,
-    "secondary": {
+    "qa_primary_id": 10,
+    "qa_secondary": {
       "firstname": "No-Jun",
       "id": 14,
       "lastname": "Park"
     },
-    "secondary_id": 14
+    "qa_secondary_id": 14
   },
   {
     "bz_component": null,
     "bz_product": null,
     "deployments": [],
     "description": "",
-    "group": {
+    "qa_group": {
       "home": "https://wiki.mozilla.org/TestEngineering/UI",
       "lead": {
         "firstname": "Dave",
@@ -383,30 +383,30 @@
       "lead_id": 3,
       "name": "User Interfaces"
     },
-    "group_name": "User Interfaces",
+    "qa_group_name": "User Interfaces",
     "id": 18,
     "irc": "#fx-test",
     "links": [],
     "name": "FoxPuppet",
-    "primary": {
+    "qa_primary": {
       "firstname": "Benny",
       "id": 15,
       "lastname": "Forehand Jr."
     },
-    "primary_id": 15,
-    "secondary": {
+    "qa_primary_id": 15,
+    "qa_secondary": {
       "firstname": "Dave",
       "id": 3,
       "lastname": "Hunt"
     },
-    "secondary_id": 3
+    "qa_secondary_id": 3
   },
   {
     "bz_component": null,
     "bz_product": null,
     "deployments": [],
     "description": "Test Pilot",
-    "group": {
+    "qa_group": {
       "home": "https://wiki.mozilla.org/TestEngineering/Customization",
       "lead": {
         "firstname": "Krupa",
@@ -416,30 +416,30 @@
       "lead_id": 2,
       "name": "Customization"
     },
-    "group_name": "Customization",
+    "qa_group_name": "Customization",
     "id": 5,
     "irc": "#testpilot",
     "links": [],
     "name": "Heatmap",
-    "primary": {
+    "qa_primary": {
       "firstname": "Peter",
       "id": 6,
       "lastname": "deHaan"
     },
-    "primary_id": 6,
-    "secondary": {
+    "qa_primary_id": 6,
+    "qa_secondary": {
       "firstname": "Softvision",
       "id": 16,
       "lastname": "Co."
     },
-    "secondary_id": 16
+    "qa_secondary_id": 16
   },
   {
     "bz_component": null,
     "bz_product": null,
     "deployments": [],
     "description": "",
-    "group": {
+    "qa_group": {
       "home": "https://wiki.mozilla.org/TestEngineering/Services",
       "lead": {
         "firstname": "Richard",
@@ -449,30 +449,30 @@
       "lead_id": 4,
       "name": "Services"
     },
-    "group_name": "Services",
+    "qa_group_name": "Services",
     "id": 27,
     "irc": "#storage",
     "links": [],
     "name": "Kinto",
-    "primary": {
+    "qa_primary": {
       "firstname": "Chris",
       "id": 7,
       "lastname": "Hartjes"
     },
-    "primary_id": 7,
-    "secondary": {
+    "qa_primary_id": 7,
+    "qa_secondary": {
       "firstname": "Karl",
       "id": 5,
       "lastname": "Thiessen"
     },
-    "secondary_id": 5
+    "qa_secondary_id": 5
   },
   {
     "bz_component": null,
     "bz_product": null,
     "deployments": [],
     "description": "",
-    "group": {
+    "qa_group": {
       "home": "https://wiki.mozilla.org/TestEngineering/Services",
       "lead": {
         "firstname": "Richard",
@@ -482,31 +482,31 @@
       "lead_id": 4,
       "name": "Services"
     },
-    "group_name": "Services",
+    "qa_group_name": "Services",
     "id": 28,
     "irc": "#fx-test",
     "links": [],
     "name": "Loads",
-    "primary": {
+    "qa_primary": {
       "firstname": "Richard",
       "id": 4,
       "lastname": "Pappalardo",
       "github": "rpappalax"
     },
-    "primary_id": 4,
-    "secondary": {
+    "qa_primary_id": 4,
+    "qa_secondary": {
       "firstname": "Chris",
       "id": 7,
       "lastname": "Hartjes"
     },
-    "secondary_id": 7
+    "qa_secondary_id": 7
   },
   {
     "bz_component": null,
     "bz_product": null,
     "deployments": [],
     "description": "Test Pilot",
-    "group": {
+    "qa_group": {
       "home": "https://wiki.mozilla.org/TestEngineering/Customization",
       "lead": {
         "firstname": "Krupa",
@@ -516,30 +516,30 @@
       "lead_id": 2,
       "name": "Customization"
     },
-    "group_name": "Customization",
+    "qa_group_name": "Customization",
     "id": 3,
     "irc": "#testpilot",
     "links": [],
     "name": "MinVid",
-    "primary": {
+    "qa_primary": {
       "firstname": "Peter",
       "id": 6,
       "lastname": "deHaan"
     },
-    "primary_id": 6,
-    "secondary": {
+    "qa_primary_id": 6,
+    "qa_secondary": {
       "firstname": "Softvision",
       "id": 16,
       "lastname": "Co."
     },
-    "secondary_id": 16
+    "qa_secondary_id": 16
   },
   {
     "bz_component": null,
     "bz_product": null,
     "deployments": [],
     "description": "Test Pilot",
-    "group": {
+    "qa_group": {
       "home": "https://wiki.mozilla.org/TestEngineering/Customization",
       "lead": {
         "firstname": "Krupa",
@@ -549,30 +549,30 @@
       "lead_id": 2,
       "name": "Customization"
     },
-    "group_name": "Customization",
+    "qa_group_name": "Customization",
     "id": 2,
     "irc": "#testpilot",
     "links": [],
     "name": "NoMore404s",
-    "primary": {
+    "qa_primary": {
       "firstname": "Karl",
       "id": 5,
       "lastname": "Thiessen"
     },
-    "primary_id": 5,
-    "secondary": {
+    "qa_primary_id": 5,
+    "qa_secondary": {
       "firstname": "Softvision",
       "id": 16,
       "lastname": "Co."
     },
-    "secondary_id": 16
+    "qa_secondary_id": 16
   },
   {
     "bz_component": null,
     "bz_product": null,
     "deployments": [],
     "description": "Test Pilot",
-    "group": {
+    "qa_group": {
       "home": "https://wiki.mozilla.org/TestEngineering/Customization",
       "lead": {
         "firstname": "Krupa",
@@ -582,30 +582,30 @@
       "lead_id": 2,
       "name": "Customization"
     },
-    "group_name": "Customization",
+    "qa_group_name": "Customization",
     "id": 1,
     "irc": "#pageshot",
     "links": [],
     "name": "PageShot",
-    "primary": {
+    "qa_primary": {
       "firstname": "Peter",
       "id": 6,
       "lastname": "deHaan"
     },
-    "primary_id": 6,
-    "secondary": {
+    "qa_primary_id": 6,
+    "qa_secondary": {
       "firstname": "Softvision",
       "id": 16,
       "lastname": "Co."
     },
-    "secondary_id": 16
+    "qa_secondary_id": 16
   },
   {
     "bz_component": null,
     "bz_product": null,
     "deployments": [],
     "description": "",
-    "group": {
+    "qa_group": {
       "home": "https://wiki.mozilla.org/TestEngineering/UI",
       "lead": {
         "firstname": "Dave",
@@ -615,30 +615,30 @@
       "lead_id": 3,
       "name": "User Interfaces"
     },
-    "group_name": "User Interfaces",
+    "qa_group_name": "User Interfaces",
     "id": 21,
     "irc": "#mobile",
     "links": [],
     "name": "Prox (iOS)",
-    "primary": {
+    "qa_primary": {
       "firstname": "Aaron",
       "id": 10,
       "lastname": "Train"
     },
-    "primary_id": 10,
-    "secondary": {
+    "qa_primary_id": 10,
+    "qa_secondary": {
       "firstname": "No-Jun",
       "id": 14,
       "lastname": "Park"
     },
-    "secondary_id": 14
+    "qa_secondary_id": 14
   },
   {
     "bz_component": null,
     "bz_product": null,
     "deployments": [],
     "description": "",
-    "group": {
+    "qa_group": {
       "home": "https://wiki.mozilla.org/TestEngineering/Services",
       "lead": {
         "firstname": "Richard",
@@ -648,7 +648,7 @@
       "lead_id": 4,
       "name": "Services"
     },
-    "group_name": "Services",
+    "qa_group_name": "Services",
     "id": 29,
     "irc": "#push",
     "links": [
@@ -675,25 +675,25 @@
       }
     ],
     "name": "Push Notification",
-    "primary": {
+    "qa_primary": {
       "firstname": "Richard",
       "id": 4,
       "lastname": "Pappalardo"
     },
-    "primary_id": 4,
-    "secondary": {
+    "qa_primary_id": 4,
+    "qa_secondary": {
       "firstname": "Rebecca",
       "id": 12,
       "lastname": "Billings"
     },
-    "secondary_id": 12
+    "qa_secondary_id": 12
   },
   {
     "bz_component": null,
     "bz_product": null,
     "deployments": [],
     "description": "",
-    "group": {
+    "qa_group": {
       "home": "https://wiki.mozilla.org/TestEngineering/Services",
       "lead": {
         "firstname": "Richard",
@@ -703,23 +703,23 @@
       "lead_id": 4,
       "name": "Services"
     },
-    "group_name": "Services",
+    "qa_group_name": "Services",
     "id": 31,
     "irc": "#normandy",
     "links": [],
     "name": "SHIELD",
-    "primary": {
+    "qa_primary": {
       "firstname": "Chris",
       "id": 7,
       "lastname": "Hartjes"
     },
-    "primary_id": 7,
-    "secondary": {
+    "qa_primary_id": 7,
+    "qa_secondary": {
       "firstname": "Karl",
       "id": 5,
       "lastname": "Thiessen"
     },
-    "secondary_id": 5
+    "qa_secondary_id": 5
   },
   {
     "bz_component": null,
@@ -733,7 +733,7 @@
       }
     ],
     "description": "Tracking Protection",
-    "group": {
+    "qa_group": {
       "home": "https://wiki.mozilla.org/TestEngineering/Services",
       "lead": {
         "firstname": "Richard",
@@ -743,7 +743,7 @@
       "lead_id": 4,
       "name": "Services"
     },
-    "group_name": "Services",
+    "qa_group_name": "Services",
     "id": 30,
     "irc": "#shavar",
     "links": [
@@ -763,25 +763,25 @@
       }
     ],
     "name": "Shavar",
-    "primary": {
+    "qa_primary": {
       "firstname": "Rebecca",
       "id": 12,
       "lastname": "Billings"
     },
-    "primary_id": 12,
-    "secondary": {
+    "qa_primary_id": 12,
+    "qa_secondary": {
       "firstname": "Richard",
       "id": 4,
       "lastname": "Pappalardo"
     },
-    "secondary_id": 4
+    "qa_secondary_id": 4
   },
   {
     "bz_component": null,
     "bz_product": null,
     "deployments": [],
     "description": "",
-    "group": {
+    "qa_group": {
       "home": "https://wiki.mozilla.org/TestEngineering/Customization",
       "lead": {
         "firstname": "Krupa",
@@ -791,30 +791,30 @@
       "lead_id": 2,
       "name": "Customization"
     },
-    "group_name": "Customization",
+    "qa_group_name": "Customization",
     "id": 10,
     "irc": "#socorro",
     "links": [],
     "name": "Socorro",
-    "primary": {
+    "qa_primary": {
       "firstname": "Matt",
       "id": 11,
       "lastname": "Brandt"
     },
-    "primary_id": 11,
-    "secondary": {
+    "qa_primary_id": 11,
+    "qa_secondary": {
       "firstname": "Stephen",
       "id": 8,
       "lastname": "Donner"
     },
-    "secondary_id": 8
+    "qa_secondary_id": 8
   },
   {
     "bz_component": null,
     "bz_product": null,
     "deployments": [],
     "description": "",
-    "group": {
+    "qa_group": {
       "home": "https://wiki.mozilla.org/TestEngineering/Services",
       "lead": {
         "firstname": "Richard",
@@ -824,7 +824,7 @@
       "lead_id": 4,
       "name": "Services"
     },
-    "group_name": "Services",
+    "qa_group_name": "Services",
     "id": 32,
     "irc": "#stubby",
     "links": [
@@ -851,25 +851,25 @@
       }
     ],
     "name": "Stub Attribution",
-    "primary": {
+    "qa_primary": {
       "firstname": "Stephen",
       "id": 8,
       "lastname": "Donner"
     },
-    "primary_id": 8,
-    "secondary": {
+    "qa_primary_id": 8,
+    "qa_secondary": {
       "firstname": "Matt",
       "id": 11,
       "lastname": "Brandt"
     },
-    "secondary_id": 11
+    "qa_secondary_id": 11
   },
   {
     "bz_component": null,
     "bz_product": null,
     "deployments": [],
     "description": "",
-    "group": {
+    "qa_group": {
       "home": "https://wiki.mozilla.org/TestEngineering/Services",
       "lead": {
         "firstname": "Richard",
@@ -879,7 +879,7 @@
       "lead_id": 4,
       "name": "Services"
     },
-    "group_name": "Services",
+    "qa_group_name": "Services",
     "id": 33,
     "irc": "#sync",
     "links": [
@@ -892,25 +892,25 @@
       }
     ],
     "name": "Sync",
-    "primary": {
+    "qa_primary": {
       "firstname": "Karl",
       "id": 5,
       "lastname": "Thiessen"
     },
-    "primary_id": 5,
-    "secondary": {
+    "qa_primary_id": 5,
+    "qa_secondary": {
       "firstname": "Chris",
       "id": 7,
       "lastname": "Hartjes"
     },
-    "secondary_id": 7
+    "qa_secondary_id": 7
   },
   {
     "bz_component": null,
     "bz_product": null,
     "deployments": [],
     "description": "Test Pilot",
-    "group": {
+    "qa_group": {
       "home": "https://wiki.mozilla.org/TestEngineering/Customization",
       "lead": {
         "firstname": "Krupa",
@@ -920,30 +920,30 @@
       "lead_id": 2,
       "name": "Customization"
     },
-    "group_name": "Customization",
+    "qa_group_name": "Customization",
     "id": 13,
     "irc": "#testpilot",
     "links": [],
     "name": "TabCenter",
-    "primary": {
+    "qa_primary": {
       "firstname": "Peter",
       "id": 6,
       "lastname": "deHaan"
     },
-    "primary_id": 6,
-    "secondary": {
+    "qa_primary_id": 6,
+    "qa_secondary": {
       "firstname": "Softvision",
       "id": 16,
       "lastname": "Co."
     },
-    "secondary_id": 16
+    "qa_secondary_id": 16
   },
   {
     "bz_component": null,
     "bz_product": null,
     "deployments": [],
     "description": "",
-    "group": {
+    "qa_group": {
       "home": "https://wiki.mozilla.org/TestEngineering/Customization",
       "lead": {
         "firstname": "Krupa",
@@ -953,30 +953,30 @@
       "lead_id": 2,
       "name": "Customization"
     },
-    "group_name": "Customization",
+    "qa_group_name": "Customization",
     "id": 11,
     "irc": "#telemetry",
     "links": [],
     "name": "Telemetry",
-    "primary": {
+    "qa_primary": {
       "firstname": "John",
       "id": 13,
       "lastname": "Dorlus"
     },
-    "primary_id": 13,
-    "secondary": {
+    "qa_primary_id": 13,
+    "qa_secondary": {
       "firstname": "Softvision",
       "id": 16,
       "lastname": "Co."
     },
-    "secondary_id": 16
+    "qa_secondary_id": 16
   },
   {
     "bz_component": null,
     "bz_product": null,
     "deployments": [],
     "description": "",
-    "group": {
+    "qa_group": {
       "home": "https://wiki.mozilla.org/TestEngineering/Customization",
       "lead": {
         "firstname": "Krupa",
@@ -986,30 +986,30 @@
       "lead_id": 2,
       "name": "Customization"
     },
-    "group_name": "Customization",
+    "qa_group_name": "Customization",
     "id": 9,
     "irc": "#testpilot",
     "links": [],
     "name": "Test Pilot",
-    "primary": {
+    "qa_primary": {
       "firstname": "Peter",
       "id": 6,
       "lastname": "deHaan"
     },
-    "primary_id": 6,
-    "secondary": {
+    "qa_primary_id": 6,
+    "qa_secondary": {
       "firstname": "John",
       "id": 13,
       "lastname": "Dorlus"
     },
-    "secondary_id": 13
+    "qa_secondary_id": 13
   },
   {
     "bz_component": null,
     "bz_product": null,
     "deployments": [],
     "description": "",
-    "group": {
+    "qa_group": {
       "home": "https://wiki.mozilla.org/TestEngineering/UI",
       "lead": {
         "firstname": "Dave",
@@ -1019,7 +1019,7 @@
       "lead_id": 3,
       "name": "User Interfaces"
     },
-    "group_name": "User Interfaces",
+    "qa_group_name": "User Interfaces",
     "id": 15,
     "irc": "#treeherder",
     "links": [
@@ -1032,25 +1032,25 @@
       }
     ],
     "name": "Treeherder",
-    "primary": {
+    "qa_primary": {
       "firstname": "Rebecca",
       "id": 12,
       "lastname": "Billings"
     },
-    "primary_id": 12,
-    "secondary": {
+    "qa_primary_id": 12,
+    "qa_secondary": {
       "firstname": "Dave",
       "id": 3,
       "lastname": "Hunt"
     },
-    "secondary_id": 3
+    "qa_secondary_id": 3
   },
   {
     "bz_component": null,
     "bz_product": null,
     "deployments": [],
     "description": "Test Pilot",
-    "group": {
+    "qa_group": {
       "home": "https://wiki.mozilla.org/TestEngineering/Customization",
       "lead": {
         "firstname": "Krupa",
@@ -1060,30 +1060,30 @@
       "lead_id": 2,
       "name": "Customization"
     },
-    "group_name": "Customization",
+    "qa_group_name": "Customization",
     "id": 6,
     "irc": "#universal-search",
     "links": [],
     "name": "Universal Search",
-    "primary": {
+    "qa_primary": {
       "firstname": "Stephen",
       "id": 8,
       "lastname": "Donner"
     },
-    "primary_id": 8,
-    "secondary": {
+    "qa_primary_id": 8,
+    "qa_secondary": {
       "firstname": "Peter",
       "id": 6,
       "lastname": "deHaan"
     },
-    "secondary_id": 6
+    "qa_secondary_id": 6
   },
   {
     "bz_component": null,
     "bz_product": null,
     "deployments": [],
     "description": "",
-    "group": {
+    "qa_group": {
       "home": "https://wiki.mozilla.org/TestEngineering/Customization",
       "lead": {
         "firstname": "Krupa",
@@ -1093,7 +1093,7 @@
       "lead_id": 2,
       "name": "Customization"
     },
-    "group_name": "Customization",
+    "qa_group_name": "Customization",
     "id": 8,
     "irc": "#webextensions",
     "links": [
@@ -1106,25 +1106,25 @@
       }
     ],
     "name": "WebExtensions",
-    "primary": {
+    "qa_primary": {
       "firstname": "Krupa",
       "id": 2,
       "lastname": "Raj"
     },
-    "primary_id": 2,
-    "secondary": {
+    "qa_primary_id": 2,
+    "qa_secondary": {
       "firstname": "Softvision",
       "id": 16,
       "lastname": "Co."
     },
-    "secondary_id": 16
+    "qa_secondary_id": 16
   },
   {
     "bz_component": null,
     "bz_product": null,
     "deployments": [],
     "description": "",
-    "group": {
+    "qa_group": {
       "home": "https://wiki.mozilla.org/TestEngineering/Customization",
       "lead": {
         "firstname": "Krupa",
@@ -1134,7 +1134,7 @@
       "lead_id": 2,
       "name": "Customization"
     },
-    "group_name": "Customization",
+    "qa_group_name": "Customization",
     "id": 12,
     "irc": "#amo",
     "links": [
@@ -1161,25 +1161,25 @@
       }
     ],
     "name": "addons.mozilla.org",
-    "primary": {
+    "qa_primary": {
       "firstname": "Krupa",
       "id": 2,
       "lastname": "Raj"
     },
-    "primary_id": 2,
-    "secondary": {
+    "qa_primary_id": 2,
+    "qa_secondary": {
       "firstname": "Softvision",
       "id": 16,
       "lastname": "Co."
     },
-    "secondary_id": 16
+    "qa_secondary_id": 16
   },
   {
     "bz_component": null,
     "bz_product": null,
     "deployments": [],
     "description": "",
-    "group": {
+    "qa_group": {
       "home": "https://wiki.mozilla.org/TestEngineering/UI",
       "lead": {
         "firstname": "Dave",
@@ -1189,7 +1189,7 @@
       "lead_id": 3,
       "name": "User Interfaces"
     },
-    "group_name": "User Interfaces",
+    "qa_group_name": "User Interfaces",
     "id": 16,
     "irc": "#mdndev",
     "links": [
@@ -1209,25 +1209,25 @@
       }
     ],
     "name": "developer.mozilla.org",
-    "primary": {
+    "qa_primary": {
       "firstname": "Matt",
       "id": 11,
       "lastname": "Brandt"
     },
-    "primary_id": 11,
-    "secondary": {
+    "qa_primary_id": 11,
+    "qa_secondary": {
       "firstname": "Dave",
       "id": 3,
       "lastname": "Hunt"
     },
-    "secondary_id": 3
+    "qa_secondary_id": 3
   },
   {
     "bz_component": null,
     "bz_product": null,
     "deployments": [],
     "description": "",
-    "group": {
+    "qa_group": {
       "home": "https://wiki.mozilla.org/TestEngineering/UI",
       "lead": {
         "firstname": "Dave",
@@ -1237,7 +1237,7 @@
       "lead_id": 3,
       "name": "User Interfaces"
     },
-    "group_name": "User Interfaces",
+    "qa_group_name": "User Interfaces",
     "id": 17,
     "irc": "#bedrock",
     "links": [
@@ -1250,17 +1250,17 @@
       }
     ],
     "name": "mozilla.org",
-    "primary": {
+    "qa_primary": {
       "firstname": "Rebecca",
       "id": 12,
       "lastname": "Billings"
     },
-    "primary_id": 12,
-    "secondary": {
+    "qa_primary_id": 12,
+    "qa_secondary": {
       "firstname": "Dave",
       "id": 3,
       "lastname": "Hunt"
     },
-    "secondary_id": 3
+    "qa_secondary_id": 3
   }
 ]

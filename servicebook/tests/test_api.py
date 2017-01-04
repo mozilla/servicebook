@@ -25,7 +25,7 @@ class ApiTest(BaseTest):
             m.get(bz_matcher, text=json.dumps(bz_resp))
             m.get(sw_matcher, text=json.dumps(sw_resp))
             absearch = self.app.get('/api/project/%d' % absearch_id)
-            self.assertEqual(absearch.json['primary_id'], 3)
+            self.assertEqual(absearch.json['qa_primary_id'], 3)
 
     def test_browsing_user(self):
         karl_json = self.app.get('/api/user/3').json
