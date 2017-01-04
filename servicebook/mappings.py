@@ -119,6 +119,20 @@ class Project(Base):
     description = Column(UnicodeText)
     irc = Column(Unicode(128))
 
+    # dev folks
+    dev_primary_id = Column(Integer, ForeignKey('user.id'))
+    dev_primary = relationship('User', foreign_keys='Project.dev_primary_id')
+    dev_secondary_id = Column(Integer, ForeignKey('user.id'))
+    dev_secondary = relationship('User',
+                                 foreign_keys='Project.dev_secondary_id')
+
+    # ops folks
+    op_primary_id = Column(Integer, ForeignKey('user.id'))
+    op_primary = relationship('User', foreign_keys='Project.op_primary_id')
+    op_secondary_id = Column(Integer, ForeignKey('user.id'))
+    op_secondary = relationship('User', foreign_keys='Project.op_secondary_id')
+
+    # qa folks
     qa_primary_id = Column(Integer, ForeignKey('user.id'))
     qa_primary = relationship('User', foreign_keys='Project.qa_primary_id')
     qa_secondary_id = Column(Integer, ForeignKey('user.id'))
@@ -137,8 +151,12 @@ class Project(Base):
         res = super(Project, self).to_json()
         res['deployments'] = [depl.to_json() for depl in self.deployments]
         res['links'] = [link.to_json() for link in self.links]
-        res['qa_primary'] = self.qa_primary.to_json()
-        res['qa_secondary'] = self.qa_secondary.to_json()
+
+        for field in ('qa_primary', 'qa_secondary', 'dev_primary',
+                      'dev_secondary', 'ops_primary', 'ops_secondary'):
+            user = getattr(self, field, None)
+            if user is not None:
+                res[field] = user.to_json()
         res['qa_group'] = self.qa_group.to_json()
         return res
 
