@@ -4,14 +4,41 @@ import logging.config
 import sys
 import argparse
 import time
+from functools import partial, wraps
 
 from werkzeug.exceptions import HTTPException
-from flask import Flask, g, request, Response
+from flask import Flask, g, request, Response, abort, current_app
 from flask.ext.iniconfig import INIConfig
 from flask_restless_swagger import SwagAPIManager as APIManager
 
 from servicebook.db import init, Session
 from servicebook.mappings import published
+from flask_restless import views
+
+
+# hack until flask-restless provides the API class in
+# pre/post processors
+def _catch_integrity_errors(session):
+    def decorator(func):
+        @wraps(func)
+        def wrapped(*args, **kw):
+            from sqlalchemy.exc import (DataError, IntegrityError,
+                                        ProgrammingError)
+            try:
+                try:
+                    g.api = func.im_self
+                except Exception:
+                    g.api = func.__self__
+                return func(*args, **kw)
+            except (DataError, IntegrityError, ProgrammingError) as exception:
+                session.rollback()
+                current_app.logger.exception(str(exception))
+                return dict(message=type(exception).__name__), 400
+        return wrapped
+    return decorator
+
+
+views.catch_integrity_errors = _catch_integrity_errors
 
 
 HERE = os.path.dirname(__file__)
@@ -19,11 +46,21 @@ DEFAULT_INI_FILE = os.path.join(HERE, '..', 'servicebook.ini')
 _DEBUG = True
 
 
-def add_timestamp(*args, **kw):
-    # XXX here we should query the db to get the stored
-    # timestamp, and compare it to the If-Match header.
-    # if they don't match we should abort with a 412 here
-    # on any database update
+def add_timestamp(method, *args, **kw):
+    if method != 'POST':
+        if not request.if_match:
+            abort(428)
+
+        # getting the existing last_modified
+        model = g.api.model
+        session = g.api.session
+        query = session.query(model)
+        entry = query = query.filter(model.id == kw['instance_id']).one()
+        etag = str(entry.last_modified)
+
+        if etag not in request.if_match:
+            abort(412)
+
     kw['data']['last_modified'] = int(time.time() * 1000)
 
 
@@ -44,7 +81,7 @@ def create_app(ini_file=DEFAULT_INI_FILE):
 
     preprocessors = {}
     for method in ('POST', 'PATCH_SINGLE', 'PUT_SINGLE', 'DELETE_SINGLE'):
-        preprocessors[method] = [add_timestamp]
+        preprocessors[method] = [partial(add_timestamp, method)]
 
     manager = APIManager(app, flask_sqlalchemy_db=app.db,
                          session=Session(),

@@ -1,4 +1,5 @@
 # encoding: utf8
+import time
 from sqlalchemy_utils import URLType
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column
@@ -26,6 +27,10 @@ class Base(object):
         return res
 
 
+def _now():
+    return int(time.time() * 100)
+
+
 class User(Base):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -35,7 +40,7 @@ class User(Base):
     github = Column(Unicode(128))
     editor = Column(Boolean, default=False)
     email = Column(Unicode(128))
-    last_modified = Column(Integer)
+    last_modified = Column(Integer, nullable=False, default=_now)
 
     def __init__(self, firstname=None, lastname=None, github=None,
                  editor=False, mozqa=False, email=None):
@@ -63,7 +68,7 @@ class Group(Base):
     home = Column(URLType())
     lead_id = Column(Integer, ForeignKey('user.id'))
     lead = relationship('User', foreign_keys='Group.lead_id')
-    last_modified = Column(Integer)
+    last_modified = Column(Integer, nullable=False, default=_now)
 
     def __init__(self, name=None, home=None, lead=None):
         super(Group, self).__init__()
@@ -90,7 +95,7 @@ class Deployment(Base):
     endpoint = Column(URLType(), nullable=False)
     project_id = Column(Integer, ForeignKey('project.id'))
     project = relationship('Project', back_populates="deployments")
-    last_modified = Column(Integer)
+    last_modified = Column(Integer, nullable=False, default=_now)
 
 
 published.append(Deployment)
@@ -104,7 +109,7 @@ class Link(Base):
     link = Column(URLType(), nullable=False)
     project_id = Column(Integer, ForeignKey('project.id'))
     project = relationship('Project', back_populates="links")
-    last_modified = Column(Integer)
+    last_modified = Column(Integer, nullable=False, default=_now)
 
 
 published.append(Link)
@@ -142,7 +147,7 @@ class Project(Base):
 
     deployments = relationship('Deployment', back_populates="project")
     links = relationship('Link', back_populates="project")
-    last_modified = Column(Integer)
+    last_modified = Column(Integer, nullable=False, default=_now)
 
     def __repr__(self):
         return '%s' % self.name

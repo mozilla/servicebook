@@ -36,10 +36,13 @@ class ApiTest(BaseTest):
         self.assertEqual(group['name'], 'Customization')
 
     def test_changing_user(self):
-        karl_json = self.app.get('/api/user/3').json
+        resp = self.app.get('/api/user/3')
+        etag = resp.etag
+        karl_json = resp.json
         self.assertEqual(karl_json['firstname'], 'Karl')
         karl_json['firstname'] = 'K.'
-        self.app.patch_json('/api/user/3', params=karl_json)
+        self.app.patch_json('/api/user/3', params=karl_json,
+                            headers={'If-Match': etag})
 
         resp = self.app.get('/api/user/3')
         karl_json = resp.json
