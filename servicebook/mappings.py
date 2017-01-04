@@ -101,18 +101,18 @@ class Deployment(Base):
 published.append(Deployment)
 
 
-class Link(Base):
-    __tablename__ = 'link'
+class ProjectTest(Base):
+    __tablename__ = 'project_test'
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(Unicode(128), nullable=False)
-    description = Column(UnicodeText)
-    link = Column(URLType(), nullable=False)
-    project_id = Column(Integer, ForeignKey('project.id'))
-    project = relationship('Project', back_populates="links")
+    url = Column(URLType())
     last_modified = Column(Integer, nullable=False, default=_now)
+    operational = Column(Boolean, default=False)
+    project_id = Column(Integer, ForeignKey('project.id'))
+    project = relationship('Project', back_populates="tests")
 
 
-published.append(Link)
+published.append(ProjectTest)
 
 
 class Project(Base):
@@ -123,6 +123,13 @@ class Project(Base):
     bz_component = Column(Unicode(128))
     description = Column(UnicodeText)
     irc = Column(Unicode(128))
+
+    # all project links
+    homepage = Column(URLType())
+    repository = Column(URLType())
+
+    # all tests
+    tests = relationship('ProjectTest', back_populates="project")
 
     # dev folks
     dev_primary_id = Column(Integer, ForeignKey('user.id'))
@@ -146,7 +153,6 @@ class Project(Base):
     qa_group = relationship('Group', foreign_keys='Project.qa_group_name')
 
     deployments = relationship('Deployment', back_populates="project")
-    links = relationship('Link', back_populates="project")
     last_modified = Column(Integer, nullable=False, default=_now)
 
     def __repr__(self):
@@ -155,7 +161,6 @@ class Project(Base):
     def to_json(self):
         res = super(Project, self).to_json()
         res['deployments'] = [depl.to_json() for depl in self.deployments]
-        res['links'] = [link.to_json() for link in self.links]
 
         for field in ('qa_primary', 'qa_secondary', 'dev_primary',
                       'dev_secondary', 'ops_primary', 'ops_secondary'):

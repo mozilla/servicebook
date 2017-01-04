@@ -97,14 +97,6 @@ def init(sqluri=_SQLURI, dump=None):
         proj.bz_product = project['bz_component']
         proj.bz_component = project['bz_product']
 
-        for link in project['links']:
-            d = mappings.Link()
-            d.name = link['name']
-            d.description = link['description']
-            d.link = link['link']
-            session.add(d)
-            proj.links.append(d)
-
         session.add(proj)
         session.commit()
 
