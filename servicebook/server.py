@@ -7,13 +7,15 @@ import time
 from functools import partial, wraps
 
 from werkzeug.exceptions import HTTPException
-from flask import Flask, g, request, Response, abort, current_app
+from flask import Flask, g, request, Response, abort, current_app, jsonify
 from flask.ext.iniconfig import INIConfig
 from flask_restless_swagger import SwagAPIManager as APIManager
 
 from servicebook.db import init, Session
 from servicebook.mappings import published
 from flask_restless import views
+from flask_restless import DefaultSerializer
+from sqlalchemy.inspection import inspect as sa_inspect
 
 
 # see https://github.com/jfinkels/flask-restless/issues/619
@@ -74,6 +76,11 @@ class NotModified(HTTPException):
         return Response(status=304)
 
 
+class JsonSerializer(DefaultSerializer):
+    def serialize(self, instance, only=None):
+        return {'data': instance.to_json()}
+
+
 def create_app(ini_file=DEFAULT_INI_FILE):
     app = Flask(__name__)
     INIConfig(app)
@@ -86,18 +93,33 @@ def create_app(ini_file=DEFAULT_INI_FILE):
     for method in ('POST', 'PATCH_SINGLE', 'PUT_SINGLE', 'DELETE_SINGLE'):
         preprocessors[method] = [partial(add_timestamp, method)]
 
+    app.db.session = Session()
+
     manager = APIManager(app, flask_sqlalchemy_db=app.db,
-                         session=Session(),
                          preprocessors=preprocessors)
 
-    def to_json(instance):
-        return instance.to_json()
 
     methods = ['GET', 'POST', 'DELETE', 'PATCH', 'PUT']
 
     for model in published:
-        manager.create_api(model, methods=methods, serializer=to_json,
-                           results_per_page=50)
+        manager.create_api(model, methods=methods,
+                           serializer_class=JsonSerializer,
+                           page_size=50)
+
+
+    @app.route('/api/')
+    def get_models():
+        models = []
+        for model in published:
+            name = model.__table__.name
+            inspected = sa_inspect(model)
+            # XXX collection name may vary
+            primary_key = [key.name for key in inspected.primary_key]
+            models.append({'name': name, 'primary_key': primary_key,
+                           'collection_name': name})
+
+        return jsonify({'models': models})
+
 
     @app.after_request
     def set_etag(response):
@@ -114,8 +136,8 @@ def create_app(ini_file=DEFAULT_INI_FILE):
         except TypeError:
             result = json.loads(str(response.data))
 
-        if 'last_modified' in result:
-            last_modified = str(result.get('last_modified'))
+        if 'data' in result and 'last_modified' in result['data']:
+            last_modified = str(result['data']['last_modified'])
         else:
             last_modified = None
 
