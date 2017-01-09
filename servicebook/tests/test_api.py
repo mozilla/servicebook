@@ -10,7 +10,7 @@ from servicebook.tests.support import BaseTest
 class ApiTest(BaseTest):
 
     def test_browsing_project(self):
-        projects = self.app.get('/api/project').json['objects']
+        projects = self.app.get('/api/project').json['data']
         absearch_id = projects[0]['id']
 
         bz_matcher = re.compile('.*bugzilla.*')
@@ -25,27 +25,32 @@ class ApiTest(BaseTest):
             m.get(bz_matcher, text=json.dumps(bz_resp))
             m.get(sw_matcher, text=json.dumps(sw_resp))
             absearch = self.app.get('/api/project/%d' % absearch_id)
-            self.assertEqual(absearch.json['qa_primary_id'], 3)
+            self.assertEqual(absearch.json['data']['qa_primary_id'], 3)
 
     def test_browsing_user(self):
-        karl_json = self.app.get('/api/user/3').json
+        karl_json = self.app.get('/api/user/3').json['data']
         self.assertEqual(karl_json['firstname'], 'Karl')
 
     def test_browsing_group(self):
-        group = self.app.get('/api/group/Customization').json
+        group = self.app.get('/api/group/Customization').json['data']
         self.assertEqual(group['name'], 'Customization')
 
     def test_changing_user(self):
         resp = self.app.get('/api/user/3')
         etag = resp.etag
-        karl_json = resp.json
+        karl_json = resp.json['data']
         self.assertEqual(karl_json['firstname'], 'Karl')
         karl_json['firstname'] = 'K.'
-        self.app.patch_json('/api/user/3', params=karl_json,
-                            headers={'If-Match': etag})
+        req_data = {'data': {'type': 'user', 'attributes': karl_json,
+                    'id': '3'}}
 
+        headers = {'If-Match': etag,
+                   'Content-Type': 'application/vnd.api+json'}
+
+        self.app.patch_json('/api/user/3', params=req_data,
+                            headers=headers)
         resp = self.app.get('/api/user/3')
-        karl_json = resp.json
+        karl_json = resp.json['data']
         etag = resp.etag
         self.assertEqual(karl_json['firstname'], 'K.')
 

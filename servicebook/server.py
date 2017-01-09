@@ -7,13 +7,13 @@ import time
 from functools import partial, wraps
 
 from werkzeug.exceptions import HTTPException
-from flask import Flask, g, request, Response, abort, current_app, jsonify
+from flask import Flask, g, request, Response, abort, jsonify
 from flask.ext.iniconfig import INIConfig
 from flask_restless_swagger import SwagAPIManager as APIManager
 
 from servicebook.db import init, Session
 from servicebook.mappings import published
-from flask_restless import views
+from flask_restless.views import base
 from flask_restless import DefaultSerializer
 from sqlalchemy.inspection import inspect as sa_inspect
 
@@ -22,26 +22,29 @@ from sqlalchemy.inspection import inspect as sa_inspect
 # hack until flask-restless provides the API class in
 # pre/post processors
 def _catch_integrity_errors(session):
-    def decorator(func):
+    def decorated(func):
         @wraps(func)
         def wrapped(*args, **kw):
-            from sqlalchemy.exc import (DataError, IntegrityError,
-                                        ProgrammingError)
             try:
                 try:
                     g.api = func.im_self
                 except Exception:
                     g.api = func.__self__
+
                 return func(*args, **kw)
-            except (DataError, IntegrityError, ProgrammingError) as exception:
+            except base.SQLAlchemyError as exception:
                 session.rollback()
-                current_app.logger.exception(str(exception))
-                return dict(message=type(exception).__name__), 400
+                status = 409 if base.is_conflict(exception) else 400
+                detail = str(exception)
+                title = base.un_camel_case(exception.__class__.__name__)
+                return base.error_response(status, cause=exception,
+                                           detail=detail,
+                                           title=title)
         return wrapped
-    return decorator
+    return decorated
 
 
-views.catch_integrity_errors = _catch_integrity_errors
+base.catch_integrity_errors = _catch_integrity_errors
 
 
 HERE = os.path.dirname(__file__)
@@ -53,20 +56,24 @@ def add_timestamp(method, *args, **kw):
     # getting the existing last_modified if the resource exists
     model = g.api.model
     session = g.api.session
-    query = session.query(model)
-    entry = query = query.filter(model.id == kw['instance_id']).one()
 
-    # if this is an update, we want a If-Match header
-    if entry is not None:
-        etag = str(entry.last_modified)
+    if 'resource_id' in kw:
+        query = session.query(model)
+        entry = query.filter(model.id == kw['resource_id']).one()
 
-        if not request.if_match:
-            abort(428)
+        # if this is an update, we want a If-Match header
+        if entry is not None:
+            etag = str(entry.last_modified)
 
-        if etag not in request.if_match:
-            abort(412)
+            if not request.if_match:
+                abort(428)
 
-    kw['data']['last_modified'] = int(time.time() * 1000)
+            if etag not in request.if_match:
+                abort(412)
+
+    g.last_modified = int(time.time() * 1000)
+    if method != 'DELETE_RESOURCE':
+        kw['data']['last_modified'] = g.last_modified
 
 
 class NotModified(HTTPException):
@@ -90,7 +97,7 @@ def create_app(ini_file=DEFAULT_INI_FILE):
     app.db = init(sqluri)
 
     preprocessors = {}
-    for method in ('POST', 'PATCH_SINGLE', 'PUT_SINGLE', 'DELETE_SINGLE'):
+    for method in ('POST_RESOURCE', 'PATCH_RESOURCE', 'DELETE_RESOURCE'):
         preprocessors[method] = [partial(add_timestamp, method)]
 
     app.db.session = Session()
@@ -98,14 +105,12 @@ def create_app(ini_file=DEFAULT_INI_FILE):
     manager = APIManager(app, flask_sqlalchemy_db=app.db,
                          preprocessors=preprocessors)
 
-
     methods = ['GET', 'POST', 'DELETE', 'PATCH', 'PUT']
 
     for model in published:
         manager.create_api(model, methods=methods,
                            serializer_class=JsonSerializer,
                            page_size=50)
-
 
     @app.route('/api/')
     def get_models():
@@ -119,7 +124,6 @@ def create_app(ini_file=DEFAULT_INI_FILE):
                            'collection_name': name})
 
         return jsonify({'models': models})
-
 
     @app.after_request
     def set_etag(response):
@@ -139,7 +143,11 @@ def create_app(ini_file=DEFAULT_INI_FILE):
         if 'data' in result and 'last_modified' in result['data']:
             last_modified = str(result['data']['last_modified'])
         else:
-            last_modified = None
+            if response.status_code == 204:
+                # we did change it, we need to resend the ETag
+                last_modified = str(g.last_modified)
+            else:
+                last_modified = None
 
         # checking If-None-Match on GET calls
         if (request.method == 'GET' and request.if_none_match):
