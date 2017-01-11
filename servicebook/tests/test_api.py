@@ -27,6 +27,35 @@ class ApiTest(BaseTest):
             absearch = self.app.get('/api/project/%d' % absearch_id)
             self.assertEqual(absearch.json['data']['qa_primary_id'], 3)
 
+    def test_tags(self):
+        resp = self.app.get('/api/project/1')
+        project = resp.json['data']
+        etag = resp.etag
+        self.assertEqual(project['tags'], [])
+
+        # create new tags
+        tags = []
+        req_data = {'data': {'type': 'tag',
+                             'attributes': {}}}
+        headers = {'Content-Type': 'application/vnd.api+json'}
+        for tag in ('python', 'oss', 'watnot'):
+            req_data['data']['attributes']['name'] = tag
+            resp = self.app.post_json('/api/tag', params=req_data,
+                                      headers=headers)
+            tags.append({'type': 'tag', 'id': resp.json['data']['id']})
+
+        # patching the projects' tag list
+        req_data = {'data': tags}
+        headers = {'If-Match': etag,
+                   'Content-Type': 'application/vnd.api+json'}
+
+        self.app.patch_json('/api/project/1/relationships/tags',
+                            params=req_data, headers=headers)
+
+        resp = self.app.get('/api/project/1')
+        project = resp.json['data']
+        self.assertEqual(len(project['tags']), 3)
+
     def test_browsing_user(self):
         karl_json = self.app.get('/api/user/3').json['data']
         self.assertEqual(karl_json['firstname'], 'Karl')

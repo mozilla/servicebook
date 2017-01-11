@@ -97,7 +97,8 @@ def create_app(ini_file=DEFAULT_INI_FILE):
     app.db = init(sqluri)
 
     preprocessors = {}
-    for method in ('POST_RESOURCE', 'PATCH_RESOURCE', 'DELETE_RESOURCE'):
+    for method in ('POST_RESOURCE', 'PATCH_RESOURCE', 'DELETE_RESOURCE',
+                   'POST_RELATIONSHIP', 'PATCH_RELATIONSHIP'):
         preprocessors[method] = [partial(add_timestamp, method)]
 
     app.db.session = Session()
@@ -110,7 +111,8 @@ def create_app(ini_file=DEFAULT_INI_FILE):
     for model in published:
         manager.create_api(model, methods=methods,
                            serializer_class=JsonSerializer,
-                           page_size=50)
+                           page_size=50,
+                           allow_to_many_replacement=True)
 
     @app.route('/api/')
     def get_models():

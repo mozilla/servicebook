@@ -2,7 +2,7 @@
 import time
 from sqlalchemy_utils import URLType
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column
+from sqlalchemy import Column, Table
 from sqlalchemy import Integer, Unicode, ForeignKey, UnicodeText, Boolean
 from sqlalchemy.orm import relationship
 
@@ -115,6 +115,21 @@ class ProjectTest(Base):
 published.append(ProjectTest)
 
 
+class Tag(Base):
+    __tablename__ = 'tag'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(Unicode(128), nullable=False)
+    last_modified = Column(Integer, nullable=False, default=_now)
+
+
+published.append(Tag)
+
+
+project_tags = Table('project_tags', Base.metadata,
+                     Column('project_id', Integer, ForeignKey('project.id')),
+                     Column('tag_id', Integer, ForeignKey('tag.id')))
+
+
 class Project(Base):
     __tablename__ = 'project'
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -127,6 +142,8 @@ class Project(Base):
     # all project links
     homepage = Column(URLType())
     repository = Column(URLType())
+
+    tags = relationship('Tag', secondary=project_tags)
 
     # all tests
     tests = relationship('ProjectTest', back_populates="project")
@@ -168,6 +185,7 @@ class Project(Base):
             if user is not None:
                 res[field] = user.to_json()
         res['qa_group'] = self.qa_group.to_json()
+        res['tags'] = [tag.to_json() for tag in self.tags]
         return res
 
 
