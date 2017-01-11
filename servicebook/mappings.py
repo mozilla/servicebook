@@ -115,6 +115,17 @@ class ProjectTest(Base):
 published.append(ProjectTest)
 
 
+class Language(Base):
+    __tablename__ = 'language'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(Unicode(128), nullable=False)
+    version = Column(Unicode(128))
+    last_modified = Column(Integer, nullable=False, default=_now)
+
+
+published.append(Language)
+
+
 class Tag(Base):
     __tablename__ = 'tag'
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -128,6 +139,11 @@ published.append(Tag)
 project_tags = Table('project_tags', Base.metadata,
                      Column('project_id', Integer, ForeignKey('project.id')),
                      Column('tag_id', Integer, ForeignKey('tag.id')))
+
+project_langs = Table('project_langs', Base.metadata,
+                      Column('project_id', Integer, ForeignKey('project.id')),
+                      Column('language_id', Integer,
+                             ForeignKey('language.id')))
 
 
 class Project(Base):
@@ -144,6 +160,7 @@ class Project(Base):
     repository = Column(URLType())
 
     tags = relationship('Tag', secondary=project_tags)
+    languages = relationship('Language', secondary=project_langs)
 
     # all tests
     tests = relationship('ProjectTest', back_populates="project")
@@ -186,6 +203,7 @@ class Project(Base):
                 res[field] = user.to_json()
         res['qa_group'] = self.qa_group.to_json()
         res['tags'] = [tag.to_json() for tag in self.tags]
+        res['languages'] = [tag.to_json() for tag in self.languages]
         return res
 
 

@@ -27,34 +27,40 @@ class ApiTest(BaseTest):
             absearch = self.app.get('/api/project/%d' % absearch_id)
             self.assertEqual(absearch.json['data']['qa_primary_id'], 3)
 
+    def test_langs(self):
+        self._test_one_many('language', ('python', 'go', 'javascript'))
+
     def test_tags(self):
+        self._test_one_many('tag', ('python', 'oss', 'watnot'))
+
+    def _test_one_many(self, field_name, collection):
         resp = self.app.get('/api/project/1')
         project = resp.json['data']
         etag = resp.etag
-        self.assertEqual(project['tags'], [])
+        self.assertEqual(project[field_name + 's'], [])
 
         # create new tags
-        tags = []
-        req_data = {'data': {'type': 'tag',
+        elms = []
+        req_data = {'data': {'type': field_name,
                              'attributes': {}}}
         headers = {'Content-Type': 'application/vnd.api+json'}
-        for tag in ('python', 'oss', 'watnot'):
-            req_data['data']['attributes']['name'] = tag
-            resp = self.app.post_json('/api/tag', params=req_data,
+        for elm in collection:
+            req_data['data']['attributes']['name'] = elm
+            resp = self.app.post_json('/api/' + field_name, params=req_data,
                                       headers=headers)
-            tags.append({'type': 'tag', 'id': resp.json['data']['id']})
+            elms.append({'type': field_name, 'id': resp.json['data']['id']})
 
         # patching the projects' tag list
-        req_data = {'data': tags}
+        req_data = {'data': elms}
         headers = {'If-Match': etag,
                    'Content-Type': 'application/vnd.api+json'}
 
-        self.app.patch_json('/api/project/1/relationships/tags',
-                            params=req_data, headers=headers)
+        url = '/api/project/1/relationships/' + field_name + 's'
+        self.app.patch_json(url, params=req_data, headers=headers)
 
         resp = self.app.get('/api/project/1')
         project = resp.json['data']
-        self.assertEqual(len(project['tags']), 3)
+        self.assertEqual(len(project[field_name + 's']), len(collection))
 
     def test_browsing_user(self):
         karl_json = self.app.get('/api/user/3').json['data']
