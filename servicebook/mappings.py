@@ -117,6 +117,19 @@ class ProjectTest(Base):
 published.append(ProjectTest)
 
 
+class JenkinsJob(Base):
+    __tablename__ = 'jenkins_job'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(Unicode(128), nullable=False)
+    jenkins_server = Column(URLType())
+    last_modified = Column(Integer, nullable=False, default=_now)
+    project_id = Column(Integer, ForeignKey('project.id'))
+    project = relationship('Project', back_populates="jenkins_jobs")
+
+
+published.append(JenkinsJob)
+
+
 class Language(Base):
     __tablename__ = 'language'
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -181,6 +194,7 @@ class Project(Base):
 
     # all tests
     tests = relationship('ProjectTest', back_populates="project")
+    jenkins_jobs = relationship('JenkinsJob', back_populates="project")
 
     # dev folks
     dev_primary_id = Column(Integer, ForeignKey('user.id'))
