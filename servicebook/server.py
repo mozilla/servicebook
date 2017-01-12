@@ -124,8 +124,15 @@ def create_app(ini_file=DEFAULT_INI_FILE):
             inspected = sa_inspect(model)
             # XXX collection name may vary
             primary_key = [key.name for key in inspected.primary_key]
-            models.append({'name': name, 'primary_key': primary_key,
-                           'collection_name': name})
+            model = {'name': name, 'primary_key': primary_key,
+                     'collection_name': name}
+            model['relationships'] = {}
+
+            for name, relationship in inspected.relationships.items():
+                rel = {'target': relationship.target.name}
+                model['relationships'][name] = rel
+
+            models.append(model)
 
         return jsonify({'models': models})
 
@@ -144,8 +151,9 @@ def create_app(ini_file=DEFAULT_INI_FILE):
         except TypeError:
             result = json.loads(str(response.data))
 
-        if 'data' in result and 'last_modified' in result['data']:
-            last_modified = str(result['data']['last_modified'])
+        data = result.get('data')
+        if data is not None and 'last_modified' in data:
+            last_modified = str(data['last_modified'])
         else:
             if response.status_code == 204:
                 # we did change it, we need to resend the ETag
