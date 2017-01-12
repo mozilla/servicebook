@@ -123,6 +123,12 @@ class Language(Base):
     last_modified = Column(Integer, nullable=False, default=_now)
 
 
+project_langs = Table('project_langs', Base.metadata,
+                      Column('project_id', Integer, ForeignKey('project.id')),
+                      Column('language_id', Integer,
+                             ForeignKey('language.id')))
+
+
 published.append(Language)
 
 
@@ -133,17 +139,27 @@ class Tag(Base):
     last_modified = Column(Integer, nullable=False, default=_now)
 
 
-published.append(Tag)
-
-
 project_tags = Table('project_tags', Base.metadata,
                      Column('project_id', Integer, ForeignKey('project.id')),
                      Column('tag_id', Integer, ForeignKey('tag.id')))
 
-project_langs = Table('project_langs', Base.metadata,
+published.append(Tag)
+
+
+class Link(Base):
+    __tablename__ = 'link'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    url = Column(URLType(), nullable=False)
+    name = Column(Unicode(128))
+    last_modified = Column(Integer, nullable=False, default=_now)
+
+
+project_repos = Table('project_repos', Base.metadata,
                       Column('project_id', Integer, ForeignKey('project.id')),
-                      Column('language_id', Integer,
-                             ForeignKey('language.id')))
+                      Column('link_id', Integer, ForeignKey('link.id')))
+
+
+published.append(Link)
 
 
 class Project(Base):
@@ -157,8 +173,7 @@ class Project(Base):
 
     # all project links
     homepage = Column(URLType())
-    repository = Column(URLType())
-
+    repositories = relationship('Link', secondary=project_repos)
     tags = relationship('Tag', secondary=project_tags)
     languages = relationship('Language', secondary=project_langs)
 
@@ -202,8 +217,9 @@ class Project(Base):
             if user is not None:
                 res[field] = user.to_json()
         res['qa_group'] = self.qa_group.to_json()
-        res['tags'] = [tag.to_json() for tag in self.tags]
-        res['languages'] = [tag.to_json() for tag in self.languages]
+
+        for rel in ('tags', 'languages', 'repositories'):
+            res[rel] = [item.to_json() for item in getattr(self, rel)]
         return res
 
 
