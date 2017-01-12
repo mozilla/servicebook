@@ -36,6 +36,8 @@ class User(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     firstname = Column(Unicode(128), nullable=False)
     lastname = Column(Unicode(128), nullable=False)
+    irc = Column(Unicode(128))
+    mozillians_login = Column(Unicode(128))
     mozqa = Column(Boolean, default=False)
     github = Column(Unicode(128))
     editor = Column(Boolean, default=False)
