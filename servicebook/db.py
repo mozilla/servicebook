@@ -106,6 +106,30 @@ def init(sqluri=_SQLURI, dump=None):
             ptest.operational = random.choice([True, False])
             proj.tests.append(ptest)
 
+        # some repo
+        repos = ['http://example.org', 'http://example.org/second']
+        for repo in repos:
+            rep = mappings.Link()
+            rep.name = 'repo'
+            rep.url = repo
+            proj.repositories.append(rep)
+
+        # some langs
+        langs = (('Python', '2.7'), ('Python', '3.5'), ('Javascript', None))
+        for lang, ver in langs:
+            plang = mappings.Language()
+
+            plang.name = lang
+            plang.version = ver
+            proj.languages.append(plang)
+
+        # some tags
+        tags = 'ui', 'flask'
+        for tag in tags:
+            ptag = mappings.Tag()
+            ptag.name = tag
+            proj.tags.append(ptag)
+
         proj.bz_product = project['bz_component']
         proj.bz_component = project['bz_product']
 
