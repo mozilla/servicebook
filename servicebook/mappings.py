@@ -184,6 +184,7 @@ class Project(Base):
     bz_product = Column(Unicode(128))
     bz_component = Column(Unicode(128))
     description = Column(UnicodeText)
+    long_description = Column(UnicodeText)
     irc = Column(Unicode(128))
 
     # all project links

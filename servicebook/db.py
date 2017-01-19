@@ -103,6 +103,7 @@ def init(sqluri=_SQLURI, dump=None):
         for test in tests:
             ptest = mappings.ProjectTest()
             ptest.name = test
+            ptest.url = 'http://example.org'
             ptest.operational = random.choice([True, False])
             proj.tests.append(ptest)
 
