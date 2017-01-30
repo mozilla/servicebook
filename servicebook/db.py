@@ -49,6 +49,34 @@ def init(sqluri=_SQLURI, dump=None):
     session.add(tarek)
     session.commit()
 
+    # some langs
+    langs = (('Python', '2.7'), ('Python', '3.5'), ('Javascript', None))
+
+    for lang, ver in langs:
+        plang = mappings.Language()
+        plang.name = lang
+        plang.version = ver
+        session.add(plang)
+
+    # some tags
+    tags = 'ui', 'flask', 'node', 'experimental'
+
+    for tag in tags:
+        ptag = mappings.Tag()
+        ptag.name = tag
+        session.add(ptag)
+
+    session.commit()
+
+    def _random(table, size=2):
+        items = session.query(table).all()
+        choice = []
+        while len(choice) < size:
+            item = random.choice(items)
+            if item not in choice:
+                choice.append(item)
+        return choice
+
     # importing people first
     for project in dump:
         # People
@@ -115,21 +143,8 @@ def init(sqluri=_SQLURI, dump=None):
             rep.url = repo
             proj.repositories.append(rep)
 
-        # some langs
-        langs = (('Python', '2.7'), ('Python', '3.5'), ('Javascript', None))
-        for lang, ver in langs:
-            plang = mappings.Language()
-
-            plang.name = lang
-            plang.version = ver
-            proj.languages.append(plang)
-
-        # some tags
-        tags = 'ui', 'flask'
-        for tag in tags:
-            ptag = mappings.Tag()
-            ptag.name = tag
-            proj.tags.append(ptag)
+        proj.languages = _random(mappings.Language, 2)
+        proj.tags = _random(mappings.Tag, 4)
 
         proj.bz_product = project['bz_component']
         proj.bz_component = project['bz_product']
