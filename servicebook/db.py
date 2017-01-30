@@ -42,9 +42,13 @@ def init(sqluri=_SQLURI, dump=None):
         return q.first()
 
     # importing two editors
-    stuart = mappings.User('Stuart', 'Philp', 'stuartphilp', True, True)
-    tarek = mappings.User('Tarek', 'Ziade', 'tarekziade', True, True,
-                          'tarek@mozilla.com')
+    stuart = mappings.User(firstname='Stuart', lastname='Philp',
+                           github='stuartphilp', mozqa=True,
+                           editor=True)
+
+    tarek = mappings.User(firstname='Tarek', lastname='Ziade',
+                          github='tarekziade', mozqa=True,
+                          editor=True, email='tarek@mozilla.com')
     session.add(stuart)
     session.add(tarek)
     session.commit()
@@ -84,13 +88,12 @@ def init(sqluri=_SQLURI, dump=None):
             pid = project[ppl]['firstname']
             if pid in people:
                 continue
-            firstname = project[ppl]['firstname']
-            lastname = project[ppl]['lastname']
-            github = project[ppl].get('github')
-            editor = project[ppl].get('editor', False)
-            mozqa = True
-            session.add(mappings.User(firstname, lastname, github, editor,
-                                      mozqa))
+
+            new = dict(project[ppl])
+            new['mozqa'] = True
+            if 'id' in new:
+                del new['id']
+            session.add(mappings.User(**new))
             people.append(pid)
 
         session.commit()

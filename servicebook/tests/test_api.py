@@ -37,7 +37,6 @@ class ApiTest(BaseTest):
         resp = self.app.get('/api/project/1')
         project = resp.json['data']
         etag = resp.etag
-        self.assertEqual(project[field_name + 's'], [])
 
         # create new tags
         elms = []
