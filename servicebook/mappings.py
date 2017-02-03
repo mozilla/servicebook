@@ -247,6 +247,18 @@ class Project(Base):
             res += ' ' + self.long_description
         if self.description:
             res += ' ' + self.description
+        if self.irc:
+            res += ' ' + self.irc
+
+        for user in (self.dev_primary, self.dev_secondary,
+                     self.op_primary, self.op_secondary,
+                     self.qa_primary, self.qa_secondary):
+            if user is not None:
+                res += ' ' + user.fullname()
+
+        if self.qa_group_name:
+            res += ' ' + self.qa_group_name
+
         return res
 
 
