@@ -11,9 +11,11 @@ from flask import Flask, g, request, Response, abort, jsonify
 from flask.ext.iniconfig import INIConfig
 from flask_restless_swagger import SwagAPIManager as APIManager
 
-from servicebook.db import init, Session
+from servicebook.db import init, Session, _SEARCH
 from servicebook.mappings import published
 from servicebook.views.search import search
+from servicebook.search import get_indexer
+
 from flask_restless.views import base
 from flask_restless import DefaultSerializer
 from sqlalchemy.inspection import inspect as sa_inspect
@@ -104,6 +106,7 @@ def create_app(ini_file=DEFAULT_INI_FILE):
         preprocessors[method] = [partial(add_timestamp, method)]
 
     app.db.session = Session()
+    get_indexer(_SEARCH, app.db.session)
     app.register_blueprint(search)
 
     manager = APIManager(app, flask_sqlalchemy_db=app.db,

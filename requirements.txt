@@ -5,6 +5,6 @@ flask
 flask-sqlalchemy
 flask-iniconfig
 PyYAML
-whooshalchemy
+whoosh
 -e git+https://github.com/jfinkels/flask-restless.git#egg=flask-restless
 -e git+https://github.com/tarekziade/flask-restless-swagger.git#egg=flask-restless-swagger

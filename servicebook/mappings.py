@@ -16,8 +16,6 @@ def _declarative_base(cls):
 
 @_declarative_base
 class Base(object):
-    __searchable__ = []
-
     @property
     def columns(self):
         return [col.name for col in self.__table__.columns]
@@ -27,6 +25,9 @@ class Base(object):
         for col in self.columns:
             res[col] = getattr(self, col)
         return res
+
+    def index(self):
+        return ''
 
 
 def _now():
@@ -178,8 +179,6 @@ published.append(Link)
 
 class Project(Base):
     __tablename__ = 'project'
-    __searchable__ = ['description', 'long_description']
-
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(Unicode(128), nullable=False)
     bz_product = Column(Unicode(128))
@@ -238,6 +237,16 @@ class Project(Base):
 
         for rel in ('tags', 'languages', 'repositories'):
             res[rel] = [item.to_json() for item in getattr(self, rel)]
+        return res
+
+    def index(self):
+        res = self.name
+        res += ' ' + ' '.join([tag.name for tag in self.tags])
+        res += ' ' + ' '.join([lang.name for lang in self.languages])
+        if self.long_description:
+            res += ' ' + self.long_description
+        if self.description:
+            res += ' ' + self.description
         return res
 
 
