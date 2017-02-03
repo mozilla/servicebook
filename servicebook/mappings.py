@@ -178,7 +178,7 @@ published.append(Link)
 
 class Project(Base):
     __tablename__ = 'project'
-    __searchable__ = ['description']
+    __searchable__ = ['description', 'long_description']
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(Unicode(128), nullable=False)
