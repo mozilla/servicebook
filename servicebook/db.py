@@ -9,6 +9,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import create_engine
 
 from servicebook import mappings
+from servicebook.search import get_indexer
 
 
 session_factory = sessionmaker(autoflush=False)
@@ -16,17 +17,18 @@ Session = scoped_session(session_factory)
 here = os.path.dirname(__file__)
 _DUMP = os.path.join(here, 'dump.json')
 _SQLURI = 'sqlite:////tmp/qa_projects.db'
+_SEARCH = {"WHOOSH_BASE": "/tmp/whoosh-" + str(sys.hexversion)}
 
 
 def init(sqluri=_SQLURI, dump=None):
     engine = create_engine(sqluri)
     session_factory.configure(bind=engine)
     mappings.Base.metadata.create_all(engine)
+    session = Session()
+    get_indexer(_SEARCH, session)
 
     if dump is None:
         return engine
-
-    session = Session()
 
     people = ["Stuart", "Tarek"]
     qa_groups = []

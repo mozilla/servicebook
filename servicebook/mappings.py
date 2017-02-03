@@ -16,6 +16,8 @@ def _declarative_base(cls):
 
 @_declarative_base
 class Base(object):
+    __searchable__ = []
+
     @property
     def columns(self):
         return [col.name for col in self.__table__.columns]
@@ -33,6 +35,7 @@ def _now():
 
 class User(Base):
     __tablename__ = 'user'
+
     id = Column(Integer, primary_key=True, autoincrement=True)
     firstname = Column(Unicode(128), nullable=False)
     lastname = Column(Unicode(128), nullable=False)
@@ -175,6 +178,8 @@ published.append(Link)
 
 class Project(Base):
     __tablename__ = 'project'
+    __searchable__ = ['description']
+
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(Unicode(128), nullable=False)
     bz_product = Column(Unicode(128))

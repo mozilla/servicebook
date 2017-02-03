@@ -13,6 +13,7 @@ from flask_restless_swagger import SwagAPIManager as APIManager
 
 from servicebook.db import init, Session
 from servicebook.mappings import published
+from servicebook.views.search import search
 from flask_restless.views import base
 from flask_restless import DefaultSerializer
 from sqlalchemy.inspection import inspect as sa_inspect
@@ -103,6 +104,7 @@ def create_app(ini_file=DEFAULT_INI_FILE):
         preprocessors[method] = [partial(add_timestamp, method)]
 
     app.db.session = Session()
+    app.register_blueprint(search)
 
     manager = APIManager(app, flask_sqlalchemy_db=app.db,
                          preprocessors=preprocessors)

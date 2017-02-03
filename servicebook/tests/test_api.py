@@ -93,3 +93,8 @@ class ApiTest(BaseTest):
                             headers={'If-None-Match': str(etag)})
         self.assertEqual(resp.status_int, 304)
         self.app.get('/api/user/3', headers={'If-None-Match': "MEH"})
+
+    def test_search(self):
+        resp = self.app.get('/api/search?q=test')
+        data = resp.json
+        self.assertTrue(len(data['data']) > 0)
