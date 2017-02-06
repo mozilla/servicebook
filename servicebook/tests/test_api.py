@@ -98,3 +98,31 @@ class ApiTest(BaseTest):
         resp = self.app.get('/api/search?q=test')
         data = resp.json
         self.assertTrue(len(data['data']) > 0)
+
+    def test_cascade_timestamps(self):
+        resp = self.app.get('/api/project/1')
+        project_etag = resp.etag
+        project_tags = resp.json['data']['tags']
+
+        # changing the relation
+        resp = self.app.get('/api/project/1/tags')
+        etag = resp.etag
+
+        self.assertEqual(etag, project_etag)
+
+        # removing a tag
+        project_tags = project_tags[1:]
+        req_data = []
+        for tag in project_tags:
+            entry = {'type': 'tag', 'id': tag['id']}
+            req_data.append(entry)
+
+        req_data = {'data': req_data}
+        headers = {'If-Match': etag,
+                   'Content-Type': 'application/vnd.api+json'}
+        self.app.patch_json('/api/project/1/relationships/tags',
+                            params=req_data, headers=headers)
+
+        # the project etag should have changed
+        resp = self.app.get('/api/project/1')
+        self.assertNotEqual(project_etag, resp.etag)

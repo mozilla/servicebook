@@ -18,6 +18,7 @@ from servicebook.search import get_indexer
 
 from flask_restless.views import base
 from flask_restless import DefaultSerializer
+from flask_restless.helpers import get_by
 from sqlalchemy.inspection import inspect as sa_inspect
 
 
@@ -75,7 +76,7 @@ def add_timestamp(method, *args, **kw):
                 abort(412)
 
     g.last_modified = int(time.time() * 1000)
-    if not method.startswith('DELETE_'):
+    if not method.startswith('DELETE_') and isinstance(kw['data'], dict):
         kw['data']['last_modified'] = g.last_modified
 
 
@@ -157,23 +158,50 @@ def create_app(ini_file=DEFAULT_INI_FILE):
             result = json.loads(str(response.data))
 
         data = result.get('data')
-        if data is not None and 'last_modified' in data:
-            last_modified = str(data['last_modified'])
+        last_modified = None
+
+        # hackish - it depends on url routes XXX
+        relation_name = request.view_args.get('relation_name')
+        resource_id = request.view_args.get('resource_id')
+        api = 'api' in g and g.api or None
+
+        # the relationship was changed
+        if (request.method in ('POST', 'PATCH') and relation_name and
+                response.status_code == 204):
+            # let's update the parent timestamp
+            instance = get_by(api.session, api.model, resource_id)
+            instance.last_modified = g.last_modified
+
+        # we're sending back some data
+        if data is not None:
+            if 'last_modidied' in data:
+                last_modified = data['last_modified']
+            elif api:
+                instance = get_by(api.session, api.model, resource_id)
+                if instance and hasattr(instance, 'last_modified'):
+                    last_modified = instance.last_modified
+
+        # empty response
         else:
             if response.status_code == 204:
                 # we did change it, we need to resend the ETag
-                last_modified = str(g.last_modified)
+                last_modified = g.last_modified
             else:
                 last_modified = None
 
+            if 'Content-Type' in response.headers:
+                response.headers.remove('Content-Type')
+
+        etag = last_modified and str(last_modified) or None
+
         # checking If-None-Match on GET calls
         if (request.method == 'GET' and request.if_none_match):
-            if last_modified and last_modified in request.if_none_match:
+            if etag and etag in request.if_none_match:
                 return NotModified()
 
         # adding an ETag header
-        if last_modified:
-            response.set_etag(last_modified)
+        if etag:
+            response.set_etag(etag)
 
         return response
 
