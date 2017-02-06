@@ -137,6 +137,11 @@ class Language(Base):
     version = Column(Unicode(128))
     last_modified = Column(Integer, nullable=False, default=_now)
 
+    def __str__(self):
+        if self.version is None:
+            return self.name
+        return '%s %s' % (self.name, self.version)
+
 
 project_langs = Table('project_langs', Base.metadata,
                       Column('project_id', Integer, ForeignKey('project.id')),
@@ -242,7 +247,7 @@ class Project(Base):
     def index(self):
         res = self.name
         res += ' ' + ' '.join([tag.name for tag in self.tags])
-        res += ' ' + ' '.join([lang.name for lang in self.languages])
+        res += ' ' + ' '.join([str(lang) for lang in self.languages])
         if self.long_description:
             res += ' ' + self.long_description
         if self.description:
