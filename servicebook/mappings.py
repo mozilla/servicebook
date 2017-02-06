@@ -229,7 +229,7 @@ class Project(Base):
         res['deployments'] = [depl.to_json() for depl in self.deployments]
         res['tests'] = [test.to_json() for test in self.tests]
         for field in ('qa_primary', 'qa_secondary', 'dev_primary',
-                      'dev_secondary', 'ops_primary', 'ops_secondary'):
+                      'dev_secondary', 'op_primary', 'op_secondary'):
             user = getattr(self, field, None)
             if user is not None:
                 res[field] = user.to_json()
