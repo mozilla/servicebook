@@ -31,7 +31,7 @@ class Base(object):
 
 
 def _now():
-    return int(time.time() * 100)
+    return int(time.time() * 1000)
 
 
 class User(Base):
