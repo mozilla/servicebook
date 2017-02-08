@@ -8,7 +8,7 @@ from functools import partial, wraps
 
 from werkzeug.exceptions import HTTPException
 from flask import Flask, g, request, Response, abort, jsonify
-from flask.ext.iniconfig import INIConfig
+from flask_iniconfig import INIConfig
 from flask_restless_swagger import SwagAPIManager as APIManager
 
 from servicebook.db import init, Session, _SEARCH
