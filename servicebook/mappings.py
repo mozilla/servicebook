@@ -234,6 +234,7 @@ class Project(Base):
         res = super(Project, self).to_json()
         res['deployments'] = [depl.to_json() for depl in self.deployments]
         res['tests'] = [test.to_json() for test in self.tests]
+        res['jenkins_jobs'] = [job.to_json() for job in self.jenkins_jobs]
         for field in ('qa_primary', 'qa_secondary', 'dev_primary',
                       'dev_secondary', 'op_primary', 'op_secondary'):
             user = getattr(self, field, None)
