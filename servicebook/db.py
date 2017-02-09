@@ -140,17 +140,8 @@ def init(sqluri=_SQLURI, dump=None):
             ptest.operational = random.choice([True, False])
             proj.tests.append(ptest)
 
-        # some repo
-        repos = ['http://example.org', 'http://example.org/second']
-        for repo in repos:
-            rep = mappings.Link()
-            rep.name = 'repo'
-            rep.url = repo
-            proj.repositories.append(rep)
-
         proj.languages = _random(mappings.Language, 2)
-        proj.tags = _random(mappings.Tag, 4)
-
+        proj.tags = _random(mappings.Tag, 3)
         proj.bz_product = project['bz_component']
         proj.bz_component = project['bz_product']
 
