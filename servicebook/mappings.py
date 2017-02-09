@@ -83,7 +83,8 @@ class Group(Base):
 
     def to_json(self):
         res = super(Group, self).to_json()
-        res['lead'] = self.lead.to_json()
+        if self.lead:
+            res['lead'] = self.lead.to_json()
         return res
 
 
