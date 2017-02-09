@@ -131,6 +131,19 @@ class JenkinsJob(Base):
 published.append(JenkinsJob)
 
 
+class TestRail(Base):
+    __tablename__ = 'testrail'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    project_id = Column(Integer, nullable=False)
+    test_rail_server = Column(URLType())
+    last_modified = Column(Integer, nullable=False, default=_now)
+    project_id = Column(Integer, ForeignKey('project.id'))
+    project = relationship('Project', back_populates="testrail")
+
+
+published.append(TestRail)
+
+
 class Language(Base):
     __tablename__ = 'language'
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -198,6 +211,7 @@ class Project(Base):
     repositories = relationship('Link', secondary=project_repos)
     tags = relationship('Tag', secondary=project_tags)
     languages = relationship('Language', secondary=project_langs)
+    testrail = relationship('TestRail', back_populates="project")
 
     # all tests
     tests = relationship('ProjectTest', back_populates="project")
@@ -235,13 +249,14 @@ class Project(Base):
         res['deployments'] = [depl.to_json() for depl in self.deployments]
         res['tests'] = [test.to_json() for test in self.tests]
         res['jenkins_jobs'] = [job.to_json() for job in self.jenkins_jobs]
+        res['testrail'] = [tr.to_json() for tr in self.testrail]
+
         for field in ('qa_primary', 'qa_secondary', 'dev_primary',
                       'dev_secondary', 'op_primary', 'op_secondary'):
             user = getattr(self, field, None)
             if user is not None:
                 res[field] = user.to_json()
         res['qa_group'] = self.qa_group.to_json()
-
         for rel in ('tags', 'languages', 'repositories'):
             res[rel] = [item.to_json() for item in getattr(self, rel)]
         return res
