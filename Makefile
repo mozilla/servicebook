@@ -30,3 +30,6 @@ docker-build:
 
 docker-run:
 	docker run -i -p 5001:5001 servicebook/dev:latest
+
+version:
+	$(BIN)/python create_version.py > version.json
