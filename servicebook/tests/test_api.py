@@ -69,30 +69,58 @@ class ApiTest(BaseTest):
         group = self.app.get('/api/group/Customization').json['data']
         self.assertEqual(group['name'], 'Customization')
 
-    def test_changing_user(self):
+    def test_changing_user_strict(self):
         resp = self.app.get('/api/user/3')
         etag = resp.etag
         karl_json = resp.json['data']
-        self.assertEqual(karl_json['firstname'], 'Karl')
-        karl_json['firstname'] = 'K.'
+        old_name = karl_json['firstname']
+        new_name = karl_json['firstname'] = old_name + 'something'
+
         req_data = {'data': {'type': 'user', 'attributes': karl_json,
                     'id': '3'}}
 
-        headers = {'If-Match': etag,
-                   'Content-Type': 'application/vnd.api+json'}
+        headers = {'Content-Type': 'application/vnd.api+json'}
 
+        # fails if no If-Match provided
+        self.app.patch_json('/api/user/3', params=req_data,
+                            headers=headers, status=428)
+
+        # fails if wront etag provided
+        headers['If-Match'] = "bleh"
+        self.app.patch_json('/api/user/3', params=req_data,
+                            headers=headers, status=412)
+
+        headers['If-Match'] = etag
         self.app.patch_json('/api/user/3', params=req_data,
                             headers=headers)
+
         resp = self.app.get('/api/user/3')
         karl_json = resp.json['data']
         etag = resp.etag
-        self.assertEqual(karl_json['firstname'], 'K.')
+        self.assertEqual(karl_json['firstname'], new_name)
 
         # now test the etag value
         resp = self.app.get('/api/user/3',
                             headers={'If-None-Match': str(etag)})
         self.assertEqual(resp.status_int, 304)
         self.app.get('/api/user/3', headers={'If-None-Match': "MEH"})
+
+    def test_changing_user(self):
+        resp = self.app.get('/api/user/3')
+        karl_json = resp.json['data']
+        etag = resp.etag
+        self.assertEqual(karl_json['firstname'], 'Karl')
+        karl_json['firstname'] = 'K.'
+        req_data = {'data': {'type': 'user', 'attributes': karl_json,
+                    'id': '3'}}
+        headers = {'Content-Type': 'application/vnd.api+json',
+                   'If-Match': etag}
+
+        self.app.patch_json('/api/user/3', params=req_data,
+                            headers=headers)
+        resp = self.app.get('/api/user/3')
+        karl_json = resp.json['data']
+        self.assertEqual(karl_json['firstname'], 'K.')
 
     def test_search(self):
         resp = self.app.get('/api/search?q=test')

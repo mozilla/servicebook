@@ -56,7 +56,7 @@ DEFAULT_INI_FILE = os.path.join(HERE, '..', 'servicebook.ini')
 _DEBUG = True
 
 
-def add_timestamp(method, *args, **kw):
+def add_timestamp(strict, method, *args, **kw):
     # getting the existing last_modified if the resource exists
     model = g.api.model
     session = g.api.session
@@ -66,7 +66,7 @@ def add_timestamp(method, *args, **kw):
         entry = query.filter(model.id == kw['resource_id']).one()
 
         # if this is an update, we want a If-Match header
-        if entry is not None:
+        if entry is not None and strict == 1:
             etag = str(entry.last_modified)
 
             if not request.if_match:
@@ -97,6 +97,7 @@ def create_app(ini_file=DEFAULT_INI_FILE):
     INIConfig(app)
     app.config.from_inifile(ini_file)
     app.secret_key = app.config['common']['secret_key']
+    strict = int(app.config['common'].get('strict_update', 0))
     sqluri = app.config['common']['sqluri']
     app.db = init(sqluri)
 
@@ -104,7 +105,7 @@ def create_app(ini_file=DEFAULT_INI_FILE):
     for method in ('POST_RESOURCE', 'PATCH_RESOURCE', 'DELETE_RESOURCE',
                    'POST_RELATIONSHIP', 'PATCH_RELATIONSHIP',
                    'DELETE_RELATIONSHIP'):
-        preprocessors[method] = [partial(add_timestamp, method)]
+        preprocessors[method] = [partial(add_timestamp, strict, method)]
 
     app.db.session = Session()
     get_indexer(_SEARCH, app.db.session)
