@@ -1,5 +1,6 @@
 import sys
 from setuptools import setup, find_packages
+from servicebook import __version__
 
 
 with open('requirements.txt') as f:
@@ -9,7 +10,7 @@ with open('requirements.txt') as f:
 
 
 setup(name='servicebook',
-      version="0.1",
+      version=__version__,
       packages=find_packages(),
       description="Mozilla QA Service Book",
       include_package_data=True,

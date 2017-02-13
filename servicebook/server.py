@@ -14,6 +14,7 @@ from flask_restless_swagger import SwagAPIManager as APIManager
 from servicebook.db import init, Session, _SEARCH
 from servicebook.mappings import published
 from servicebook.views.search import search
+from servicebook.views.heartbeat import heartbeat
 from servicebook.search import get_indexer
 
 from flask_restless.views import base
@@ -110,6 +111,7 @@ def create_app(ini_file=DEFAULT_INI_FILE):
     app.db.session = Session()
     get_indexer(_SEARCH, app.db.session)
     app.register_blueprint(search)
+    app.register_blueprint(heartbeat)
 
     manager = APIManager(app, flask_sqlalchemy_db=app.db,
                          preprocessors=preprocessors)
@@ -145,7 +147,7 @@ def create_app(ini_file=DEFAULT_INI_FILE):
 
     @app.after_request
     def set_etag(response):
-        if request.blueprint == 'swagger':
+        if request.blueprint in ('swagger', 'heartbeat'):
             return response
 
         if response.status_code > 399:
