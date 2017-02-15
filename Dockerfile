@@ -12,10 +12,11 @@ RUN pip install -r requirements.txt
 RUN pip install uwsgi
 
 ADD . /app
+RUN chown 10001:10001 -R /app
+
 RUN python setup.py develop
 RUN python create_version.py > version.json
 
-RUN chown 10001:10001 -R /app
 USER app
 EXPOSE 5001
-CMD uwsgi --ini uwsgi.ini
+CMD python init_db.py; uwsgi --ini uwsgi.ini

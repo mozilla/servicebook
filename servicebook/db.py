@@ -16,7 +16,7 @@ session_factory = sessionmaker(autoflush=False)
 Session = scoped_session(session_factory)
 here = os.path.dirname(__file__)
 _DUMP = os.path.join(here, 'dump.json')
-_SQLURI = 'sqlite:////tmp/qa_projects.db'
+_SQLURI = os.environ.get('SQLURI', 'sqlite:////tmp/qa_projects.db')
 _SEARCH = {"WHOOSH_BASE": "/tmp/whoosh-" + str(sys.hexversion)}
 
 

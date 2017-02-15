@@ -99,7 +99,9 @@ def create_app(ini_file=DEFAULT_INI_FILE):
     app.config.from_inifile(ini_file)
     app.secret_key = app.config['common']['secret_key']
     strict = int(app.config['common'].get('strict_update', 0))
-    sqluri = app.config['common']['sqluri']
+    sqluri = os.environ.get('SQLURI')
+    if sqluri is None:
+        sqluri = app.config['common']['sqluri']
     app.db = init(sqluri)
 
     preprocessors = {}
