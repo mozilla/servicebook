@@ -1,4 +1,5 @@
 # encoding: utf8
+import uuid
 import time
 from sqlalchemy_utils import URLType
 from sqlalchemy.ext.declarative import declarative_base
@@ -286,3 +287,21 @@ class Project(Base):
 
 
 published.append(Project)
+
+
+class AuthenticationKey(Base):
+    __tablename__ = 'keys'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    application = Column(Unicode(128), nullable=False)
+    key = Column(Unicode(128), nullable=False)
+    last_modified = Column(BigInteger, nullable=False, default=_now)
+
+    def __init__(self, application, key=None):
+        super(AuthenticationKey, self).__init__()
+        self.application = application
+        if key is None:
+            key = str(uuid.uuid4())
+        self.key = key
+
+    def __str__(self):
+        return 'App: %s, Key: %s' % (self.application, self.key)

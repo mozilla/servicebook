@@ -20,4 +20,5 @@ setup(name='servicebook',
       [console_scripts]
       servicebook = servicebook.server:main
       servicebook-import = servicebook.db:main
+      servicebook-addkey = servicebook.keys:main
       """)
