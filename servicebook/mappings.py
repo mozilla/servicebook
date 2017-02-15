@@ -3,7 +3,8 @@ import time
 from sqlalchemy_utils import URLType
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Table
-from sqlalchemy import Integer, Unicode, ForeignKey, UnicodeText, Boolean
+from sqlalchemy import (Integer, Unicode, ForeignKey, UnicodeText, Boolean,
+                        BigInteger)
 from sqlalchemy.orm import relationship
 
 
@@ -46,7 +47,7 @@ class User(Base):
     github = Column(Unicode(128))
     editor = Column(Boolean, default=False)
     email = Column(Unicode(128))
-    last_modified = Column(Integer, nullable=False, default=_now)
+    last_modified = Column(BigInteger, nullable=False, default=_now)
 
     def __init__(self, **kw):
         super(User, self).__init__()
@@ -70,7 +71,7 @@ class Group(Base):
     home = Column(URLType())
     lead_id = Column(Integer, ForeignKey('user.id'))
     lead = relationship('User', foreign_keys='Group.lead_id')
-    last_modified = Column(Integer, nullable=False, default=_now)
+    last_modified = Column(BigInteger, nullable=False, default=_now)
 
     def __init__(self, name=None, home=None, lead=None):
         super(Group, self).__init__()
@@ -98,7 +99,7 @@ class Deployment(Base):
     endpoint = Column(URLType(), nullable=False)
     project_id = Column(Integer, ForeignKey('project.id'))
     project = relationship('Project', back_populates="deployments")
-    last_modified = Column(Integer, nullable=False, default=_now)
+    last_modified = Column(BigInteger, nullable=False, default=_now)
 
 
 published.append(Deployment)
@@ -109,7 +110,7 @@ class ProjectTest(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(Unicode(128), nullable=False)
     url = Column(URLType())
-    last_modified = Column(Integer, nullable=False, default=_now)
+    last_modified = Column(BigInteger, nullable=False, default=_now)
     operational = Column(Boolean, default=False)
     project_id = Column(Integer, ForeignKey('project.id'))
     project = relationship('Project', back_populates="tests")
@@ -123,7 +124,7 @@ class JenkinsJob(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(Unicode(128), nullable=False)
     jenkins_server = Column(URLType())
-    last_modified = Column(Integer, nullable=False, default=_now)
+    last_modified = Column(BigInteger, nullable=False, default=_now)
     project_id = Column(Integer, ForeignKey('project.id'))
     project = relationship('Project', back_populates="jenkins_jobs")
 
@@ -136,7 +137,7 @@ class TestRail(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     project_id = Column(Integer, nullable=False)
     test_rail_server = Column(URLType())
-    last_modified = Column(Integer, nullable=False, default=_now)
+    last_modified = Column(BigInteger, nullable=False, default=_now)
     project_id = Column(Integer, ForeignKey('project.id'))
     project = relationship('Project', back_populates="testrail")
 
@@ -149,7 +150,7 @@ class Language(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(Unicode(128), nullable=False)
     version = Column(Unicode(128))
-    last_modified = Column(Integer, nullable=False, default=_now)
+    last_modified = Column(BigInteger, nullable=False, default=_now)
 
     def __str__(self):
         if self.version is None:
@@ -170,7 +171,7 @@ class Tag(Base):
     __tablename__ = 'tag'
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(Unicode(128), nullable=False)
-    last_modified = Column(Integer, nullable=False, default=_now)
+    last_modified = Column(BigInteger, nullable=False, default=_now)
 
 
 project_tags = Table('project_tags', Base.metadata,
@@ -185,7 +186,7 @@ class Link(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     url = Column(URLType(), nullable=False)
     name = Column(Unicode(128))
-    last_modified = Column(Integer, nullable=False, default=_now)
+    last_modified = Column(BigInteger, nullable=False, default=_now)
 
 
 project_repos = Table('project_repos', Base.metadata,
@@ -239,7 +240,7 @@ class Project(Base):
     qa_group = relationship('Group', foreign_keys='Project.qa_group_name')
 
     deployments = relationship('Deployment', back_populates="project")
-    last_modified = Column(Integer, nullable=False, default=_now)
+    last_modified = Column(BigInteger, nullable=False, default=_now)
 
     def __repr__(self):
         return '%s' % self.name
