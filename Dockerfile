@@ -17,5 +17,5 @@ RUN python create_version.py > version.json
 
 RUN chown 10001:10001 -R /app
 USER app
-EXPOSE 80
+EXPOSE 5001
 CMD uwsgi --ini uwsgi.ini
