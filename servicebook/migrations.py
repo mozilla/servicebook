@@ -4,10 +4,11 @@ from servicebook import mappings
 
 
 def increment_database(engine, session, current):
+    engine.echo = True
 
     if current == 0:
         # public flag
-        public = 'alter table %s add column public BOOLEAN DEFAULT True'
+        public = 'alter table %s add column public BOOLEAN DEFAULT True;'
         for table in ('project', 'deployment', 'project_test', 'jenkins_job',
                       'testrail', 'link'):
             engine.execute(public % table)

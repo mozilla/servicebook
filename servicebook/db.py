@@ -49,6 +49,7 @@ def migrate_db(args=sys.argv[1:]):
     args = parser.parse_args(args=args)
     engine = init(args.sqluri)
     session = Session()
+    session.bind = engine
 
     # read the database version
     try:
