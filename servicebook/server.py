@@ -152,6 +152,9 @@ def create_app(ini_file=DEFAULT_INI_FILE):
         if request.blueprint in ('swagger', 'heartbeat'):
             return response
 
+        if request.path == '/api/':
+            return response
+
         if response.status_code > 399:
             return response
 

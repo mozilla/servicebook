@@ -8,6 +8,10 @@ from servicebook.tests.support import BaseTest
 
 
 class ApiTest(BaseTest):
+    def test_get_table_lists(self):
+        tables = self.app.get('/api/').json
+        models = tables['models']
+        self.assertTrue(len(models) > 3)
 
     def test_browsing_project(self):
         projects = self.app.get('/api/project').json['data']
