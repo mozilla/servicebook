@@ -101,6 +101,7 @@ class Deployment(Base):
     project_id = Column(Integer, ForeignKey('project.id'))
     project = relationship('Project', back_populates="deployments")
     last_modified = Column(BigInteger, nullable=False, default=_now)
+    public = Column(Boolean, default=True)
 
 
 published.append(Deployment)
@@ -114,6 +115,7 @@ class ProjectTest(Base):
     last_modified = Column(BigInteger, nullable=False, default=_now)
     operational = Column(Boolean, default=False)
     jenkins_pipeline = Column(Boolean, default=False)
+    public = Column(Boolean, default=True)
     project_id = Column(Integer, ForeignKey('project.id'))
     project = relationship('Project', back_populates="tests")
 
@@ -126,6 +128,7 @@ class JenkinsJob(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(Unicode(128), nullable=False)
     jenkins_server = Column(URLType())
+    public = Column(Boolean, default=True)
     last_modified = Column(BigInteger, nullable=False, default=_now)
     project_id = Column(Integer, ForeignKey('project.id'))
     project = relationship('Project', back_populates="jenkins_jobs")
@@ -139,6 +142,7 @@ class TestRail(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     project_id = Column(Integer, nullable=False)
     test_rail_server = Column(URLType())
+    public = Column(Boolean, default=True)
     last_modified = Column(BigInteger, nullable=False, default=_now)
     project_id = Column(Integer, ForeignKey('project.id'))
     project = relationship('Project', back_populates="testrail")
@@ -188,6 +192,7 @@ class Link(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     url = Column(URLType(), nullable=False)
     name = Column(Unicode(128))
+    public = Column(Boolean, default=True)
     last_modified = Column(BigInteger, nullable=False, default=_now)
 
 
@@ -208,6 +213,7 @@ class Project(Base):
     description = Column(UnicodeText)
     long_description = Column(UnicodeText)
     irc = Column(Unicode(128))
+    public = Column(Boolean, default=True)
 
     # all project links
     homepage = Column(URLType())
