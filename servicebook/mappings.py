@@ -113,6 +113,7 @@ class ProjectTest(Base):
     url = Column(URLType())
     last_modified = Column(BigInteger, nullable=False, default=_now)
     operational = Column(Boolean, default=False)
+    jenkins_pipeline = Column(Boolean, default=False)
     project_id = Column(Integer, ForeignKey('project.id'))
     project = relationship('Project', back_populates="tests")
 
