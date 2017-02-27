@@ -32,6 +32,9 @@ def init(sqluri=_SQLURI, dump=None):
 
     people = ["Stuart", "Tarek"]
     qa_groups = []
+    dbver = mappings.DatabaseVersion()
+    dbver.version = "0.1"
+    session.add(dbver)
 
     def _find_user(firstname):
         p = mappings.User

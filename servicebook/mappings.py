@@ -314,3 +314,10 @@ class AuthenticationKey(Base):
 
     def __str__(self):
         return 'App: %s, Key: %s' % (self.application, self.key)
+
+
+class DatabaseVersion(Base):
+    __tablename__ = 'version'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    version = Column(Unicode(128), nullable=False)
+    last_modified = Column(BigInteger, nullable=False, default=_now)
