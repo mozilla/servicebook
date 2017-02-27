@@ -18,6 +18,22 @@ def increment_database(engine, session, current):
         engine.execute(sql)
 
         # adding new tables
-        mappings.DatabaseVersion.__table__.create(bind=engine, checkfirst=True)
+        for table in (mappings.DatabaseVersion, mappings.Team):
+            table.__table__.create(bind=engine, checkfirst=True)
+
+        # adding teams
+        for team_name in ('OPS', 'QA', 'Dev', 'Community'):
+            team = mappings.Team(team_name)
+            session.add(team)
+
+        # re-creating table user (for the new team key)
+        engine.execute('alter table user rename to old_user')
+        mappings.User.__table__.create(bind=engine)
+        fields = ['id', 'firstname', 'lastname', 'irc', 'mozillians_login',
+                  'mozqa', 'github', 'editor', 'email', 'last_modified']
+        fields = ','.join(fields)
+        engine.execute('insert into user (%s) select * from old_user' %
+                       (fields))
+        engine.execute('drop table old_user')
 
     return current + 1

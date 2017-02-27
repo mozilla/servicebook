@@ -36,6 +36,23 @@ def _now():
     return int(time.time() * 1000)
 
 
+class Team(Base):
+    __tablename__ = 'team'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(Unicode(128), nullable=False)
+    last_modified = Column(BigInteger, nullable=False, default=_now)
+
+    def __init__(self, name=None):
+        super(Team, self).__init__()
+        self.name = name
+
+    def __repr__(self):
+        return self.name
+
+
+published.append(Team)
+
+
 class User(Base):
     __tablename__ = 'user'
 
@@ -49,8 +66,11 @@ class User(Base):
     editor = Column(Boolean, default=False)
     email = Column(Unicode(128))
     last_modified = Column(BigInteger, nullable=False, default=_now)
-    group_name = Column(Unicode(128), ForeignKey('group.name'))
-    group = relationship('Group', foreign_keys='User.group_name')
+    team_id = Column(Integer, ForeignKey('team.id'))
+    team = relationship('Team', foreign_keys='User.team_id')
+    secondary_team_id = Column(Integer, ForeignKey('team.id'))
+    secondary_team = relationship('Team',
+                                  foreign_keys='User.secondary_team_id')
 
     def __init__(self, **kw):
         super(User, self).__init__()
