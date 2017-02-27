@@ -21,4 +21,5 @@ setup(name='servicebook',
       servicebook = servicebook.server:main
       servicebook-import = servicebook.db:main
       servicebook-keys = servicebook.keys:main
+      servicebook-migrate-db = servicebook.db:migrate_db
       """)

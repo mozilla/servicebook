@@ -7,9 +7,11 @@ import random
 
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import create_engine
+from sqlalchemy.orm.exc import NoResultFound
 
 from servicebook import mappings
 from servicebook.search import get_indexer
+from servicebook.migrations import increment_database
 
 
 session_factory = sessionmaker(autoflush=False)
@@ -18,6 +20,48 @@ here = os.path.dirname(__file__)
 _DUMP = os.path.join(here, 'dump.json')
 _SQLURI = os.environ.get('SQLURI', 'sqlite:////tmp/qa_projects.db')
 _SEARCH = {"WHOOSH_BASE": "/tmp/whoosh-" + str(sys.hexversion)}
+DATABASE_VERSION = 1
+
+
+def _migrate(engine, current, target):
+    print("Migrating from %s to %s" % (current, target))
+    session = Session()
+    while current < target:
+        current = increment_database(engine, session, current)
+        session.commit()
+
+    version = session.query(mappings.DatabaseVersion).first()
+    if version is None:
+        version = mappings.DatabaseVersion()
+    version.version = target
+    session.add(version)
+    session.commit()
+    print("Done")
+
+
+def migrate_db(args=sys.argv[1:]):
+    parser = argparse.ArgumentParser(
+        description='ServiceBook Data importer.')
+
+    parser.add_argument('--sqluri', help='Database',
+                        type=str, default=_SQLURI)
+
+    args = parser.parse_args(args=args)
+    engine = init(args.sqluri)
+    session = Session()
+
+    # read the database version
+    try:
+        version = session.query(mappings.DatabaseVersion).one().version
+    except NoResultFound:
+        version = 0
+    print("Current Database version %d" % version)
+    print("Target Database version %d" % DATABASE_VERSION)
+
+    if version < DATABASE_VERSION:
+        _migrate(engine, version, DATABASE_VERSION)
+    else:
+        print("Nothing will be done.")
 
 
 def init(sqluri=_SQLURI, dump=None):
@@ -33,7 +77,7 @@ def init(sqluri=_SQLURI, dump=None):
     people = ["Stuart", "Tarek"]
     qa_groups = []
     dbver = mappings.DatabaseVersion()
-    dbver.version = "0.1"
+    dbver.version = DATABASE_VERSION
     session.add(dbver)
 
     def _find_user(firstname):
@@ -123,11 +167,13 @@ def init(sqluri=_SQLURI, dump=None):
         proj.qa_secondary = _find_user(project['qa_secondary']['firstname'])
         proj.irc = project['irc']
         proj.qa_group = _find_qa_group(project['qa_group_name'])
+        proj.public = True
 
         for deplo in project['deployments']:
             d = mappings.Deployment()
             d.name = deplo['name']
             d.endpoint = deplo['endpoint']
+            d.public = True
             session.add(d)
             proj.deployments.append(d)
 
@@ -141,6 +187,8 @@ def init(sqluri=_SQLURI, dump=None):
             ptest.name = test
             ptest.url = 'http://example.org'
             ptest.operational = random.choice([True, False])
+            ptest.jenkins_pipeline = False
+            ptest.public = True
             proj.tests.append(ptest)
 
         proj.languages = _random(mappings.Language, 2)

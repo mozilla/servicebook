@@ -319,5 +319,5 @@ class AuthenticationKey(Base):
 class DatabaseVersion(Base):
     __tablename__ = 'version'
     id = Column(Integer, primary_key=True, autoincrement=True)
-    version = Column(Unicode(128), nullable=False)
+    version = Column(Integer, nullable=False)
     last_modified = Column(BigInteger, nullable=False, default=_now)
