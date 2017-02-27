@@ -49,6 +49,8 @@ class User(Base):
     editor = Column(Boolean, default=False)
     email = Column(Unicode(128))
     last_modified = Column(BigInteger, nullable=False, default=_now)
+    group_name = Column(Unicode(128), ForeignKey('group.name'))
+    group = relationship('Group', foreign_keys='User.group_name')
 
     def __init__(self, **kw):
         super(User, self).__init__()
