@@ -1,31 +1,41 @@
 """ Place holder to programmatically change the DB.
 """
 from servicebook import mappings
+from sqlalchemy.exc import OperationalError
 
 
 def increment_database(engine, session, current):
     engine.echo = True
 
     if current == 0:
+        # adding new tables
+        for table in (mappings.DatabaseVersion, mappings.Team, mappings.TestRail):
+            try:
+                table.__table__.create(bind=engine)
+
+            except OperationalError:
+                pass
+
         # public flag
         public = 'alter table %s add column public BOOLEAN DEFAULT True;'
         for table in ('project', 'deployment', 'project_test', 'jenkins_job',
                       'testrail', 'link'):
-            engine.execute(public % table)
+            try:
+                engine.execute(public % table)
+            except OperationalError:
+                if table != 'testrail':
+                    raise
 
         # jenkins_pipeline in project_test
         sql = ('alter table project_test add column jenkins_pipeline BOOLEAN '
                'DEFAULT False')
         engine.execute(sql)
 
-        # adding new tables
-        for table in (mappings.DatabaseVersion, mappings.Team):
-            table.__table__.create(bind=engine, checkfirst=True)
-
         # adding teams
         for team_name in ('OPS', 'QA', 'Dev', 'Community'):
             team = mappings.Team(team_name)
             session.add(team)
+        session.commit()
 
         # re-creating table user (for the new team key)
         engine.execute('alter table user rename to old_user')
