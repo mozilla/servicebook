@@ -1,11 +1,13 @@
 # encoding: utf8
 import uuid
 import time
+from collections import namedtuple
+
 from sqlalchemy_utils import URLType
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Table
 from sqlalchemy import (Integer, Unicode, ForeignKey, UnicodeText, Boolean,
-                        BigInteger)
+                        BigInteger, Enum)
 from sqlalchemy.orm import relationship
 
 
@@ -316,6 +318,8 @@ class Project(Base):
 
 
 published.append(Project)
+scopes = 'read', 'readwrite', 'admin'
+scopes = namedtuple('NamedTuple', scopes)(*scopes)
 
 
 class AuthenticationKey(Base):
@@ -323,17 +327,21 @@ class AuthenticationKey(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     application = Column(Unicode(128), nullable=False)
     key = Column(Unicode(128), nullable=False)
+    scope = Column(Enum(*scopes._asdict().values()), nullable=False,
+                   default='r')
     last_modified = Column(BigInteger, nullable=False, default=_now)
 
-    def __init__(self, application, key=None):
+    def __init__(self, application, key=None, scope='read'):
         super(AuthenticationKey, self).__init__()
         self.application = application
         if key is None:
             key = str(uuid.uuid4())
         self.key = key
+        self.scope = scope
 
     def __str__(self):
-        return 'App: %s, Key: %s' % (self.application, self.key)
+        res = 'App: %s, Key: %s, Scope: %s'
+        return res % (self.application, self.key, self.scope)
 
 
 class DatabaseVersion(Base):

@@ -19,6 +19,8 @@ def main(args=sys.argv[1:]):
     subparsers.add_parser('list', help='list keys')
     parser_add = subparsers.add_parser('add', help='add a key')
     parser_add.add_argument('app', type=str, help='Application name')
+    parser_add.add_argument('--scope', type=str, help='Application Scope',
+                            default='read')
     parser_revoke = subparsers.add_parser('revoke', help='Revoke a key')
     parser_revoke.add_argument('app', type=str, help='Application name')
 
@@ -42,7 +44,7 @@ def main(args=sys.argv[1:]):
             print("Revoke it if you want a new one")
             print(key)
         else:
-            new_key = mappings.AuthenticationKey(args.app)
+            new_key = mappings.AuthenticationKey(args.app, args.scope)
             session.add(new_key)
             session.commit()
             print(new_key)

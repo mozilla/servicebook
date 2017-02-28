@@ -47,5 +47,9 @@ def increment_database(engine, session, current):
         engine.execute('insert into user (%s) select * from old_user' %
                        (fields))
         engine.execute('drop table old_user')
+    elif current == 1:
+        sql = ('alter table keys add column scope STRING '
+               'DEFAULT "r"')
+        engine.execute(sql)
 
     return current + 1
