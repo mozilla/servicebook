@@ -9,7 +9,8 @@ def increment_database(engine, session, current):
 
     if current == 0:
         # adding new tables
-        for table in (mappings.DatabaseVersion, mappings.Team, mappings.TestRail):
+        for table in (mappings.DatabaseVersion, mappings.Team,
+                      mappings.TestRail):
             try:
                 table.__table__.create(bind=engine)
 
