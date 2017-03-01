@@ -56,21 +56,28 @@ The Docker image will reach out for the database that's set
 **servicebook.ini**.
 
 
-Key managment
--------------
+Authentication
+--------------
 
 The application asks for clients to provide a key when they try to
 modify the database. Keys are stored in a table in the database.
 
-Each application that whishes to get an access should have its own
-API key and scope.
+You can define how anonymous accesses are handled with the
+**anonymous_access** variable in the **common** section of the config file.
 
-Scopes can be:
+The value to set is a permission **scope**. Possible values:
 
-- read: access to GET and HEAD calls
-- readwrite: access to PATCH, PUT, POST, DELETE, GET, HEAD
-- admin: like readwrite - will be used for specific admin tasks
+- **read**: access to GET and HEAD calls - **default value when non specified**
+- **readwrite**: access to PATCH, PUT, POST, DELETE, GET, HEAD
+- **admin**: like readwrite - will be used for specific admin tasks
 
+When an application interacts with the servicebook, it may provide an
+API key in the Authorization header, prefixed by APIKey::
+
+    Authorization APIKey ZGJkYWI3ZmQtZDEwNy00MzJiLWJlNDgtMjZkNTQyZGFiZDhi
+
+The value is a base64-encoded UUID. Each application that whishes to get an
+access should have its own API key and scope.
 
 You can list/add/revoke keys using the **servicebook-keys** command::
 
