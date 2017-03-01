@@ -325,12 +325,12 @@ scopes = namedtuple('NamedTuple', scopes)(*scopes)
 
 
 class AuthenticationKey(Base):
-    __tablename__ = 'keys'
+    __tablename__ = 'authkeys'
     id = Column(Integer, primary_key=True, autoincrement=True)
     application = Column(Unicode(128), nullable=False)
     key = Column(Unicode(128), nullable=False)
     scope = Column(Enum(*scopes._asdict().values()), nullable=False,
-                   default='r')
+                   default='read')
     last_modified = Column(BigInteger, nullable=False, default=_now)
 
     def __init__(self, application, key=None, scope='read'):

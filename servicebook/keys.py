@@ -44,7 +44,7 @@ def main(args=sys.argv[1:]):
             print("Revoke it if you want a new one")
             print(key)
         else:
-            new_key = mappings.AuthenticationKey(args.app, args.scope)
+            new_key = mappings.AuthenticationKey(args.app, scope=args.scope)
             session.add(new_key)
             session.commit()
             print(new_key)

@@ -63,26 +63,32 @@ The application asks for clients to provide a key when they try to
 modify the database. Keys are stored in a table in the database.
 
 Each application that whishes to get an access should have its own
-API key and scope. Scopes can be: read, readwrite, admin.
+API key and scope.
+
+Scopes can be:
+
+- read: access to GET and HEAD calls
+- readwrite: access to PATCH, PUT, POST, DELETE, GET, HEAD
+- admin: like readwrite - will be used for specific admin tasks
 
 
 You can list/add/revoke keys using the **servicebook-keys** command::
 
-    $ bin/servicebook-keys --sqluri mysql+pymysql://book:book@0.0.0.0/book list
+    $ servicebook-keys --sqluri mysql+pymysql://book:book@0.0.0.0/book list
     No keys!
 
-    $ bin/servicebook-keys --sqluri mysql+pymysql://book:book@0.0.0.0/book add MyApp
-    App: MyApp, Key: 399c1365-3700-4ce6-8fd1-f304a32a0794
+    $ servicebook-keys --sqluri mysql+pymysql://book:book@0.0.0.0/book add MyApp
+    App: MyApp, Key: 399c1365-3700-4ce6-8fd1-f304a32a0794, Scope: read
 
-    $ bin/servicebook-keys --sqluri mysql+pymysql://book:book@0.0.0.0/book add MyApp2
-    App: MyApp2, Key: ef2b1158-27ca-4994-a887-c0d531a0749d
+    $ servicebook-keys --sqluri mysql+pymysql://book:book@0.0.0.0/book add MyApp2 --scope readwrite
+    App: MyApp2, Key: e87271fd-ca31-46cf-8cc5-48b1f9348e4e, Scope: readwrite
 
-    $ bin/servicebook-keys --sqluri mysql+pymysql://book:book@0.0.0.0/book list
-    App: MyApp, Key: 399c1365-3700-4ce6-8fd1-f304a32a0794
-    App: MyApp2, Key: ef2b1158-27ca-4994-a887-c0d531a0749d
+    $ servicebook-keys --sqluri mysql+pymysql://book:book@0.0.0.0/book list
+    App: MyApp, Key: 399c1365-3700-4ce6-8fd1-f304a32a0794, Scope: read
+    App: MyApp2, Key: e87271fd-ca31-46cf-8cc5-48b1f9348e4e, Scope: readwrite
 
-    $ bin/servicebook-keys --sqluri mysql+pymysql://book:book@0.0.0.0/book revoke MyApp
+    $ servicebook-keys --sqluri mysql+pymysql://book:book@0.0.0.0/book revoke MyApp
     Key revoked for MyApp
 
-    $ bin/servicebook-keys --sqluri mysql+pymysql://book:book@0.0.0.0/book list
-    App: MyApp2, Key: ef2b1158-27ca-4994-a887-c0d531a0749d
+    $ servicebook-keys --sqluri mysql+pymysql://book:book@0.0.0.0/book list
+    App: MyApp2, Key: e87271fd-ca31-46cf-8cc5-48b1f9348e4e, Scope: readwrite
