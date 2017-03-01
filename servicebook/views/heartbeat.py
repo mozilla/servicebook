@@ -7,14 +7,15 @@ from servicebook.mappings import Project
 from servicebook.db import Session
 
 
+commit = subprocess.check_output(["git", "describe", "--always"])
+commit = str(commit.strip(), 'utf8')
 heartbeat = Blueprint('heartbeat', __name__)
 
 
 @heartbeat.route('/__version__')
 def _version():
-    commit = subprocess.check_output(["git", "describe", "--always"])
     resp = render_template('version.json', version=__version__,
-                           commit=str(commit.strip(), 'utf8'))
+                           commit=commit)
     data = json.loads(resp)
     return jsonify(data)
 
