@@ -63,7 +63,8 @@ The application asks for clients to provide a key when they try to
 modify the database. Keys are stored in a table in the database.
 
 Each application that whishes to get an access should have its own
-API key.
+API key and scope. Scopes can be: read, readwrite, admin.
+
 
 You can list/add/revoke keys using the **servicebook-keys** command::
 

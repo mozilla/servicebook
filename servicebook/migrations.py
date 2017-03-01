@@ -49,7 +49,7 @@ def increment_database(engine, session, current):
         engine.execute('drop table old_user')
     elif current == 1:
         sql = ('alter table keys add column scope STRING '
-               'DEFAULT "r"')
+               'DEFAULT "read"')
         engine.execute(sql)
 
     return current + 1
