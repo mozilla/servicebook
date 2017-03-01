@@ -16,6 +16,7 @@ from servicebook.mappings import published
 from servicebook.views.search import search
 from servicebook.views.heartbeat import heartbeat
 from servicebook.search import get_indexer
+from servicebook.auth import authenticate
 
 from flask_restless.views import base
 from flask_restless import DefaultSerializer
@@ -152,7 +153,7 @@ def create_app(ini_file=DEFAULT_INI_FILE):
         if request.blueprint in ('swagger', 'heartbeat'):
             return response
 
-        if request.path == '/api/':
+        if request.path.rstrip('/') == '/api':
             return response
 
         if response.status_code > 399:
@@ -215,6 +216,7 @@ def create_app(ini_file=DEFAULT_INI_FILE):
 
     @app.before_request
     def before_req():
+        authenticate(app, request)
         g.debug = _DEBUG
 
     logging.config.fileConfig(ini_file)

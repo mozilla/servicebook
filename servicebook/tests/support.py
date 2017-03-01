@@ -3,10 +3,12 @@ from unittest import TestCase
 from contextlib import contextmanager
 import json
 import re
+import sys
+from io import StringIO
 
 import yaml
 import requests_mock
-from flask.ext.webtest import TestApp
+from flask_webtest import TestApp
 from servicebook.server import main as app_creator
 from servicebook.db import main as importer
 
@@ -21,8 +23,10 @@ class BaseTest(TestCase):
         super(BaseTest, self).setUp()
         global _ONE_TIME
         if _ONE_TIME is None:
-            importer(['--dump-file', _DUMP, '--sqluri', 'sqlite://'])
-            app = app_creator(['--config-file', _INI, '--no-run'])
+            print('Creating the app and database. This takes time...')
+            with silence():
+                importer(['--dump-file', _DUMP, '--sqluri', 'sqlite://'])
+                app = app_creator(['--config-file', _INI, '--no-run'])
             _ONE_TIME = TestApp(app)
         self.app = _ONE_TIME
 
@@ -64,3 +68,15 @@ class BaseTest(TestCase):
             finally:
                 # logging out
                 self.app.get('/logout')
+
+
+@contextmanager
+def silence():
+    oldout, olderr = sys.stdout, sys.stderr
+    sys.stdout, sys.stderr = StringIO(), StringIO()
+    try:
+        yield sys.stdout, sys.stderr
+    finally:
+        sys.stdout.seek(0)
+        sys.stderr.seek(0)
+        sys.stdout, sys.stderr = oldout, olderr

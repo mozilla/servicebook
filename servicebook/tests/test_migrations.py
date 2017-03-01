@@ -4,6 +4,7 @@ from unittest import TestCase
 
 from servicebook.db import migrate_db, Session, DATABASE_VERSION
 from servicebook import mappings
+from servicebook.tests.support import silence
 
 
 _DB = os.path.join(os.path.dirname(__file__), 'projects_0.db')
@@ -21,6 +22,7 @@ class TestMigration(TestCase):
 
     def test_migrate_db(self):
         session = Session()
-        migrate_db(['--sqluri', _SQLURI])
+        with silence():
+            migrate_db(['--sqluri', _SQLURI])
         ver = session.query(mappings.DatabaseVersion).one().version
         self.assertEqual(ver, DATABASE_VERSION)

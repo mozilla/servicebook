@@ -289,9 +289,11 @@ class Project(Base):
             user = getattr(self, field, None)
             if user is not None:
                 res[field] = user.to_json()
-        res['qa_group'] = self.qa_group.to_json()
+        if self.qa_group is not None:
+            res['qa_group'] = self.qa_group.to_json()
         for rel in ('tags', 'languages', 'repositories'):
-            res[rel] = [item.to_json() for item in getattr(self, rel)]
+            res[rel] = [item.to_json() for item in getattr(self, rel)
+                        if item is not None]
         return res
 
     def index(self):
