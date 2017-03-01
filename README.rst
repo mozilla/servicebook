@@ -59,8 +59,7 @@ The Docker image will reach out for the database that's set
 Authentication
 --------------
 
-The application asks for clients to provide a key when they try to
-modify the database. Keys are stored in a table in the database.
+The application can secure the HTTP API access for reads and/or writes.
 
 You can define how anonymous accesses are handled with the
 **anonymous_access** variable in the **common** section of the config file.
@@ -71,13 +70,13 @@ The value to set is a permission **scope**. Possible values:
 - **readwrite**: access to PATCH, PUT, POST, DELETE, GET, HEAD
 - **admin**: like readwrite - will be used for specific admin tasks
 
-When an application interacts with the servicebook, it may provide an
-API key in the Authorization header, prefixed by APIKey::
+Client can also have a privileged access with an API key.
+The key is passed in the Authorization header, prefixed by APIKey::
 
     Authorization APIKey ZGJkYWI3ZmQtZDEwNy00MzJiLWJlNDgtMjZkNTQyZGFiZDhi
 
-The value is a base64-encoded UUID. Each application that whishes to get an
-access should have its own API key and scope.
+The value is a base64-encoded UUID. Each application that whishes to get a
+priviledged access should have its own API key and scope.
 
 You can list/add/revoke keys using the **servicebook-keys** command::
 
@@ -99,3 +98,11 @@ You can list/add/revoke keys using the **servicebook-keys** command::
 
     $ servicebook-keys --sqluri mysql+pymysql://book:book@0.0.0.0/book list
     App: MyApp2, Key: e87271fd-ca31-46cf-8cc5-48b1f9348e4e, Scope: readwrite
+
+
+The default setup will make the data read-only and will required a privileged
+access with **readwrite** scope for writing in the database.
+
+You should have one separate key per calling service so it's easier to revoke or
+renew a specific service access if required.
+
