@@ -10,7 +10,7 @@ def increment_database(engine, session, current):
     if current == 0:
         # adding new tables
         for table in (mappings.DatabaseVersion, mappings.Team,
-                      mappings.TestRail):
+                      mappings.TestRail, mappings.AuthenticationKey):
             try:
                 table.__table__.create(bind=engine)
 
@@ -48,8 +48,10 @@ def increment_database(engine, session, current):
                        (fields))
         engine.execute('drop table old_user')
     elif current == 1:
-        sql = ('alter table keys add column scope STRING '
+        sql = ('alter table authkeys add column scope STRING '
                'DEFAULT "read"')
-        engine.execute(sql)
-
+        try:
+            engine.execute(sql)
+        except OperationalError:
+            pass
     return current + 1
