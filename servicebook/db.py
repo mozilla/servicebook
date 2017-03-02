@@ -131,6 +131,14 @@ def init(sqluri=_SQLURI, dump=None):
                 choice.append(item)
         return choice
 
+    # some teams
+    for team_name in ('OPS', 'QA', 'Dev', 'Community'):
+        team = mappings.Team(team_name)
+        session.add(team)
+    session.commit()
+
+
+
     # importing people first
     for project in dump:
         # People
