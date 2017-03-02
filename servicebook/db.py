@@ -137,8 +137,6 @@ def init(sqluri=_SQLURI, dump=None):
         session.add(team)
     session.commit()
 
-
-
     # importing people first
     for project in dump:
         # People
