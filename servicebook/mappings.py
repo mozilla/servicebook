@@ -63,7 +63,7 @@ class User(Base):
     lastname = Column(Unicode(128), nullable=False)
     irc = Column(Unicode(128))
     mozillians_login = Column(Unicode(128))
-    mozqa = Column(Boolean, default=False)
+    public = Column(Boolean, default=False)
     github = Column(Unicode(128))
     editor = Column(Boolean, default=False)
     email = Column(Unicode(128))

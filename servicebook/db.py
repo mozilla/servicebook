@@ -20,7 +20,7 @@ here = os.path.dirname(__file__)
 _DUMP = os.path.join(here, 'dump.json')
 _SQLURI = os.environ.get('SQLURI', 'sqlite:////tmp/qa_projects.db')
 _SEARCH = {"WHOOSH_BASE": "/tmp/whoosh-" + str(sys.hexversion)}
-DATABASE_VERSION = 2
+DATABASE_VERSION = 3
 
 
 def _migrate(engine, current, target):
@@ -93,11 +93,11 @@ def init(sqluri=_SQLURI, dump=None):
 
     # importing two editors
     stuart = mappings.User(firstname='Stuart', lastname='Philp',
-                           github='stuartphilp', mozqa=True,
+                           github='stuartphilp', public=True,
                            editor=True)
 
     tarek = mappings.User(firstname='Tarek', lastname='Ziade',
-                          github='tarekziade', mozqa=True,
+                          github='tarekziade', public=True,
                           editor=True, email='tarek@mozilla.com')
     session.add(stuart)
     session.add(tarek)
@@ -146,7 +146,7 @@ def init(sqluri=_SQLURI, dump=None):
                 continue
 
             new = dict(project[ppl])
-            new['mozqa'] = True
+            new['public'] = True
             if 'id' in new:
                 del new['id']
             session.add(mappings.User(**new))

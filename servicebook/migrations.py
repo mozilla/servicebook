@@ -42,16 +42,27 @@ def increment_database(engine, session, current):
         engine.execute('alter table user rename to old_user')
         mappings.User.__table__.create(bind=engine)
         fields = ['id', 'firstname', 'lastname', 'irc', 'mozillians_login',
-                  'mozqa', 'github', 'editor', 'email', 'last_modified']
+                  'github', 'editor', 'email', 'last_modified']
         fields = ','.join(fields)
-        engine.execute('insert into user (%s) select * from old_user' %
-                       (fields))
+        engine.execute('insert into user (%s) select %s from old_user' %
+                       (fields, fields))
         engine.execute('drop table old_user')
     elif current == 1:
         sql = ('alter table authkeys add column scope STRING '
                'DEFAULT "read"')
         try:
             engine.execute(sql)
+        except OperationalError:
+            pass
+    elif current == 2:
+        public = 'alter table user add column public BOOLEAN DEFAULT False;'
+        try:
+            engine.execute(public)
+        except OperationalError:
+            pass
+        remove = 'alter table user add column mozqa'
+        try:
+            engine.execute(remove)
         except OperationalError:
             pass
     return current + 1
