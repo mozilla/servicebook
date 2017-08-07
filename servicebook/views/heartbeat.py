@@ -1,23 +1,23 @@
-import subprocess
-import json
-from flask import Blueprint, render_template, jsonify
-
-from servicebook import __version__
+import os
+from flask import Blueprint, jsonify, Response
 from servicebook.mappings import Project
 from servicebook.db import Session
 
 
-commit = subprocess.check_output(["git", "describe", "--always"])
-commit = str(commit.strip(), 'utf8')
+here = os.path.abspath(os.path.dirname(__file__))
+circleci_artifact = 'version.json'
 heartbeat = Blueprint('heartbeat', __name__)
 
 
 @heartbeat.route('/__version__')
 def _version():
-    resp = render_template('version.json', version=__version__,
-                           commit=commit)
-    data = json.loads(resp)
-    return jsonify(data)
+    if os.path.exists(circleci_artifact):
+        filename = circleci_artifact
+    else:
+        filename = os.path.join(here, '..', 'templates', 'version.json')
+
+    with open(filename) as f:
+        return Response(f.read(), mimetype='application/json')
 
 
 @heartbeat.route('/__lbheartbeat__')
