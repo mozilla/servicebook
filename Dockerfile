@@ -15,7 +15,7 @@ COPY . /app
 RUN chown 10001:10001 -R /app
 
 RUN python setup.py develop
-RUN python create_version.py > version.json
+COPY version.json /app/version.json
 
 USER app
 EXPOSE 5001

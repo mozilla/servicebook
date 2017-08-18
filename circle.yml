@@ -44,6 +44,6 @@ deployment:
   hub_testing:
     branch: /testing_.*/
     commands:
-        - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-        - "docker tag app:build ${DOCKERHUB_REPO}:${CIRCLE_BRANCH}"
-        - "docker push ${DOCKERHUB_REPO}:${CIRCLE_BRANCH}"
+      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+      - "docker tag app:build ${DOCKERHUB_REPO}:${CIRCLE_BRANCH}"
+      - "docker push ${DOCKERHUB_REPO}:${CIRCLE_BRANCH}"
