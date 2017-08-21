@@ -75,87 +75,54 @@ def init(sqluri=_SQLURI, dump=None):
     if dump is None:
         return engine
 
-    people = ["Stuart", "Tarek"]
+    people = []
     qa_groups = []
+
     dbver = mappings.DatabaseVersion()
     dbver.version = DATABASE_VERSION
     session.add(dbver)
 
-    def _find_user(firstname):
-        p = mappings.User
-        q = session.query(p).filter(p.firstname == firstname)
+    def _find_entry(mapping, field, value):
+        f = getattr(mapping, field)
+        q = session.query(mapping).filter(f == value)
         return q.first()
+
+    def _find_user(firstname):
+        return _find_entry(mappings.User, 'firstname', firstname)
 
     def _find_qa_group(name):
-        g = mappings.Group
-        q = session.query(g).filter(g.name == name)
-        return q.first()
-
-    # importing two editors
-    stuart = mappings.User(firstname='Stuart', lastname='Philp',
-                           github='stuartphilp', public=True,
-                           editor=True)
-
-    tarek = mappings.User(firstname='Tarek', lastname='Ziade',
-                          github='tarekziade', public=True,
-                          editor=True, email='tarek@mozilla.com')
-    session.add(stuart)
-    session.add(tarek)
-    session.commit()
-
-    # some langs
-    langs = (('Python', '2.7'), ('Python', '3.5'), ('Javascript', None))
-
-    for lang, ver in langs:
-        plang = mappings.Language()
-        plang.name = lang
-        plang.version = ver
-        session.add(plang)
-
-    # some tags
-    tags = 'ui', 'flask', 'node', 'experimental'
-
-    for tag in tags:
-        ptag = mappings.Tag()
-        ptag.name = tag
-        session.add(ptag)
-
-    session.commit()
-
-    def _random(table, size=2):
-        items = session.query(table).all()
-        choice = []
-        while len(choice) < size:
-            item = random.choice(items)
-            if item not in choice:
-                choice.append(item)
-        return choice
-
-    # some teams
-    for team_name in ('OPS', 'QA', 'Dev', 'Community'):
-        team = mappings.Team(team_name)
-        session.add(team)
-    session.commit()
+        return _find_entry(mappings.Group, 'name', name)
 
     # importing people first
-    for project in dump:
+    for project in dump['data']:
         # People
-        for ppl in ('qa_primary', 'qa_secondary'):
-            pid = project[ppl]['firstname']
+        for ppl in ('qa_primary', 'qa_secondary', 'dev_primary', 'dev_secondary',
+                    'op_primary', 'op_secondary'):
+            person = project.get(ppl)
+            if person is None:
+                continue
+            pid = person['firstname']
             if pid in people:
                 continue
-
             new = dict(project[ppl])
-            new['public'] = True
             if 'id' in new:
                 del new['id']
-            session.add(mappings.User(**new))
+            user = mappings.User(**new)
+            session.add(user)
             people.append(pid)
+            for team in ('team', 'secondary_team'):
+                if team not in new:
+                    continue
+                if _find_entry(mappings.Team, 'name', team) is None:
+                    t = Team(**new[team])
+                    session.add(t)
 
         session.commit()
 
-    for project in dump:
+    for project in dump['data']:
         print('Importing %s' % project['name'])
+        project = dict(project)
+  
         # Groups
         qa_group_name = project['qa_group_name']
         if qa_group_name not in qa_groups:
@@ -168,40 +135,35 @@ def init(sqluri=_SQLURI, dump=None):
 
         # The project itself
         proj = mappings.Project()
-        proj.name = project['name']
-        proj.description = project['description']
-        proj.qa_primary = _find_user(project['qa_primary']['firstname'])
-        proj.qa_secondary = _find_user(project['qa_secondary']['firstname'])
-        proj.irc = project['irc']
+        proj.from_json(project)
+        for role in ('qa_primary', 'qa_secondary', 'dev_primary', 'dev_secondary', 
+                     'op_primary', 'op_secondary'):
+            if role not in project:
+                continue
+            setattr(proj, role, _find_user(project[role]['firstname']))
+
         proj.qa_group = _find_qa_group(project['qa_group_name'])
-        proj.public = True
 
-        for deplo in project['deployments']:
-            d = mappings.Deployment()
-            d.name = deplo['name']
-            d.endpoint = deplo['endpoint']
-            d.public = True
-            session.add(d)
-            proj.deployments.append(d)
+        for attr, mapping, dupe in (('tests', mappings.ProjectTest, None),
+                                    ('repositories', mappings.Link, 'url'),
+                                    ('tags', mappings.Tag, 'name'),
+                                    ('languages', mappings.Language, 'name'),
+                                    ('testrail', mappings.TestRail, None),
+                                    ('jenkins_jobs', mappings.JenkinsJob, None),
+                                    ('deployments', mappings.Deployment, None)):
+            for item in project[attr]:
+                item = dict(item)
+                if dupe is not None:
+                    e = _find_entry(mapping, dupe, item[dupe])
+                    if e:
+                        getattr(proj, attr).append(e)
+                        continue
 
-        # for each project we want
-        tests = ['Test Suite', 'Unit', 'Functional/UI', 'Load',
-                 'Performance', 'Accessibility', 'Security',
-                 'Localization']
-
-        for test in tests:
-            ptest = mappings.ProjectTest()
-            ptest.name = test
-            ptest.url = 'http://example.org'
-            ptest.operational = random.choice([True, False])
-            ptest.jenkins_pipeline = False
-            ptest.public = True
-            proj.tests.append(ptest)
-
-        proj.languages = _random(mappings.Language, 2)
-        proj.tags = _random(mappings.Tag, 3)
-        proj.bz_product = project['bz_component']
-        proj.bz_component = project['bz_product']
+                if 'id' in item:
+                    del item['id']
+                ob = mapping(**item)
+                session.add(ob)
+                getattr(proj, attr).append(ob)
 
         session.add(proj)
         session.commit()

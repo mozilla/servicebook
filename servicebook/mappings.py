@@ -30,6 +30,12 @@ class Base(object):
             res[col] = getattr(self, col)
         return res
 
+    def from_json(self, data):
+        for key, value in data.items():
+            if key == 'id' or key not in self.columns:
+                continue
+            setattr(self, key, value)
+  
     def index(self):
         return ''
 
@@ -85,6 +91,14 @@ class User(Base):
 
     def fullname(self):
         return self.__repr__()
+
+    def to_json(self):
+        res = super(User, self).to_json()
+        if self.team:
+            res['team'] = self.team.to_json()
+        if self.secondary_team:
+            res['secondary_team'] = self.secondary_team.to_json()
+        return res
 
 
 published.append(User)
