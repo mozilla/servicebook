@@ -3,7 +3,6 @@ import os
 import json
 import argparse
 import sys
-import random
 
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import create_engine
@@ -96,7 +95,8 @@ def init(sqluri=_SQLURI, dump=None):
     # importing people first
     for project in dump['data']:
         # People
-        for ppl in ('qa_primary', 'qa_secondary', 'dev_primary', 'dev_secondary',
+        for ppl in ('qa_primary', 'qa_secondary', 'dev_primary',
+                    'dev_secondary',
                     'op_primary', 'op_secondary'):
             person = project.get(ppl)
             if person is None:
@@ -107,7 +107,7 @@ def init(sqluri=_SQLURI, dump=None):
             new = dict(project[ppl])
             if 'id' in new:
                 del new['id']
-            teams  = {}
+            teams = {}
             for team in ('team', 'secondary_team'):
                 if team not in new:
                     continue
@@ -132,7 +132,6 @@ def init(sqluri=_SQLURI, dump=None):
     for project in dump['data']:
         print('Importing %s' % project['name'])
         project = dict(project)
-  
         # Groups
         qa_group_name = project['qa_group_name']
         if qa_group_name not in qa_groups:
@@ -146,7 +145,8 @@ def init(sqluri=_SQLURI, dump=None):
         # The project itself
         proj = mappings.Project()
         proj.from_json(project)
-        for role in ('qa_primary', 'qa_secondary', 'dev_primary', 'dev_secondary', 
+        for role in ('qa_primary', 'qa_secondary', 'dev_primary',
+                     'dev_secondary',
                      'op_primary', 'op_secondary'):
             if role not in project:
                 continue
@@ -154,13 +154,15 @@ def init(sqluri=_SQLURI, dump=None):
 
         proj.qa_group = _find_qa_group(project['qa_group_name'])
 
-        for attr, mapping, dupe in (('tests', mappings.ProjectTest, None),
-                                    ('repositories', mappings.Link, 'url'),
-                                    ('tags', mappings.Tag, 'name'),
-                                    ('languages', mappings.Language, 'name'),
-                                    ('testrail', mappings.TestRail, None),
-                                    ('jenkins_jobs', mappings.JenkinsJob, None),
-                                    ('deployments', mappings.Deployment, None)):
+        rels = (('tests', mappings.ProjectTest, None),
+                ('repositories', mappings.Link, 'url'),
+                ('tags', mappings.Tag, 'name'),
+                ('languages', mappings.Language, 'name'),
+                ('testrail', mappings.TestRail, None),
+                ('jenkins_jobs', mappings.JenkinsJob, None),
+                ('deployments', mappings.Deployment, None))
+
+        for attr, mapping, dupe in rels:
             for item in project[attr]:
                 item = dict(item)
                 if dupe is not None:

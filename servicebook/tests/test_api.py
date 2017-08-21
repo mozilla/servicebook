@@ -29,7 +29,7 @@ class ApiTest(BaseTest):
             m.get(bz_matcher, text=json.dumps(bz_resp))
             m.get(sw_matcher, text=json.dumps(sw_resp))
             absearch = self.app.get('/api/project/%d' % absearch_id)
-            self.assertEqual(absearch.json['data']['qa_primary_id'], 3)
+            self.assertEqual(absearch.json['data']['qa_primary_id'], 1)
 
     def test_langs(self):
         self._test_one_many('language', ('python', 'go', 'javascript'))
@@ -66,7 +66,7 @@ class ApiTest(BaseTest):
         self.assertEqual(len(project[field_name + 's']), len(collection))
 
     def test_browsing_user(self):
-        karl_json = self.app.get('/api/user/3').json['data']
+        karl_json = self.app.get('/api/user/2').json['data']
         self.assertEqual(karl_json['firstname'], 'Karl')
 
     def test_browsing_group(self):
@@ -74,55 +74,59 @@ class ApiTest(BaseTest):
         self.assertEqual(group['name'], 'Customization')
 
     def test_changing_user_strict(self):
-        resp = self.app.get('/api/user/3')
+        resp = self.app.get('/api/user/2')
         etag = resp.etag
         karl_json = resp.json['data']
         old_name = karl_json['firstname']
         new_name = karl_json['firstname'] = old_name + 'something'
+        del karl_json['team']
+        del karl_json['secondary_team']
 
         req_data = {'data': {'type': 'user', 'attributes': karl_json,
-                    'id': '3'}}
+                    'id': '2'}}
 
         headers = {'Content-Type': 'application/vnd.api+json'}
 
         # fails if no If-Match provided
-        self.app.patch_json('/api/user/3', params=req_data,
+        self.app.patch_json('/api/user/2', params=req_data,
                             headers=headers, status=428)
 
         # fails if wront etag provided
         headers['If-Match'] = "bleh"
-        self.app.patch_json('/api/user/3', params=req_data,
+        self.app.patch_json('/api/user/2', params=req_data,
                             headers=headers, status=412)
 
         headers['If-Match'] = etag
-        self.app.patch_json('/api/user/3', params=req_data,
+        self.app.patch_json('/api/user/2', params=req_data,
                             headers=headers)
 
-        resp = self.app.get('/api/user/3')
+        resp = self.app.get('/api/user/2')
         karl_json = resp.json['data']
         etag = resp.etag
         self.assertEqual(karl_json['firstname'], new_name)
 
         # now test the etag value
-        resp = self.app.get('/api/user/3',
+        resp = self.app.get('/api/user/2',
                             headers={'If-None-Match': str(etag)})
         self.assertEqual(resp.status_int, 304)
-        self.app.get('/api/user/3', headers={'If-None-Match': "MEH"})
+        self.app.get('/api/user/2', headers={'If-None-Match': "MEH"})
 
     def test_changing_user(self):
-        resp = self.app.get('/api/user/3')
+        resp = self.app.get('/api/user/2')
         karl_json = resp.json['data']
         etag = resp.etag
         self.assertEqual(karl_json['firstname'], 'Karl')
         karl_json['firstname'] = 'K.'
+        del karl_json['team']
+        del karl_json['secondary_team']
         req_data = {'data': {'type': 'user', 'attributes': karl_json,
-                    'id': '3'}}
+                    'id': '2'}}
         headers = {'Content-Type': 'application/vnd.api+json',
                    'If-Match': etag}
 
-        self.app.patch_json('/api/user/3', params=req_data,
+        self.app.patch_json('/api/user/2', params=req_data,
                             headers=headers)
-        resp = self.app.get('/api/user/3')
+        resp = self.app.get('/api/user/2')
         karl_json = resp.json['data']
         self.assertEqual(karl_json['firstname'], 'K.')
 

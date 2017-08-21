@@ -35,7 +35,7 @@ class Base(object):
             if key == 'id' or key not in self.columns:
                 continue
             setattr(self, key, value)
-  
+
     def index(self):
         return ''
 
@@ -50,9 +50,11 @@ class Team(Base):
     name = Column(Unicode(128), nullable=False)
     last_modified = Column(BigInteger, nullable=False, default=_now)
 
-    def __init__(self, name=None, last_modified=_now):
+    def __init__(self, name=None, last_modified=None):
         super(Team, self).__init__()
         self.name = name
+        if last_modified is None:
+            last_modified = _now()
         self.last_modified = last_modified
 
     def __repr__(self):
