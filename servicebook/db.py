@@ -107,16 +107,26 @@ def init(sqluri=_SQLURI, dump=None):
             new = dict(project[ppl])
             if 'id' in new:
                 del new['id']
-            user = mappings.User(**new)
-            session.add(user)
-            people.append(pid)
+            teams  = {}
             for team in ('team', 'secondary_team'):
                 if team not in new:
                     continue
-                if _find_entry(mappings.Team, 'name', team) is None:
-                    t = Team(**new[team])
+                entry = _find_entry(mappings.Team, 'name', team)
+                if entry is None:
+                    del new[team]['id']
+                    t = mappings.Team(**new[team])
                     session.add(t)
+                    session.commit()
+                    teams[team] = t
+                    new[team + '_id'] = t.id
+                else:
+                    new[team + '_id'] = entry.id
 
+                del new[team]
+
+            user = mappings.User(**new)
+            session.add(user)
+            people.append(pid)
         session.commit()
 
     for project in dump['data']:

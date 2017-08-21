@@ -50,9 +50,10 @@ class Team(Base):
     name = Column(Unicode(128), nullable=False)
     last_modified = Column(BigInteger, nullable=False, default=_now)
 
-    def __init__(self, name=None):
+    def __init__(self, name=None, last_modified=_now):
         super(Team, self).__init__()
         self.name = name
+        self.last_modified = last_modified
 
     def __repr__(self):
         return self.name
