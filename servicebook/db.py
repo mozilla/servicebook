@@ -92,6 +92,12 @@ def init(sqluri=_SQLURI, dump=None):
     def _find_qa_group(name):
         return _find_entry(mappings.Group, 'name', name)
 
+    # predefined teams
+    for team in ('Dev', 'QA', 'OPS'):
+        t = mappings.Team(name=team)
+        session.add(t)
+    session.commit()
+
     # importing people first
     for project in dump['data']:
         # People
@@ -111,13 +117,15 @@ def init(sqluri=_SQLURI, dump=None):
             for team in ('team', 'secondary_team'):
                 if team not in new:
                     continue
-                entry = _find_entry(mappings.Team, 'name', team)
+                team_data = new[team]
+                entry = _find_entry(mappings.Team, 'name', team_data['name'])
                 if entry is None:
-                    del new[team]['id']
-                    t = mappings.Team(**new[team])
+                    del team_data['id']
+                    print('Creating team ' + team_data['name'])
+                    t = mappings.Team(**team_data)
                     session.add(t)
                     session.commit()
-                    teams[team] = t
+                    teams[team_data['name']] = t
                     new[team + '_id'] = t.id
                 else:
                     new[team + '_id'] = entry.id
@@ -125,6 +133,7 @@ def init(sqluri=_SQLURI, dump=None):
                 del new[team]
 
             user = mappings.User(**new)
+            print('Created user ' + str(user))
             session.add(user)
             people.append(pid)
         session.commit()
