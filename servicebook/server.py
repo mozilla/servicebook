@@ -112,6 +112,9 @@ def create_app(ini_file=DEFAULT_INI_FILE):
         preprocessors[method] = [partial(add_timestamp, strict, method)]
 
     app.db.session = Session()
+    if 'whoosh' in app.config and 'path' in app.config['whoosh']:
+        _SEARCH['WHOOSH_BASE'] = app.config['whoosh']['path']
+
     get_indexer(_SEARCH, app.db.session)
     app.register_blueprint(search)
     app.register_blueprint(heartbeat)
