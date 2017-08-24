@@ -9,8 +9,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm.exc import NoResultFound
 
 from servicebook import mappings
-from servicebook.search import get_indexer
+from servicebook.search import get_indexer, IndexService
 from servicebook.migrations import increment_database
+from servicebook.mappings import published
 
 
 session_factory = sessionmaker(autoflush=False)
@@ -191,6 +192,34 @@ def init(sqluri=_SQLURI, dump=None):
 
     session.close()
     return engine
+
+
+def reindex(args=sys.argv[1:]):
+    parser = argparse.ArgumentParser(
+        description='ServiceBook Search reindexer.')
+
+    parser.add_argument('--whoosh-root', help='Dump file',
+                        type=str, default=_SEARCH['WHOOSH_BASE'])
+
+    parser.add_argument('--sqluri', help='Database',
+                        type=str, default=_SQLURI)
+
+    args = parser.parse_args(args=args)
+
+    engine = create_engine(args.sqluri)
+    session_factory.configure(bind=engine)
+    mappings.Base.metadata.create_all(engine)
+    session = Session()
+    _SEARCH['WHOOSH_BASE'] = args.whoosh_root
+    indexer = IndexService(config=_SEARCH, session=session)
+
+    for mapping in published:
+        print("Indexing %s" % mapping.__table__)
+        indexer.register_mapping(mapping)
+        indexer._flush_set(session.query(mapping))
+
+    print("")
+    print("Reindexing done")
 
 
 def main(args=sys.argv[1:]):

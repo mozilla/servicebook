@@ -20,6 +20,7 @@ setup(name='servicebook',
       [console_scripts]
       servicebook = servicebook.server:main
       servicebook-import = servicebook.db:main
+      servicebook-reindex = servicebook.db:reindex
       servicebook-keys = servicebook.keys:main
       servicebook-migrate-db = servicebook.db:migrate_db
       """)
