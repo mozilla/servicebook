@@ -66,7 +66,11 @@ def migrate_db(args=sys.argv[1:]):
 
 
 def init(sqluri=_SQLURI, dump=None):
-    engine = create_engine(sqluri)
+    if sqluri.startswith('mysql'):
+        engine = create_engine(sqluri, pool_pre_ping=True, pool_recycle=3600)
+    else:
+        engine = create_engine(sqluri)
+
     session_factory.configure(bind=engine)
     mappings.Base.metadata.create_all(engine)
     session = Session()
