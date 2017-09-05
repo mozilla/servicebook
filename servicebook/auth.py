@@ -36,7 +36,7 @@ def authenticate(app, request):
     # XXX cache this call for one minute
     q = app.db.session.query(AuthenticationKey)
     q = q.filter(AuthenticationKey.key == key)
-    auth = q.one()
+    auth = q.first()
     if auth is None:
         return abort(401)
 
