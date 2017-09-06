@@ -7,5 +7,6 @@ flask-iniconfig==0.1.0
 PyYAML==3.12
 whoosh==2.7.4
 PyMySQL==0.7.10
+raven[flask]
 -e git+https://github.com/tarekziade/flask-restless.git#egg=flask-restless
 -e git+https://github.com/tarekziade/flask-restless-swagger.git#egg=flask-restless-swagger

@@ -10,6 +10,7 @@ from werkzeug.exceptions import HTTPException
 from flask import Flask, g, request, Response, abort, jsonify
 from flask_iniconfig import INIConfig
 from flask_restless_swagger import SwagAPIManager as APIManager
+from raven.contrib.flask import Sentry
 
 from servicebook.db import init, Session, _SEARCH
 from servicebook.mappings import published
@@ -56,6 +57,7 @@ base.catch_integrity_errors = _catch_integrity_errors
 HERE = os.path.dirname(__file__)
 DEFAULT_INI_FILE = os.path.join(HERE, '..', 'servicebook.ini')
 _DEBUG = True
+sentry = Sentry()
 
 
 def add_timestamp(strict, method, *args, **kw):
@@ -99,6 +101,9 @@ def create_app(ini_file=DEFAULT_INI_FILE):
     INIConfig(app)
     app.config.from_inifile(ini_file)
     app.secret_key = app.config['common']['secret_key']
+    if app.config.get('sentry', {}).get('dsn') is not None:
+        sentry.init_app(app, dsn=app.config['sentry']['dsn'],
+                        logging=True, level=logging.ERROR)
     strict = int(app.config['common'].get('strict_update', 0))
     sqluri = os.environ.get('SQLURI')
     if sqluri is None:
