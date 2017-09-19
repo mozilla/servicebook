@@ -25,9 +25,30 @@ from flask_restless.helpers import get_by
 from sqlalchemy.inspection import inspect as sa_inspect
 
 
+sentry = Sentry()
+
+
 # see https://github.com/jfinkels/flask-restless/issues/619
 # hack until flask-restless provides the API class in
 # pre/post processors
+
+def _tries(exception, session, func, *args, **kw):
+    attempts = 0
+    session.rollback()
+
+    while attempts < 6:
+        time.sleep(attempts * 2.)
+        try:
+            res = func(*args, **kw)
+            session.commit()
+            return res
+        except Exception:
+            session.rollback()
+            attempts += 1
+
+    raise exception
+
+
 def _catch_integrity_errors(session):
     def decorated(func):
         @wraps(func)
@@ -38,9 +59,17 @@ def _catch_integrity_errors(session):
                 except Exception:
                     g.api = func.__self__
 
-                return func(*args, **kw)
+                res = func(*args, **kw)
+                session.commit()
+                return res
             except base.SQLAlchemyError as exception:
-                session.rollback()
+                try:
+                    return _tries(exception, session, func, *args, **kw)
+                except Exception:
+                    pass
+
+                if sentry.client:
+                    sentry.captureException()
                 status = 409 if base.is_conflict(exception) else 400
                 detail = str(exception)
                 title = base.un_camel_case(exception.__class__.__name__)
@@ -57,7 +86,6 @@ base.catch_integrity_errors = _catch_integrity_errors
 HERE = os.path.dirname(__file__)
 DEFAULT_INI_FILE = os.path.join(HERE, '..', 'servicebook.ini')
 _DEBUG = True
-sentry = Sentry()
 
 
 def add_timestamp(strict, method, *args, **kw):
