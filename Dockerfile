@@ -19,4 +19,6 @@ COPY version.json /app/version.json
 
 USER app
 EXPOSE 5001
-CMD python init_db.py; uwsgi --ini uwsgi.ini
+CMD python init_db.py && \
+    servicebook-reindex --sqluri $(grep servicebook_db /app/servicebook.ini | awk '{print $NF}') --whoosh-root /app/index/ && \
+    uwsgi --ini uwsgi.ini
