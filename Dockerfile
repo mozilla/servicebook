@@ -19,4 +19,6 @@ COPY version.json /app/version.json
 
 USER app
 EXPOSE 5001
-CMD python init_db.py; uwsgi --ini uwsgi.ini
+CMD python init_db.py && \
+    ./servicebook_index.sh && \
+    uwsgi --ini uwsgi.ini

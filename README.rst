@@ -55,6 +55,12 @@ image, then running it. It will bind the app to your 5001 port::
 The Docker image will reach out for the database that's set
 **servicebook.ini**.
 
+Running with external DB
+------------------------
+
+If you would like to use an external DB for storage, be sure to set the default
+character set for the database to UTF-8 (utf8mr for mysql).
+
 
 Authentication
 --------------
