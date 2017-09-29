@@ -20,4 +20,4 @@ COPY version.json /app/version.json
 USER app
 EXPOSE 5001
 ENTRYPOINT ["/app/entrypoint.sh"]
-CMD start
+CMD ["start"]
