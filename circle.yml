@@ -22,7 +22,7 @@ dependencies:
       I="image-$(date +%j).tar"; mkdir -p ~/docker; rm ~/docker/*; docker save app:build > ~/docker/$I; ls -l ~/docker
 test:
   override:
-    - docker run -d --net=host -e SQLURI=sqlite://///app/db -i -p 5001:5001 app:build; sleep 10
+    - docker run -d --net=host -e SQLURI=sqlite://///app/db -i -p 5001:5001 app:build test; sleep 10
     - curl --retry 10 --retry-delay 5 -v 'http://localhost:5001/__version__'
 deployment:
   hub_latest:
