@@ -2,6 +2,7 @@
 set -e
 cd /app
 ARG=$(echo "$1" | tr "[:upper:]" "[:lower:]")
+echo "I was passed $ENV"
 
 do_db_init() {
   python init_db.py
@@ -41,6 +42,10 @@ case "$ARG" in
   ;;
   "index")
     mkindex
+    exit
+  ;;
+  "test")
+    start_app
     exit
   ;;
   *)
