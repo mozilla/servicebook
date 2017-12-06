@@ -1,12 +1,12 @@
-requests==2.13.0
-SQLALchemy==1.2.0b2
-SQLAlchemy-Utils==0.32.9
-flask==0.12
-flask-sqlalchemy==2.1
+requests==2.18.4
+SQLALchemy==1.2.0b3
+SQLAlchemy-Utils==0.32.21
+flask==0.12.2
+flask-sqlalchemy==2.3.2
 flask-iniconfig==0.1.0
 PyYAML==3.12
 whoosh==2.7.4
-PyMySQL==0.7.10
+PyMySQL==0.7.11
 raven[flask]
 -e git+https://github.com/tarekziade/flask-restless.git#egg=flask-restless
 -e git+https://github.com/tarekziade/flask-restless-swagger.git#egg=flask-restless-swagger
