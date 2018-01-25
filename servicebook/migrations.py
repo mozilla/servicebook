@@ -65,4 +65,10 @@ def increment_database(engine, session, current):
             engine.execute(remove)
         except OperationalError:
             pass
+    elif current == 3:
+        active = 'alter table project add column active BOOLEAN DEFAULT True;'
+        try:
+            engine.execute(active)
+        except OperationalError:
+            pass
     return current + 1

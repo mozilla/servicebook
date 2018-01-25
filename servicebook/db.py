@@ -20,7 +20,7 @@ here = os.path.dirname(__file__)
 _DUMP = os.path.join(here, 'dump.json')
 _SQLURI = os.environ.get('SQLURI', 'sqlite:////tmp/qa_projects.db')
 _SEARCH = {"WHOOSH_BASE": "/tmp/whoosh-" + str(sys.hexversion)}
-DATABASE_VERSION = 3
+DATABASE_VERSION = 4
 
 
 def _migrate(engine, current, target):

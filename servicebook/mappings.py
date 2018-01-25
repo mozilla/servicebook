@@ -255,6 +255,7 @@ class Project(Base):
     long_description = Column(UnicodeText)
     irc = Column(Unicode(128))
     public = Column(Boolean, default=True)
+    active = Column(Boolean, default=True)
 
     # all project links
     homepage = Column(URLType())
