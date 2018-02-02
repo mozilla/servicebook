@@ -34,11 +34,10 @@ SQLITE3 or postgres by tweaking the **sqluri** option in **servicebook.ini**.
 Create a local virtualenv, install requirements, initialize the DB
 then run the service::
 
-    $ virtualenv .
-    $ bin/pip install -r requirements.txt
-    $ bin/python setup.py develop
-    $ bin/servicebook-import --sqluri mysql+pymysql://book:book@0.0.0.0/book
-    $ bin/servicebook
+    $ pipenv install --dev
+    $ pipenv shell
+    $ servicebook-import --sqluri mysql+pymysql://book:book@0.0.0.0/book
+    $ servicebook
 
 The app runs on the 5001 port by default.
 
@@ -111,4 +110,3 @@ access with **readwrite** scope for writing in the database.
 
 You should have one separate key per calling service so it's easier to revoke or
 renew a specific service access if required.
-

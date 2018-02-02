@@ -1,12 +1,5 @@
-import sys
 from setuptools import setup, find_packages
 from servicebook import __version__
-
-
-with open('requirements.txt') as f:
-    deps = [dep for dep in f.read().split('\n') if dep.strip() != ''
-            and not dep.startswith('-e')]
-    install_requires = deps
 
 
 setup(name='servicebook',
@@ -15,7 +8,20 @@ setup(name='servicebook',
       description="Mozilla QA Service Book",
       include_package_data=True,
       zip_safe=False,
-      install_requires=install_requires,
+      install_requires=[
+        'flask-iniconfig',
+        'flask-restless-swagger',
+        'flask-restless',
+        'flask-sqlalchemy',
+        'flask',
+        'PyMySQL',
+        'PyYAML',
+        'raven[flask]',
+        'requests',
+        'SQLAlchemy-Utils',
+        'SQLALchemy',
+        'whoosh',
+      ],
       entry_points="""
       [console_scripts]
       servicebook = servicebook.server:main

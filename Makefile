@@ -14,13 +14,14 @@ $(PYTHON):
 	$(VIRTUALENV) $(VTENV_OPTS) $(VENV)
 
 build: $(PYTHON)
-	$(PYTHON) setup.py develop
+	$(BIN)/pip install pipenv
+	$(BIN)/pipenv install --system
 
 clean:
 	rm -rf $(VENV)
 
 test_dependencies:
-	$(BIN)/pip install flake8 tox
+	$(BIN)/pip install tox
 
 test: build test_dependencies
 	$(BIN)/tox

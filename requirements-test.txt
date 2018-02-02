@@ -1,7 +1,0 @@
--r requirements.txt
-
--e git+https://github.com/tarekziade/restjson.git#egg=restjson
-flake8==3.0.4
-tox==2.3.1
-flask-webtest==0.0.7
-requests-mock
