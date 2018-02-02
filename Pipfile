@@ -29,3 +29,7 @@ flask-webtest = "*"
 nose = "*"
 requests-mock = "*"
 restjson = {git = "https://github.com/tarekziade/restjson.git"}
+
+
+[requires]
+python_version = "3.5"
