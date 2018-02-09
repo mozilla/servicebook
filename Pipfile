@@ -1,0 +1,35 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[packages]
+
+flask = "*"
+flask-iniconfig = "*"
+flask-restless = {git = "https://github.com/tarekziade/flask-restless.git", editable = true}
+flask-restless-swagger = {git = "https://github.com/tarekziade/flask-restless-swagger.git", editable = true}
+flask-sqlalchemy = "*"
+pymysql = "*"
+pyyaml = "*"
+raven = {extras = ["flask"]}
+requests = "*"
+sqlalchemy = "*"
+sqlalchemy-utils = "*"
+whoosh = "*"
+"e1839a8" = {path = ".", editable = true}
+
+
+[dev-packages]
+
+coverage = "*"
+flask-webtest = "*"
+nose = "*"
+requests-mock = "*"
+restjson = {git = "https://github.com/tarekziade/restjson.git"}
+
+
+[requires]
+python_version = "3.5"
