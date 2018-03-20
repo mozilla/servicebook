@@ -7,9 +7,10 @@ RUN addgroup --gid 10001 app
 RUN adduser --gid 10001 --uid 10001 --home /app --shell /sbin/nologin --no-create-home --disabled-password --gecos we,dont,care,yeah app
 
 WORKDIR /app
-RUN pip install pipenv uwsgi
+COPY Pipfile pipenv.txt /app/
+RUN pip install -r pipenv.txt uwsgi
 COPY . /app
-RUN pipenv install --deploy --system
+RUN pipenv install --deploy --system --skip-lock
 
 RUN chown 10001:10001 -R /app
 
