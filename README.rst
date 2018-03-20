@@ -16,8 +16,8 @@ a set of API to interact with them.
     :target: https://travis-ci.org/mozilla/servicebook
     :alt: Build Status
     
-.. |pyup| image:: https://pyup.io/repos/github/mozilla/stubattribution-tests/shield.svg
-     :target: https://pyup.io/repos/github/mozilla/stubattribution-tests/
+.. |pyup| image:: https://pyup.io/repos/github/mozilla/servicebook/shield.svg
+     :target: https://pyup.io/repos/github/mozilla/servicebook
      :alt: Updates
 
 
