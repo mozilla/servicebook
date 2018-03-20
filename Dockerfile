@@ -10,7 +10,7 @@ WORKDIR /app
 COPY Pipfile pipenv.txt /app/
 RUN pip install -r pipenv.txt uwsgi
 COPY . /app
-RUN pipenv install --deploy --system --skip-lock
+RUN pipenv install --deploy --skip-lock
 
 RUN chown 10001:10001 -R /app
 
