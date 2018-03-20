@@ -4,7 +4,7 @@ env:
     - TOX_ENV=flake8
 python: 3.5
 install:
-  - pip install -r pipenv.txt tox.txt
+  - pip install -r pipenv.txt -r tox.txt
 script: tox -e $TOX_ENV
 after_success:
   - pip install coveralls
