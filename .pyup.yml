@@ -1,4 +1,6 @@
 update: insecure
 requirements:
+  - pipenv.txt
   - Pipfile
   - Pipfile.lock
+  - tox.txt
