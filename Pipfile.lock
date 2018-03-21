@@ -177,9 +177,9 @@
         },
         "sqlalchemy-utils": {
             "hashes": [
-                "sha256:e35431b0e57c4f7030ff598c23813c8b7b04b508ce10e8e9ebe448645b38d6d7"
+                "sha256:e90725b96c4625c319b89deffa85fe37a4845ece33dd2a951546cff936311e5c"
             ],
-            "version": "==0.32.21"
+            "version": "==0.33.1"
         },
         "urllib3": {
             "hashes": [
