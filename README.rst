@@ -4,7 +4,7 @@ Service Book
 Mozilla Services projects API. Provides a Database of all projects and
 a set of API to interact with them.
 
-|travis| |master-coverage|
+|travis| |pyup| |master-coverage|
 
 
 .. |master-coverage| image::
@@ -14,6 +14,11 @@ a set of API to interact with them.
 
 .. |travis| image:: https://travis-ci.org/mozilla/servicebook.svg?branch=master
     :target: https://travis-ci.org/mozilla/servicebook
+    :alt: Build Status
+    
+.. |pyup| image:: https://pyup.io/repos/github/mozilla/servicebook/shield.svg
+     :target: https://pyup.io/repos/github/mozilla/servicebook
+     :alt: Updates
 
 
 Use the Service Book
