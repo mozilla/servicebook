@@ -1,5 +1,6 @@
 language: python
 env:
+    - PIPENV_IGNORE_VIRTUALENVS=1
     - TOX_ENV=py35
     - TOX_ENV=flake8
 python: 3.5
