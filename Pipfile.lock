@@ -158,11 +158,6 @@
             "index": "pypi",
             "version": "==2.18.4"
         },
-        "servicebook": {
-            "editable": true,
-            "git": "git@github.com:davehunt/servicebook.git",
-            "ref": "b772423a61884b5b4ce5921989df81d6d85c7cec"
-        },
         "six": {
             "hashes": [
                 "sha256:70e8a77beed4562e7f14fe23a786b54f6296e34344c23bc42f07b15018ff98e9",
