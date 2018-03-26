@@ -1,12 +1,9 @@
 [[source]]
-
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
-
 [packages]
-
 flask = "*"
 flask-iniconfig = "*"
 flask-restless = {git = "https://github.com/tarekziade/flask-restless.git", editable = true}
@@ -21,15 +18,13 @@ sqlalchemy-utils = "*"
 whoosh = "*"
 "e1839a8" = {path = ".", editable = true}
 
-
 [dev-packages]
-
 coverage = "*"
 flask-webtest = "*"
 nose = "*"
 requests-mock = "*"
 restjson = {git = "https://github.com/tarekziade/restjson.git"}
-
+"flake8" = "*"
 
 [requires]
 python_version = "3.5"
