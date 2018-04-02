@@ -174,10 +174,9 @@
         },
         "sqlalchemy-utils": {
             "hashes": [
-                "sha256:e90725b96c4625c319b89deffa85fe37a4845ece33dd2a951546cff936311e5c"
+                "sha256:986930124da1386208c2bcdcdb149df88c095ab62d666fae865639ede1edc5f6"
             ],
-            "index": "pypi",
-            "version": "==0.33.1"
+            "version": "==0.33.2"
         },
         "urllib3": {
             "hashes": [
