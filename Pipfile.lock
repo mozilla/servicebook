@@ -400,10 +400,10 @@
         },
         "webob": {
             "hashes": [
-                "sha256:63f4220492476c5c716b615baed7bf3d27040b3105014375787160dee0943115",
-                "sha256:8d10af182fda4b92193113ee1edeb687ab9dc44336b37d6804e413f0240d40d9"
+                "sha256:ae809c05b667c3457a2937cdb4a7c7f07e90f26c651a340d37fdd1d5cf1fed27",
+                "sha256:6fca7aa39bd2f6d2ff71f15a22223ff256c91f60b1ab52dac0ab38dc6ea9142f"
             ],
-            "version": "==1.7.4"
+            "version": "==1.8.0"
         },
         "webtest": {
             "hashes": [
