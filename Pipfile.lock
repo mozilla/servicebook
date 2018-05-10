@@ -366,11 +366,10 @@
         },
         "requests-mock": {
             "hashes": [
-                "sha256:2931887853c42e1d73879983d5bf03041109472991c5b4b8dba5d11ed23b9d0b",
-                "sha256:96a1e45b1c0bd18d14fcb2d55b3b09d6d46237e37bcae3155df4cb75bc42619e"
+                "sha256:ea06be249562e52c550cb252e03058d058d9eaca792076b0b2b54d4dc87ff5c7",
+                "sha256:a029fe6c5244963ef042c6224ff787049bfc5bab958a1b7e5b632ef0bbb05de4"
             ],
-            "index": "pypi",
-            "version": "==1.4.0"
+            "version": "==1.5.0"
         },
         "restjson": {
             "git": "https://github.com/tarekziade/restjson.git"
