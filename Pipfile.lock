@@ -143,10 +143,10 @@
         },
         "raven": {
             "hashes": [
-                "sha256:e4edf648829a64234800a10ed94ca08e0b38592f7449fa5e70931db62f5cd851",
-                "sha256:f908e9b39f02580e7f822030d119ed3b2e8d32300a2fec6373e5827d588bbae7"
+                "sha256:1c641e5ebc2d4185560608e253970ca0d4b98475f4edf67735015a415f9e1d48",
+                "sha256:95aecf76c414facaddbb056f3e98c7936318123e467728f2e50b3a66b65a6ef7"
             ],
-            "version": "==6.7.0"
+            "version": "==6.8.0"
         },
         "requests": {
             "hashes": [
