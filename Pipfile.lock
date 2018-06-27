@@ -109,10 +109,10 @@
         },
         "pymysql": {
             "hashes": [
-                "sha256:2e77a2a193b1d21d51934c4ca055c88971eb6c6fc6e381b428c081bc14b215f8",
-                "sha256:34e19bfff13e8b2ffc38a68f9ad064609d48f3d46320e8ab8184af527e662629"
+                "sha256:08bc389a8d63708ceb883eac928d004d9ebf97fc973abe7ec1c1b4d0e2edfb3c",
+                "sha256:8ee053bce47c97786ccf7d2e73e9063c214251cecef846b1219a9169f4f833eb"
             ],
-            "version": "==0.8.1"
+            "version": "==0.9.0"
         },
         "python-dateutil": {
             "hashes": [
