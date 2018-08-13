@@ -12,11 +12,11 @@ a set of API to interact with them.
     :target: https://circleci.com/gh/mozilla/servicebook
 
 .. |master-coverage| image::
-    https://coveralls.io/repos/mozilla/servicebook/badge.svg?branch=master
+    https://img.shields.io/coveralls/github/mozilla/servicebook/master.svg
     :alt: Coverage
     :target: https://coveralls.io/r/mozilla/servicebook
 
-.. |travis| image:: https://travis-ci.org/mozilla/servicebook.svg?branch=master
+.. |travis| image:: https://img.shields.io/travis/mozilla/servicebook/master.svg?logo=travis
     :target: https://travis-ci.org/mozilla/servicebook
     :alt: Build Status
 
