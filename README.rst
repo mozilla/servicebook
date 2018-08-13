@@ -7,9 +7,9 @@ a set of API to interact with them.
 |circleci| |travis| |pyup| |master-coverage|
 
 .. |circleci| image::
-    https://img.shields.io/circleci/project/github/mozilla/servicebook.svg?logo=circleci
+    https://img.shields.io/circleci/project/github/mozilla/servicebook/master.svg?logo=circleci
     :alt: CircleCI
-    :target: https://circleci.com/gh/mozilla/servicebook
+    :target: https://circleci.com/gh/mozilla/servicebook/tree/master
 
 .. |master-coverage| image::
     https://img.shields.io/coveralls/github/mozilla/servicebook/master.svg
