@@ -30,7 +30,7 @@ jobs:
       - run:
           name: Push
           command: |
-            export DOCKER_IMAGE="mozilla/${CIRCLECI_PROJECT_REPONAME}:latest"
+            export DOCKER_IMAGE="mozilla/${CIRCLE_PROJECT_REPONAME}:latest"
             if [ -n "${CIRCLE_TAG}" ]; then
               export DOCKER_IMAGE="mozilla/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_TAG}"
             fi
