@@ -1,0 +1,43 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: docker:stable
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Create version.json
+          command: |
+            printf '{"commit":"%s","version":"%s","source":"https://github.com/%s/%s","build":"%s"}\n' \
+            "$CIRCLE_SHA1"             \
+            "$CIRCLE_TAG"              \
+            "$CIRCLE_PROJECT_USERNAME" \
+            "$CIRCLE_PROJECT_REPONAME" \
+            "$CIRCLE_BUILD_URL"        \
+            > version.json
+      - run:
+          name: Build
+          command: |
+            docker info
+            docker build -t app:build .
+      - run:
+          name: Test
+          command: |
+            docker run -d --name servicebook --net=host -e SQLURI=sqlite://///app/db -i -p 5001:5001 app:build test
+            sleep 10
+            docker run --network container:servicebook appropriate/curl --retry 10 --retry-delay 5 -4 -v 'http://localhost:5001/__version__'
+      - run:
+          name: Push
+          command: |
+            export DOCKER_IMAGE="mozilla/${CIRCLECI_PROJECT_REPONAME}:latest"
+            if [ -n "${CIRCLE_TAG}" ]; then
+              export DOCKER_IMAGE="mozilla/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_TAG}"
+            fi
+            if [ "${CIRCLE_BRANCH}" == "master" ] || [ -n "${CIRCLE_TAG}" ]; then
+              echo "${DOCKER_PASSWORD}" | docker login -u="${DOCKER_USERNAME}" --password-stdin
+              docker tag app:build "${DOCKER_IMAGE}"
+              docker push "${DOCKER_IMAGE}"
+            fi
+      - store_artifacts:
+          path: version.json

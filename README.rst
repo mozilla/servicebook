@@ -4,22 +4,21 @@ Service Book
 Mozilla Services projects API. Provides a Database of all projects and
 a set of API to interact with them.
 
-|travis| |pyup| |master-coverage|
-
-
-.. |master-coverage| image::
-    https://coveralls.io/repos/mozilla/servicebook/badge.svg?branch=master
-    :alt: Coverage
-    :target: https://coveralls.io/r/mozilla/servicebook
-
-.. |travis| image:: https://travis-ci.org/mozilla/servicebook.svg?branch=master
-    :target: https://travis-ci.org/mozilla/servicebook
-    :alt: Build Status
-    
-.. |pyup| image:: https://pyup.io/repos/github/mozilla/servicebook/shield.svg
-     :target: https://pyup.io/repos/github/mozilla/servicebook
-     :alt: Updates
-
+.. image:: https://img.shields.io/badge/license-MPL%202.0-blue.svg
+   :target: https://github.com/mozilla/servicebook-web/blob/master/LICENSE.txt
+   :alt: License
+.. image:: https://img.shields.io/circleci/project/github/mozilla/servicebook/master.svg?logo=circleci
+   :alt: CircleCI
+   :target: https://circleci.com/gh/mozilla/servicebook/tree/master
+.. image:: https://img.shields.io/travis/mozilla/servicebook/master.svg?logo=travis
+   :target: https://travis-ci.org/mozilla/servicebook
+   :alt: Travis CI
+.. image:: https://img.shields.io/coveralls/github/mozilla/servicebook/master.svg
+   :alt: Coverage
+   :target: https://coveralls.io/github/mozilla/servicebook?branch=master
+.. image:: https://pyup.io/repos/github/mozilla/servicebook/shield.svg
+   :target: https://pyup.io/repos/github/mozilla/servicebook
+   :alt: Updates
 
 Use the Service Book
 --------------------
