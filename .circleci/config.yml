@@ -35,7 +35,7 @@ jobs:
               export DOCKER_IMAGE="mozilla/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_TAG}"
             fi
             if [ "${CIRCLE_BRANCH}" == "master" ] || [ -n "${CIRCLE_TAG}" ]; then
-              echo "${DOCKER_PASSWORD}" | docker login -u="${DOCKER_USERNAME}" --password-stdin
+              docker login -u $DOCKER_USER -p $DOCKER_PASS
               docker tag app:build "${DOCKER_IMAGE}"
               docker push "${DOCKER_IMAGE}"
             fi
