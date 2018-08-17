@@ -1,6 +1,4 @@
-update: insecure
+schedule: "every month"
 requirements:
-  - pipenv.txt
   - Pipfile
   - Pipfile.lock
-  - tox.txt

@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-flask = "*"
+flask = "==0.12.4"
 flask-iniconfig = "*"
 flask-restless = {git = "https://github.com/tarekziade/flask-restless.git", editable = true}
 flask-restless-swagger = {git = "https://github.com/tarekziade/flask-restless-swagger.git", editable = true}
@@ -23,8 +23,7 @@ coverage = "*"
 flask-webtest = "*"
 nose = "*"
 requests-mock = "*"
-restjson = {git = "https://github.com/tarekziade/restjson.git"}
-"flake8" = "*"
+flake8 = "*"
 
 [requires]
 python_version = "3.5"
