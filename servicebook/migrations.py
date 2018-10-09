@@ -24,13 +24,15 @@ def increment_database(engine, session, current):
             try:
                 engine.execute(public % table)
             except OperationalError:
-                if table != 'testrail':
-                    raise
+                pass
 
         # jenkins_pipeline in project_test
         sql = ('alter table project_test add column jenkins_pipeline BOOLEAN '
                'DEFAULT False')
-        engine.execute(sql)
+        try:
+            engine.execute(sql)
+        except OperationalError:
+            pass
 
         # adding teams
         for team_name in ('OPS', 'QA', 'Dev', 'Community'):
