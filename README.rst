@@ -16,9 +16,9 @@ a set of API to interact with them.
 .. image:: https://img.shields.io/coveralls/github/mozilla/servicebook/master.svg
    :alt: Coverage
    :target: https://coveralls.io/github/mozilla/servicebook?branch=master
-.. image:: https://pyup.io/repos/github/mozilla/servicebook/shield.svg
-   :target: https://pyup.io/repos/github/mozilla/servicebook
-   :alt: Updates
+.. image:: https://api.dependabot.com/badges/status?host=github&repo=mozilla/servicebook-web
+   :target: https://dependabot.com
+   :alt: Dependabot
 
 Use the Service Book
 --------------------
