@@ -1,4 +1,0 @@
-schedule: "every month"
-requirements:
-  - Pipfile
-  - Pipfile.lock
