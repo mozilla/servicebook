@@ -84,8 +84,8 @@ The key is passed in the Authorization header, prefixed by APIKey::
 
     Authorization APIKey ZGJkYWI3ZmQtZDEwNy00MzJiLWJlNDgtMjZkNTQyZGFiZDhi
 
-The value is a base64-encoded UUID. Each application that whishes to get a
-priviledged access should have its own API key and scope.
+The value is a base64-encoded UUID. Each application that wishes to get a
+privileged access should have its own API key and scope.
 
 You can list/add/revoke keys using the **servicebook-keys** command::
 
@@ -109,7 +109,7 @@ You can list/add/revoke keys using the **servicebook-keys** command::
     App: MyApp2, Key: e87271fd-ca31-46cf-8cc5-48b1f9348e4e, Scope: readwrite
 
 
-The default setup will make the data read-only and will required a privileged
+The default setup will make the data read-only and will require a privileged
 access with **readwrite** scope for writing in the database.
 
 You should have one separate key per calling service so it's easier to revoke or
