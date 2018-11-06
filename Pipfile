@@ -11,7 +11,7 @@ flask-restless-swagger = {git = "https://github.com/tarekziade/flask-restless-sw
 flask-sqlalchemy = "*"
 pymysql = "*"
 pyyaml = "*"
-raven = {extras = ["flask"]}
+raven = {extras = ["flask"], version = "*"}
 requests = "*"
 sqlalchemy = "*"
 sqlalchemy-utils = "*"
