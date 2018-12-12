@@ -276,10 +276,10 @@
         },
         "sqlalchemy-utils": {
             "hashes": [
-                "sha256:4119204ff302906015516992b7481e5aabeeaa61c7b04329f9113e42c097b855"
+                "sha256:d8c10eac729d9cdc22af694a1c2f144780787942df1eb70c0f0715d1fa6fcf9e"
             ],
             "index": "pypi",
-            "version": "==0.33.3"
+            "version": "==0.33.9"
         },
         "urllib3": {
             "hashes": [
