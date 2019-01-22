@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-flask = "==0.12.4"
+flask = "==1.0.2"
 flask-iniconfig = "*"
 flask-restless = {git = "https://github.com/tarekziade/flask-restless.git", editable = true}
 flask-restless-swagger = {git = "https://github.com/tarekziade/flask-restless-swagger.git", editable = true}
